@@ -1,6 +1,6 @@
 import { integer, pgTable, varchar, text } from 'drizzle-orm/pg-core';
 
-export const registerTable = pgTable('register', {
+export const registerTable = pgTable('supplier_register', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   company_name_or_owns_car: varchar({ length: 255 }).notNull(),
   owner_name: varchar({ length: 255 }).notNull(),
