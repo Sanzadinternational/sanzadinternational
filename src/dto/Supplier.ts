@@ -1,0 +1,16 @@
+export interface CreateSupplierInput {
+    company_name_or_owns_car:string,
+    owner_name:string,
+    office_address:string,
+    country:string, 
+    city:string,
+    zipcode:number,
+    office_number:number,
+    email:string,
+    contact_person:number,
+    mobile_number:number,
+    tax_no_or_vat_no:number,
+    pan_number:number,
+    currency:string,
+    image:string, 
+  }

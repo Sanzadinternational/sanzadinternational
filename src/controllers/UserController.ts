@@ -11,9 +11,6 @@ export const GetProducts = async (req: Request, res: Response, next: NextFunctio
     else{
         return res.json({"message":"No Product found"});
     }
-    
-    
-
 }
 
 export const SearchProduct = async (req: Request, res: Response, next: NextFunction) => {
