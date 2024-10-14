@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateSupplierInput } from "../dto/Supplier";
+import { CreateSupplierInput } from "../dto";
 const Supplier = require('../db/schema/SupplierSchema');
 
 export const CreateSupplier = async(req:Request,res:Response,next:NextFunction)=>{

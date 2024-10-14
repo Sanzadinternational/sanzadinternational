@@ -1,9 +1,9 @@
 import express, {Request, Response, NextFunction} from 'express';
-import { CreateSupplier } from '../controllers/SupplierController';
+import { CreateSupplier } from '../controllers';
 
 const router = express.Router();
 
-router.post('/Supplier', CreateSupplier);
+router.post('/registration', CreateSupplier);
 // router.get('/products', GetProducts);
 // router.get('/product/:id', GetProductById);
 // router.get('/product/:Keyword', SearchProduct);
