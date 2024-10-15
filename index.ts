@@ -16,7 +16,8 @@ app.use("/", (req, res) => {
         "message":"done",
     });
 });
-app.use("/SupplierRoute", SupplierRoute);
+
+app.use("/Supplier", SupplierRoute);
 // mongoose.connect(MONGOURI).then((result) => {console.log("success")}).catch((error) => {console.error(error)});
 
 

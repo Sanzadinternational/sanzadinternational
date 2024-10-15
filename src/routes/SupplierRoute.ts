@@ -1,12 +1,13 @@
 import express, {Request, Response, NextFunction} from 'express';
-import { CreateSupplier } from '../controllers';
+import { CreateSupplier,GetSupplier } from '../controllers';
 
 const router = express.Router();
 
 router.post('/registration', CreateSupplier);
+router.get('/GetSupplier',GetSupplier);
 // router.get('/products', GetProducts);
 // router.get('/product/:id', GetProductById);
-// router.get('/product/:Keyword', SearchProduct);
+// router.get('/product/:Keyword', SearchProduct); 
 
 // router.get('/', (req: Request, res: Response, next: NextFunction) => {
 //     res.json({ message:'Hello from user route'})    
