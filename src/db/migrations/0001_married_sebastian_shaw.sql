@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS "register" (
 	"pan_number" integer NOT NULL,
 	"currency" varchar(255) NOT NULL,
 	"image" varchar(255) NOT NULL,
-	"image_path" text NOT NULL,
+	-- "image_path" text NOT NULL,
 	CONSTRAINT "register_email_unique" UNIQUE("email")
 );

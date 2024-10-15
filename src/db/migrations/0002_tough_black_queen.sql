@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS "supplier_register" (
 	"pan_number" integer NOT NULL,
 	"currency" varchar(255) NOT NULL,
 	"image" varchar(255) NOT NULL,
-	"image_path" text NOT NULL,
+	-- "image_path" text NOT NULL,
 	CONSTRAINT "supplier_register_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint

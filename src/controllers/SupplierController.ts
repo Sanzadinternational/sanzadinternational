@@ -1,16 +1,14 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateSupplierInput } from "../dto"; // Assuming you have a DTO to validate the input
-// import  {SupplierSchema}  from "../db/schema/SupplierSchema"; // Assuming SupplierSchema defines the supplier table
-// import db from "../db"; // Importing your database instance
-const db = require("../config/index");
-
-const { v4: uuidv4 } = require('uuid');
+import { CreateSupplierInput } from "../dto";
+// import { v4 as uuidv4 } from 'uuid';
 import { eq } from "drizzle-orm";
+const { v4: uuidv4 } = require('uuid');
+// Make sure db is correctly configured and imported
+import { db } from "../db/db";
+const { registerTable } = require('../db/schema/SupplierSchema');
 
-const Supplier = require('../db/schema/SupplierSchema');
-export const CreateSupplier = async(req:Request,res:Response,next:NextFunction) => { 
+export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {
-        // Extracting supplier details from the request body 
         const {
             company_name_or_owns_car, 
             owner_name, 
@@ -26,14 +24,14 @@ export const CreateSupplier = async(req:Request,res:Response,next:NextFunction) 
             pan_number,
             currency,
             image,
-        } = <CreateSupplierInput>req.body; // Type assertion using CreateSupplierInput DTO 
-        
-        let id =uuidv4;
-        // Inserting the new supplier into the database
+        } = <CreateSupplierInput>req.body;
+
+        const id = uuidv4(); // Generate UUID for the new supplier
+
+        // Insert the new supplier
         const newSupplier = await db
-            .insert(Supplier)
+            .insert(registerTable)
             .values({
-                id,
                 company_name_or_owns_car,
                 owner_name,
                 office_address,
@@ -49,41 +47,43 @@ export const CreateSupplier = async(req:Request,res:Response,next:NextFunction) 
                 currency,
                 image,
             })
-            .returning(); // Returning the inserted supplier data
-        let [supplier] = await db.select().from(Supplier).where(eq(Supplier.id,id)); 
-        // Sending back the newly created supplier as a JSON response
-        res.status(201).json(newSupplier);
-        return res.send(supplier);
+            .returning(); // Return the newly inserted supplier
+
+        return res.status(201).json(newSupplier);
+
     } catch (error) {
-        // Error handling, passing error to middleware
+        // Pass any error to the error handler middleware
         next(error);
     }
 };
 
-export const GetSupplier = async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-        const result = await db.select({
-            f1: Supplier.id,
-            f2: Supplier.name,
-            f3:Supplier.company_name_or_owns_car, 
-            f4:Supplier.owner_name, 
-            f5:Supplier.office_address,
-            f6:Supplier.country,
-            f7:Supplier.city,
-            f8:Supplier.zipcode,
-            f9:Supplier.office_number,
-            f10:Supplier.email,
-            f11:Supplier.contact_person,
-            f12:Supplier.mobile_number,
-            f13:Supplier.tax_no_or_vat_no,
-            f14:Supplier.pan_number,
-            f15:Supplier.currency,
-            f16:Supplier.image,
-          }).from(Supplier);
-          return  res.status(201).json(result);
-        //   const { field1, field2 } = result[0];
-    }
-    catch(error){
+export const GetSupplier = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Fetch all suppliers from the database
+        const result = await db
+            .select({
+                id: registerTable.id,
+                company_name_or_owns_car: registerTable.company_name_or_owns_car,
+                owner_name: registerTable.owner_name, 
+                office_address: registerTable.office_address,
+                country: registerTable.country,
+                city: registerTable.city,
+                zipcode:registerTable.zipcode,
+                office_number: registerTable.office_number,
+                email: registerTable.email,
+                contact_person: registerTable.contact_person,
+                mobile_number: registerTable.mobile_number,
+                tax_no_or_vat_no: registerTable.tax_no_or_vat_no,
+                pan_number: registerTable.pan_number,
+                currency: registerTable.currency,
+                image: registerTable.image,
+            })
+            .from(registerTable);
+
+        return res.status(200).json(result);
+
+    } catch (error) {
+        // Pass the error to the error handler middleware
         next(error);
     }
-}
+};
