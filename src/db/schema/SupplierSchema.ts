@@ -16,7 +16,7 @@ export const registerTable = pgTable('supplier_register', {
   pan_number: integer().notNull(), 
   currency: varchar({ length: 255 }).notNull(),
   image: varchar({ length: 255 }).notNull(),
-  password:varchar({length:255}).notNull(),  
+  password: varchar({length:255}).notNull(),
   // imagepath: text('image_path').notNull(),  
 });
 
