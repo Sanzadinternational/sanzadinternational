@@ -5,7 +5,8 @@ import { eq } from "drizzle-orm";
 const { v4: uuidv4 } = require('uuid');
 // Make sure db is correctly configured and imported
 import { db } from "../db/db";
-const { registerTable } = require('../db/schema/SupplierSchema');
+const { registerTable } = require('../db/schema/SupplierSchema'); 
+const bcrypt = require('bcrypt'); 
 
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -14,7 +15,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             owner_name, 
             office_address,
             country,
-            city,
+            city,    
             zipcode,
             office_number,
             email,
@@ -24,10 +25,12 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             pan_number,
             currency,
             image,
+            password,
         } = <CreateSupplierInput>req.body;
 
         const id = uuidv4(); // Generate UUID for the new supplier
-
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
         // Insert the new supplier
         const newSupplier = await db
             .insert(registerTable)
@@ -38,7 +41,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 country,
                 city,
                 zipcode,
-                office_number,
+                office_number, 
                 email,
                 contact_person,
                 mobile_number,
@@ -46,6 +49,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 pan_number,
                 currency,
                 image,
+                password: hashedPassword,
             })
             .returning(); // Return the newly inserted supplier
 
@@ -60,7 +64,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
 export const GetSupplier = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Fetch all suppliers from the database
-        const result = await db
+        const result = await db 
             .select({
                 id: registerTable.id,
                 company_name_or_owns_car: registerTable.company_name_or_owns_car,
@@ -77,10 +81,11 @@ export const GetSupplier = async (req: Request, res: Response, next: NextFunctio
                 pan_number: registerTable.pan_number,
                 currency: registerTable.currency,
                 image: registerTable.image,
+                password:registerTable.password,
             })
             .from(registerTable);
 
-        return res.status(200).json(result);
+        return res.status(200).json(result); 
 
     } catch (error) {
         // Pass the error to the error handler middleware

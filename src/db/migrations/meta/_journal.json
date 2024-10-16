@@ -22,6 +22,13 @@
       "when": 1728934155584,
       "tag": "0002_tough_black_queen",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1729096878117,
+      "tag": "0003_pretty_bedlam",
+      "breakpoints": true
     }
   ]
 }

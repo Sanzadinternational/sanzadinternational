@@ -13,4 +13,4 @@ router.get('/GetSupplier',GetSupplier);
 //     res.json({ message:'Hello from user route'})    
 // })
 
-export {router as SupplierRoute};
+export {router as SupplierRoute}; 

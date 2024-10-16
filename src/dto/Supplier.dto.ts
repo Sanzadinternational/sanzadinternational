@@ -13,4 +13,5 @@ export interface CreateSupplierInput {
     pan_number:number,
     currency:string,
     image:string, 
+    password:string, 
   }
