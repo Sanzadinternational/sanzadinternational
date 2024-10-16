@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require('uuid');
 // Make sure db is correctly configured and imported
 import { db } from "../db/db";
 const { registerTable } = require('../db/schema/SupplierSchema'); 
-const bcrypt = require('bcrypt'); 
+// const bcrypt = require('bcrypt'); 
 
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -25,12 +25,12 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             pan_number,
             currency,
             image,
-            password,
+            // password,
         } = <CreateSupplierInput>req.body;
 
         const id = uuidv4(); // Generate UUID for the new supplier
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        // const saltRounds = 10;
+        // const hashedPassword = await bcrypt.hash(password, saltRounds);
         // Insert the new supplier
         const newSupplier = await db
             .insert(registerTable)
@@ -49,7 +49,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 pan_number,
                 currency,
                 image,
-                password: hashedPassword,
+                // password: hashedPassword,
             })
             .returning(); // Return the newly inserted supplier
 
@@ -81,7 +81,7 @@ export const GetSupplier = async (req: Request, res: Response, next: NextFunctio
                 pan_number: registerTable.pan_number,
                 currency: registerTable.currency,
                 image: registerTable.image,
-                password:registerTable.password,
+                // password:registerTable.password,
             })
             .from(registerTable);
 
