@@ -15,6 +15,13 @@
       "when": 1729091021012,
       "tag": "0001_dashing_eternals",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1729199249459,
+      "tag": "0002_unknown_roulette",
+      "breakpoints": true
     }
   ]
 }
