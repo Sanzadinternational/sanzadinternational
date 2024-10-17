@@ -1,10 +1,8 @@
-CREATE TABLE IF NOT EXISTS "supplier_details_services" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "supplier_details_services_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	-- "vehicle_type" varchar(255) NOT NULL,
-	-- "vehicle_brand" integer NOT NULL,
-	"vehicle_type": text('vehicle_type') NOT NULL,
-    "vehicle_brand": text('vehicle_brand') NOT NULL, 
-	"type_service" varchar(255) NOT NULL, 
+CREATE TABLE IF NOT EXISTS "supplier_details" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"vehicle_type" text NOT NULL,
+	"vehicle_brand" text NOT NULL,
+	"type_service" varchar(255) NOT NULL,
 	"vehicle_model" integer NOT NULL,
 	"doors" varchar(255) NOT NULL,
 	"seats" varchar(255) NOT NULL,
@@ -23,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "supplier_details_services" (
 	"city_center" varchar(255) NOT NULL,
 	"vehicle_for" varchar(255) NOT NULL,
 	"half_day_city_limit_4hrs" boolean DEFAULT false,
-	"half_day_city_limit_8hrs" boolean DEFAULT false,
+	"full_day_city_limit_8hrs" boolean DEFAULT false,
 	"tick_box" boolean DEFAULT true,
 	"vehicle_rent" integer NOT NULL,
 	"fuel" varchar(255) NOT NULL,
@@ -33,3 +31,5 @@ CREATE TABLE IF NOT EXISTS "supplier_details_services" (
 	"driver_tips" integer NOT NULL,
 	"other" varchar(255) NOT NULL
 );
+--> statement-breakpoint
+DROP TABLE "supplier_details_services";

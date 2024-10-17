@@ -1,12 +1,12 @@
-import { integer, pgTable, varchar, text, boolean } from 'drizzle-orm/pg-core';
+import { integer, pgTable, varchar, text, boolean,uuid } from 'drizzle-orm/pg-core'; 
 
-export const registerTable = pgTable('supplier_details_services', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  vehicle_type: varchar({ length: 255 }).notNull(),
-  vehicle_brand: integer().notNull(),
+export const registerTable2 = pgTable('supplier_details', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  vehicle_type: text('vehicle_type').notNull(),
+  vehicle_brand: text('vehicle_brand').notNull(),
   type_service: varchar({ length: 255 }).notNull(),
   vehicle_model: integer().notNull(), 
-  doors: varchar({ length: 255 }).notNull(),
+  doors: varchar({ length: 255 }).notNull(), 
   seats: varchar({length:255}).notNull(),
   category_space: integer(),
   max_number_pax_accommodate: varchar({ length: 255 }).notNull(),
@@ -23,7 +23,7 @@ export const registerTable = pgTable('supplier_details_services', {
   city_center:varchar({length:255}).notNull(),
   vehicle_for:varchar({length:255}).notNull(),
   half_day_city_limit_4hrs: boolean('half_day_city_limit_4hrs').default(false), 
-  full_day_city_limit_8hrs: boolean('half_day_city_limit_8hrs').default(false),
+  full_day_city_limit_8hrs: boolean('half_day_city_limit_8hrs').default(false), 
   inclusions:boolean('tick_box').default(true),
   vehicle_rent:integer().notNull(),
   fuel:varchar({length:255}).notNull(),

@@ -1,6 +1,6 @@
-export interface CreateSupplierInput { 
- vehicle_type:string,
-  vehicle_brand:number, 
+export interface CreateSupplierDetailServicesInput { 
+ vehicle_type:Text,
+  vehicle_brand:Text, 
   type_service:string,
   vehicle_model:number, 
   doors:string,
@@ -15,7 +15,7 @@ export interface CreateSupplierInput {
   transfer_information:string,
   service_providing_location:string,  
   airport:string,
-  port_cruise:string,
+  port_cruise:string, 
   station:string,
   city_center:string,
   vehicle_for:string,
