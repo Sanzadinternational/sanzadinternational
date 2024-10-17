@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, text } from 'drizzle-orm/pg-core'; 
+import { integer, pgTable, varchar, text, PgTable, date } from 'drizzle-orm/pg-core'; 
 
 export const registerTable = pgTable('supplier_register', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -20,3 +20,47 @@ export const registerTable = pgTable('supplier_register', {
   // imagepath: text('image_path').notNull(),  
 });
 
+export const One_Way_Service_Price_Details = pgTable('One_Way_Service_Details',{
+    id:integer().primaryKey().generatedAlwaysAsIdentity(),
+    country:varchar({length:255}).notNull(),
+    city:varchar({length:255}).notNull(),
+    location_from_airport:varchar({length:255}).notNull(),
+    location_from_port_cruise:varchar({length:255}).notNull(),
+    location_from_station:varchar({length:255}).notNull(),
+    location_from_city_center:varchar({length:255}).notNull(),
+    location_to_airport:varchar({length}).notNull(),
+    location_to_port_cruise:varchar({length}).notNull(),
+    location_to_station:varchar({length:255}).notNull(),
+    location_to_city_center:varchar({length:255}).notNull(),
+    night_time_supplement:varchar({length:255}).notNull(),
+    vice_versa:varchar({length:255}).notNull(),
+    half_day_city_limit_4hrs:varchar({length:255}).notNull(),
+    full_day_city_limit_8hrs:varchar({length:255}).notNull(),
+    from_date: date().notNull(), 
+    to_date: date().notNull(),   
+    price: integer().notNull(), 
+    new_location: varchar({ length: 255 }).notNull(),
+
+});
+
+export const Roundtrip_Service_Price_Details = pgTable('Roundtrip_Service_Price_Details',{
+  id:integer().primaryKey().generatedAlwaysAsIdentity(),
+  country:varchar({length:255}).notNull(),
+  city:varchar({length:255}).notNull(),
+  location_from_airport:varchar({length:255}).notNull(),
+  location_from_port_cruise:varchar({length:255}).notNull(),
+  location_from_station:varchar({length:255}).notNull(),
+  location_from_city_center:varchar({length:255}).notNull(),
+  location_to_airport:varchar({length:255}).notNull(),
+  location_to_port_cruise:varchar({length:255}).notNull(),
+  location_to_station:varchar({length:255}).notNull(),
+  location_to_city_center:varchar({length:255}).notNull(),
+  night_time_supplement:varchar({length:255}).notNull(),
+  vice_versa:varchar({length:255}).notNull(),
+  half_day_city_limit_4hrs:varchar({length:255}).notNull(), 
+  full_day_city_limit_8hrs:varchar({length:255}).notNull(),
+  from_date: date().notNull(), 
+  to_date: date().notNull(),   
+  price: integer().notNull(), 
+  new_location: varchar({ length: 255 }).notNull(), 
+}); 

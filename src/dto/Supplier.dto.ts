@@ -15,3 +15,44 @@ export interface CreateSupplierInput {
     image:string, 
     password:string, 
   }
+
+  export interface One_Way_Service_Price_Details{
+    country:string,
+    city:string,
+    location_from_airport:string,
+    location_from_port_cruise:string,
+    location_from_station:string,
+    location_from_city_center:string,
+    location_to_airport:string,
+    location_to_port_cruise:string,
+    location_to_station:string,
+    location_to_city_center:string,
+    night_time_supplement:string,
+    vice_versa:string,
+    half_day_city_limit_4hrs:string,
+    full_day_city_limit_8hrs:string,
+    from_date:string,
+    to_date:string,
+    price:number,
+    new_location:string
+  }
+  export interface Roundtrip_Service_Price_Details{
+    country:string,
+    city:string,
+    location_from_airport:string,
+    location_from_port_cruise:string,
+    location_from_station:string,
+    location_from_city_center:string,
+    location_to_airport:string,
+    location_to_port_cruise:string,
+    location_to_station:string,
+    location_to_city_center:string,
+    night_time_supplement:string,
+    vice_versa:string,
+    half_day_city_limit_4hrs:string,
+    full_day_city_limit_8hrs:string,
+    from_date:string,
+    to_date:string,
+    price:number,
+    new_location:string
+  }

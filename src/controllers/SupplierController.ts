@@ -263,3 +263,77 @@ export const Supplier_details = async (req: Request, res: Response, next: NextFu
         next(error);
     }
 };
+
+export const deleteUserById = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Assuming the ID to delete comes from the request (e.g., a URL parameter)
+        const { id } = req.params;
+
+        // Perform the deletion
+        const deletedUserIds: { deletedId: number }[] = await db
+            .delete(registerTable2)
+            .where(eq(registerTable2.id, id)) // Dynamically use the provided ID
+            .returning({ deletedId: registerTable2.id });
+
+        // If no user was deleted, return a 404 response
+        if (deletedUserIds.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Respond with the ID(s) of the deleted user(s)
+        return res.status(200).json(deletedUserIds);
+
+    } catch (error) {
+        // Handle any errors that occur
+        next(error);
+    }
+};
+
+
+export const GetSupplier_details = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Fetch all suppliers from the database
+        const result = await db 
+            .select({
+                id: registerTable2.id,
+                vehicle_type:registerTable2.vehicle_type,
+                vehicle_brand:registerTable2.vehicle_brand,
+                type_service:registerTable2.type_service,
+                vehicle_model:registerTable2.vehicle_model,
+                doors:registerTable2.doors,
+                seats:registerTable2.seats,
+                category_space:registerTable2.category_space,
+                max_number_pax_accommodate:registerTable2.max_number_pax_accommodate,
+                luggage_information:registerTable2.luggage_information,
+                max_number_medium_suitcase:registerTable2.max_number_medium_suitcase,
+                max_number_carbin_bag:registerTable2.max_number_carbin_bag,
+                space_available_other_luggage:registerTable2.space_available_other_luggage,
+                location_details:registerTable2.location_details,
+                transfer_information:registerTable2.transfer_information,
+                service_providing_location:registerTable2.service_providing_location,
+                airport:registerTable2.airport,
+                port_cruise:registerTable2.port_cruise,
+                station:registerTable2.station,
+                city_center:registerTable2.city_center,
+                vehicle_for:registerTable2.vehicle_for,
+                half_day_city_limit_4hrs:registerTable2.half_day_city_limit_4hrs,
+                full_day_city_limit_8hrs:registerTable2.full_day_city_limit_8hrs,
+                inclusions:registerTable2.inclusions,
+                vehicle_rent:registerTable2.vehicle_rent,
+                fuel:registerTable2.fuel,
+                driver:registerTable2.driver,
+                parking_fees:registerTable2.parking_fees,
+                toll_or_taxes:registerTable2.toll_or_taxes,
+                driver_tips:registerTable2.driver_tips,
+                other:registerTable2.other,
+                // password:registerTable.password,
+            })
+            .from(registerTable2);
+
+        return res.status(200).json(result); 
+
+    } catch (error) {
+        // Pass the error to the error handler middleware
+        next(error);
+    }
+};
