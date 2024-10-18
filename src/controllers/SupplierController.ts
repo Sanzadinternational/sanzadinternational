@@ -1,11 +1,16 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateSupplierInput,CreateSupplierDetailServicesInput } from "../dto";
+import { CreateSupplierInput,CreateSupplierDetailServicesInput, CreateSupplierOneWayInput } from "../dto";
+// const {One_Way_Service_Details = require('../dto/Supplier.dto');
 // import { v4 as uuidv4 } from 'uuid';
 import { eq } from "drizzle-orm";
 const { v4: uuidv4 } = require('uuid');
 // Make sure db is correctly configured and imported
 import { db } from "../db/db";
-const { registerTable } = require('../db/schema/SupplierSchema'); 
+const { registerTable, One_WayTable} = require('../db/schema/SupplierSchema'); 
+// const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
+// import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
+
+// const { One_Way_Service_Price_Details } = require('../db/schema/SupplierSchema'); 
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
 // const bcrypt = require('bcrypt'); 
 
@@ -334,6 +339,123 @@ export const GetSupplier_details = async (req: Request, res: Response, next: Nex
 
     } catch (error) {
         // Pass the error to the error handler middleware
+        next(error);
+    }
+}; 
+
+// export const One_Way_Service_Details = async(req:Request,res:Response,next:NextFunction) =>{
+//     try{
+//         const {
+//             country,
+//             city,
+//             location_from_airport,
+//             location_from_port_cruise,
+//             location_from_station,
+//             location_from_city_center,
+//             location_to_airport,
+//             location_to_port_cruise,
+//             location_to_station,
+//             location_to_city_center,
+//             night_time_supplement,
+//             vice_versa,
+//             half_day_city_limit_4hrs,
+//             full_day_city_limit_8hrs,
+//             from_date, 
+//             to_date,   
+//             price, 
+//             new_location,
+//         } = <One_Way_Service_Price_Details>req.body;
+//         const id = uuidv4();
+        
+//         const newSupplier = await db
+//         .insert(One_Way_Service_Details)
+//         .values({
+//             id,
+//             country,
+//             city,
+//             location_from_airport,
+//             location_from_port_cruise,
+//             location_from_station,
+//             location_from_city_center,
+//             location_to_airport,
+//             location_to_port_cruise,
+//             location_to_station,
+//             location_to_city_center,
+//             night_time_supplement,
+//             vice_versa,
+//             half_day_city_limit_4hrs,
+//             full_day_city_limit_8hrs,
+//             from_date, 
+//             to_date,   
+//             price, 
+//             new_location,
+//         })
+//         .returning(); // Return the newly inserted supplier details 
+
+//         // Respond with the newly created supplier
+//         return res.status(201).json(newSupplier);
+//     }catch{
+//         next(error);
+//     }
+// }
+
+export const One_Way_Details = async (req: Request, res: Response, next: NextFunction) => {   
+    try {
+        // Destructure the incoming request body 
+        const {
+            country,
+            city,
+            location_from_airport,
+            location_from_port_cruise,
+            location_from_station,
+            location_from_city_center,
+            location_to_airport,
+            location_to_port_cruise,
+            location_to_station,
+            location_to_city_center,
+            night_time_supplement,
+            vice_versa,
+            half_day_city_limit_4hrs,
+            full_day_city_limit_8hrs,
+            from_date, 
+            to_date,   
+            price, 
+            new_location,
+        } = <CreateSupplierOneWayInput>req.body; // Directly take values from the request body 
+
+        const id = uuidv4(); // Generate UUID for the new supplier 
+
+        // Insert the new supplier details into the database 
+        const newSupplier = await db
+            .insert(One_WayTable) // Assuming `registerTable2` is your Drizzle ORM table
+            .values({
+                id, // Include the generated UUID
+               country,
+            city,
+            location_from_airport,
+            location_from_port_cruise,
+            location_from_station,
+            location_from_city_center,
+            location_to_airport,
+            location_to_port_cruise,
+            location_to_station,
+            location_to_city_center,
+            night_time_supplement,
+            vice_versa,
+            half_day_city_limit_4hrs,
+            full_day_city_limit_8hrs,
+            from_date, 
+            to_date,   
+            price, 
+            new_location,
+            })
+            .returning(); // Return the newly inserted supplier details 
+
+        // Respond with the newly created supplier
+        return res.status(201).json(newSupplier);
+
+    } catch (error) {
+        // Pass any error to the error handler middleware
         next(error);
     }
 };

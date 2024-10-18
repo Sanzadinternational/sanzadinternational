@@ -16,7 +16,7 @@ export interface CreateSupplierInput {
     password:string, 
   }
 
-  export interface One_Way_Service_Price_Details{
+  export interface CreateSupplierOneWayInput{
     country:string,
     city:string,
     location_from_airport:string,

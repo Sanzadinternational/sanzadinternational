@@ -20,7 +20,7 @@ export const registerTable = pgTable('supplier_register', {
   // imagepath: text('image_path').notNull(),  
 });
 
-export const One_Way_Service_Price_Details = pgTable('One_Way_Service_Details',{
+export const One_WayTable = pgTable('One_Way_Service_Details',{
     id:integer().primaryKey().generatedAlwaysAsIdentity(),
     country:varchar({length:255}).notNull(),
     city:varchar({length:255}).notNull(),
