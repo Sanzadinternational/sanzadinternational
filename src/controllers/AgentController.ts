@@ -5,8 +5,9 @@ import { CreateAgentInput } from "../dto";
 import { db } from "../db/db";
 const { AgentTable } = require('../db/schema/AgentSchema');
 const bcrypt = require('bcrypt');
-
-// const jwt = require('jsonwebtoken');
+import { eq } from "drizzle-orm";
+// import jwt from 'jsonwebtoken';
+const jwt = require('jsonwebtoken');
 
 export const CreateAgent = async(req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -88,29 +89,83 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
     }
 }
 
-// const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad';
+// const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
 
-// export const loginAgent = async(req:Request,res:Response,next:NextFunction)=>{
+// export const loginAgent = async(req:Request,res:Response,next:NextFunction)=>{ 
 //     try{
-//           const {Email,Password}=req.body;
-//           const agent = await db.select().from(AgentTable).where({ Email }).first();
+//           const {Email,Password}=req.body; 
+//         //   const agent = await db.select({AgentTable.Email,AgentTable.Password}).from(AgentTable);
+//         const agent = await db
+//     .select({
+//         email: AgentTable.Email,
+//         password: AgentTable.Password
+//     })
+//     .from(AgentTable)
+//     .where(eq(AgentTable.Email, Email)); 
 //           if(!agent)
 //           {
-//             return res.status(404).json({message:"Agent is not found"});
+//             return res.status(404).json({message:"Agent is not found"}); 
 //           }
 
-//           const isPasswordValid = await bcrypt.compare(Password,agent.Password);
+//           const isPasswordValid = await bcrypt.compare(Password,agent.Password); 
 
 //           if(!isPasswordValid){
 //             return res.status(401).json({message:'Invalid credentials'});
 //           }
 
-//           const token = jwt.sign({id:agent.id,Email:agent.Email},JWT_SECRET,{
+//           const token = jwt.sign({id:agent.id,Email:agent.Email},JWT_SECRET,{ 
 //             expiresIn:'1h',
 //           });
 
-//           return res.status(200).json({message:'Login Successfully'});
+//           return res.status(200).json({message:'Login Successfully',
+//             token,
+//           });
 //     }catch(error){
 //         next(error);
 //     }
 // }
+
+const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
+
+export const loginAgent = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { Email, Password } = req.body; 
+
+        // Fetch the agent by email
+        const [agent] = await db
+            .select({
+                email: AgentTable.Email,
+                password: AgentTable.Password
+            })
+            .from(AgentTable)
+            .where(eq(AgentTable.Email, Email));
+
+        // Check if the agent was found
+        if (!agent) {
+            return res.status(404).json({ message: "Agent not found" });
+        }
+
+        // Compare the provided password with the hashed password in the database
+        const isPasswordValid = await bcrypt.compare(Password, agent.password); // 'password' (lowercase)
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Generate a JWT token
+        const token = jwt.sign(
+            {  email: agent.email }, // Use 'agent.email' (lowercase)
+            JWT_SECRET,
+            { expiresIn: '1h' }  // Token valid for 1 hour
+        );
+
+        // Return a successful response with the token
+        return res.status(200).json({
+            message: 'Login Successfully',
+            token,
+        });
+
+    } catch (error) {
+        next(error); // Pass error to global error handler
+    }
+};
