@@ -1,6 +1,7 @@
 import express  from "express";
 import bodyParser from "body-parser";
 import { SupplierRoute } from "./src/routes";
+import {AgentRoute} from "./src/routes";
 // import {SupplierRoute} from './routes/SupplierRoute';
 // const SupplierRoute = require('./src/routes/SupplierRoute');
 // import mongoose from "mongoose";
@@ -17,7 +18,8 @@ app.use(bodyParser.urlencoded({extended: true}));
 //     });
 // });
 
-app.use("/Supplier", SupplierRoute);
+app.use("/Api/V1/Supplier", SupplierRoute);
+app.use('/Api/V1/Agent',AgentRoute);
 // mongoose.connect(MONGOURI).then((result) => {console.log("success")}).catch((error) => {console.error(error)});
 
 
