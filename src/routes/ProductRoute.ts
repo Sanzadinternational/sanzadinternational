@@ -12,4 +12,4 @@ router.get('/product/:Keyword', SearchProduct);
 //     res.json({ message:'Hello from user route'})    
 // })
 
-export {router as ProductRoute};
+export {router as ProductRoute}; 

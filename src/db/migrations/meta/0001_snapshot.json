@@ -1,6 +1,6 @@
 {
-  "id": "c7cfd648-1938-4a88-ba9c-e931e0b735ef",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "17064e87-b213-4861-b602-12a7170df0bb",
+  "prevId": "c7cfd648-1938-4a88-ba9c-e931e0b735ef",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -389,6 +389,12 @@
         },
         "image": {
           "name": "image",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true

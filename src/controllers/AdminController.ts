@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { CreateProductInput, EditProduct } from "../dto";
-import { Product } from "../models";
+// import { Product } from "../models";
 
 export const CreateProduct = async (req: Request, res: Response, next: NextFunction) => {
     // upload.single('image')(req, res, async (err) => {
