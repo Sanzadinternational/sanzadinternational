@@ -9,7 +9,8 @@ import { eq } from "drizzle-orm";
 const nodemailer = require("nodemailer");
 // import jwt from 'jsonwebtoken';
 const jwt = require('jsonwebtoken');
-const { EMAIL, PASSWORD} = require('../env.ts'); 
+
+var Mailgen = require('mailgen'); 
 
 export const CreateAgent = async(req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -217,6 +218,9 @@ export const EmailSend= async(req:Request,res:Response,next:NextFunction)=>{
 
 export const GetBill= async(req:Request,res:Response,next:NextFunction)=>{
     try{
+
+       const {userEmail} = req.body; 
+
         let config={
             service:'gmail',
             auth:{
@@ -225,7 +229,43 @@ export const GetBill= async(req:Request,res:Response,next:NextFunction)=>{
             }
         }
         let transporter = nodemailer.createTransport(config);
-        res.status(201).json("GetBill Successfully");
+        let MailGenerator = new Mailgen({
+            theme:"default",
+            product:{
+                name:"Mailgen",
+                link:"https://mailgen.js"
+            }
+        })
+
+        let response={
+            body:{
+                name:"Sanzad Email",
+                intro:"Your bill has arrived",
+                table:{
+                    data:[
+                        {
+                            item:"Nodemailer Stack Book",
+                            description:"A Backend Application",
+                            price:"$10.99"
+                        }
+                    ]
+                },
+                outro:"Looking forward to do more business"
+            }
+        }
+    let mail =  MailGenerator.generate(response)
+    let message = {
+        from : "jugalkishor556455@gmail.com",
+        to:userEmail,
+        subject:"Place Order",
+        html:mail
+    } 
+    transporter.sendMail(message).then(()=>{
+        return res.status(201).json({
+            msg:"You should receive an email"
+        })
+    }).catch(console.error);
+        // res.status(201).json("GetBill Successfully");
     }catch(error){
         next(error);
     }
