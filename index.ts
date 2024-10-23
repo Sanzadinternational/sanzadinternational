@@ -9,7 +9,9 @@ var cors = require('cors')
 // var cors = require('cors')
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin:"https://sanzadinternational-gnmaw55c4-sanzadinternationals-projects.vercel.app/",
+}));
 // app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true})); 
