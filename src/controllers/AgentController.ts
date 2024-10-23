@@ -1,12 +1,13 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateAgentInput } from "../dto";
+import { CreateAgentInput,CreateOtpInput } from "../dto";
 // import { v4 as uuidv4 } from 'uuid';
 // const { v4: uuidv4 } = require('uuid');
 import { db } from "../db/db";
 const { AgentTable } = require('../db/schema/AgentSchema');
-const bcrypt = require('bcrypt');
+const { otpTable } = require('../db/schema/OtpAgentSchema'); 
+const bcrypt = require('bcrypt'); 
 import { eq } from "drizzle-orm";
-const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer"); 
 // import jwt from 'jsonwebtoken';
 const jwt = require('jsonwebtoken');
 
@@ -173,11 +174,59 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+// export const Emailotps = async(req: Request, res: Response, next: NextFunction) => { 
+//     try {
+//         const verficationCode = Math.floor(100000 + Math.random() * 900000).toString;
+//         const {
+//             email,
+//             otp,
+//             verficationCode,
+//         } = req.body as CreateOtpInput; 
+
+//         // const id = uuidv4();
+
+//         // Hash the password before storing
+    
+
+//         const newAgent = await db
+//             .insert(otpTable)
+//             .values({
+//                 email,
+//                 otp,
+//                 verficationCode
+//             })
+//             .returning(); // Return the newly inserted agent
+
+//         return res.status(201).json(otpTable);
+//     } catch (error) {
+//         next(error);
+//     }
+// }
+export const Emailotps = async (req: Request, res: Response, next: NextFunction) => { 
+    try {
+        const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();  // Fixed to call .toString()
+
+        const { email, otp } = req.body as CreateOtpInput;  // Removed verificationCode from req.body, as it's generated
+
+        const newOtp = await db
+            .insert(otpTable)
+            .values({
+                email,
+                otp,
+                verificationCode,  // Use the generated verificationCode 
+            })
+            .returning();  // Return the newly inserted row 
+
+        return res.status(201).json(newOtp);  // Return the new OTP
+    } catch (error) {
+        next(error);
+    }
+};
 
 export const EmailSend= async(req:Request,res:Response,next:NextFunction)=>{
     try{
         let testAccount = await nodemailer.createTestAccount();
-
+        const { email, verificationCode } = req.body as CreateOtpInput;  
         let transporter = nodemailer.createTransport({
             host:"smtp.ethereal.email",
             post:587,
@@ -190,10 +239,10 @@ export const EmailSend= async(req:Request,res:Response,next:NextFunction)=>{
 
         let message={
             from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-            to: "bar@example.com, baz@example.com", // list of receivers
+            to: email, // list of receivers
             subject: "Hello ✔", // Subject line
-            text: "Successfully Register", // plain text body
-            html: "<b>Hello world?</b>", // html body
+            text: `<b>Your OTP is ${verificationCode}</b>`, // plain text body
+            html: `<b>Your OTP is ${verificationCode}</b>`, // html body 
         }
 
         // transporter.sendMail(message).then((info)=>{
@@ -221,7 +270,7 @@ export const GetBill= async(req:Request,res:Response,next:NextFunction)=>{
     try{
 
        const {userEmail} = req.body; 
-
+       const { email, verificationCode } = req.body as CreateOtpInput;  
         let config={
             service:'gmail',
             auth:{
@@ -247,7 +296,7 @@ export const GetBill= async(req:Request,res:Response,next:NextFunction)=>{
                         {
                             item:"Nodemailer Stack Book",
                             description:"A Backend Application",
-                            price:"$10.99"
+                            price:`${verificationCode}`
                         }
                     ]
                 },
@@ -257,7 +306,7 @@ export const GetBill= async(req:Request,res:Response,next:NextFunction)=>{
     let mail =  MailGenerator.generate(response)
     let message = {
         from : "jugalkishor556455@gmail.com",
-        to:userEmail,
+        to:email,
         subject:"Place Order",
         html:mail
     } 

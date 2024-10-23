@@ -14,3 +14,10 @@ export interface CreateAgentInput {
       Currency:string,
       Gst_Tax_Certificate:string, 
 }
+
+export interface CreateOtpInput {
+  email:string,
+  otp: string,
+//   isVerified:boolean,
+  verificationCode: string,
+}
