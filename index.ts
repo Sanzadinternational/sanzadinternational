@@ -10,7 +10,7 @@ var cors = require('cors')
 const app = express();
 
 app.use(cors({
-    origin:"https://sanzadinternational-gnmaw55c4-sanzadinternationals-projects.vercel.app/",
+    origin:"https://frontend-eight-sage-74.vercel.app/",
 }));
 // app.use(cors());
 app.use(bodyParser.json());
