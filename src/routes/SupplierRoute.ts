@@ -6,7 +6,7 @@ const router = express.Router();
 router.post('/registration', CreateSupplier); 
 router.get('/GetSupplier',GetSupplier);
 router.post('/Supplier_details', Supplier_details); 
-router.get('/GetSupplier_details',GetSupplier_details);
+router.get('/GetSupplier_details',GetSupplier_details); 
 router.delete('/deleteUserById/:id', deleteUserById);
 router.post('One_Way_Service_Details', One_Way_Details);
 // router.get('/products', GetProducts); 
