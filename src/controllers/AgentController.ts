@@ -6,8 +6,11 @@ import { db } from "../db/db";
 const { AgentTable } = require('../db/schema/AgentSchema');
 const bcrypt = require('bcrypt');
 import { eq } from "drizzle-orm";
+const nodemailer = require("nodemailer");
 // import jwt from 'jsonwebtoken';
 const jwt = require('jsonwebtoken');
+
+var Mailgen = require('mailgen'); 
 
 export const CreateAgent = async(req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -169,3 +172,102 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         next(error); // Pass error to global error handler
     }
 };
+
+
+export const EmailSend= async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        let testAccount = await nodemailer.createTestAccount();
+
+        let transporter = nodemailer.createTransport({
+            host:"smtp.ethereal.email",
+            post:587,
+            secure:false,
+            auth:{
+                user:testAccount.user,
+                pass:testAccount.pass,
+            },
+        });
+
+        let message={
+            from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
+            to: "bar@example.com, baz@example.com", // list of receivers
+            subject: "Hello ✔", // Subject line
+            text: "Successfully Register", // plain text body
+            html: "<b>Hello world?</b>", // html body
+        }
+
+        // transporter.sendMail(message).then((info)=>{
+        //     return res.status(201).json({
+        //         msg:"you should reciever email", 
+        //         info:info.messageId,
+        //         preview:nodemailer.getTestMassageUrL(info) 
+        //     });
+        // }).catch(console.error);
+        let info = await transporter.sendMail(message); 
+  
+        // Log the message ID and preview URL for debugging
+        console.log('Message sent: %s', info.messageId);
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+    
+        // Send response to the client
+        return res.status(201).json({ msg: "You should receive an email", previewURL: nodemailer.getTestMessageUrl(info) });
+        res.status(201).json("Send Email Successfully"); 
+    }catch(error){
+        next(error);
+    }
+}
+
+export const GetBill= async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+
+       const {userEmail} = req.body; 
+
+        let config={
+            service:'gmail',
+            auth:{
+                user:'jugalkishor556455@gmail.com',
+                pass:'vhar uhhv gjfy dpes'
+            }
+        }
+        let transporter = nodemailer.createTransport(config);
+        let MailGenerator = new Mailgen({
+            theme:"default",
+            product:{
+                name:"Mailgen",
+                link:"https://mailgen.js"
+            }
+        })
+
+        let response={
+            body:{
+                name:"Sanzad Email",
+                intro:"Your bill has arrived",
+                table:{
+                    data:[
+                        {
+                            item:"Nodemailer Stack Book",
+                            description:"A Backend Application",
+                            price:"$10.99"
+                        }
+                    ]
+                },
+                outro:"Looking forward to do more business"
+            }
+        }
+    let mail =  MailGenerator.generate(response)
+    let message = {
+        from : "jugalkishor556455@gmail.com",
+        to:userEmail,
+        subject:"Place Order",
+        html:mail
+    } 
+    transporter.sendMail(message).then(()=>{
+        return res.status(201).json({
+            msg:"You should receive an email"
+        })
+    }).catch(console.error);
+        // res.status(201).json("GetBill Successfully");
+    }catch(error){
+        next(error);
+    }
+}

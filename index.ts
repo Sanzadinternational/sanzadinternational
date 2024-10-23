@@ -2,12 +2,14 @@ import express  from "express";
 import bodyParser from "body-parser";
 import { SupplierRoute } from "./src/routes";
 import {AgentRoute} from "./src/routes";
+var cors = require('cors')
 // import {SupplierRoute} from './routes/SupplierRoute';
 // const SupplierRoute = require('./src/routes/SupplierRoute');
 // import mongoose from "mongoose";
 // var cors = require('cors')
 const app = express();
 
+app.use(cors());
 // app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true})); 
