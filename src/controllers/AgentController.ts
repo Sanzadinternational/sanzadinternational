@@ -173,6 +173,7 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
     }
 };
 
+
 export const EmailSend= async(req:Request,res:Response,next:NextFunction)=>{
     try{
         let testAccount = await nodemailer.createTestAccount();
@@ -202,7 +203,7 @@ export const EmailSend= async(req:Request,res:Response,next:NextFunction)=>{
         //         preview:nodemailer.getTestMassageUrL(info) 
         //     });
         // }).catch(console.error);
-        let info = await transporter.sendMail(message);
+        let info = await transporter.sendMail(message); 
   
         // Log the message ID and preview URL for debugging
         console.log('Message sent: %s', info.messageId);
