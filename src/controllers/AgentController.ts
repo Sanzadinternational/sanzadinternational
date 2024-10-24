@@ -1,9 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateAgentInput,CreateOtpInput } from "../dto";
+import { CreateAgentInput,CreateOtpInput,CreateOneWayTripInput,CreateRoundTripInput } from "../dto";
 // import { v4 as uuidv4 } from 'uuid';
 // const { v4: uuidv4 } = require('uuid'); 
 import { db } from "../db/db";
-const { AgentTable } = require('../db/schema/AgentSchema');
+const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema');
 const {Emailotps} = require('./EmailotpsController');
 const bcrypt = require('bcrypt'); 
 import { eq } from "drizzle-orm";
@@ -391,3 +391,53 @@ export const GetBill=async(req:Request,res:Response,next:NextFunction)=>{
     })
     res.status(201).json("getBill Successfully"); 
 };
+
+export const OneWayTrip= async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+        const {
+            pick_up_location,
+            drop_off_location,
+            date,
+            passengers, 
+        } = req.body as CreateOneWayTripInput;
+
+        const newAgent = await db
+            .insert(OneWayTripTable)
+            .values({
+                pick_up_location,
+                drop_off_location,
+                date,
+                passengers,
+            })
+            .returning(); // Return the newly inserted agent
+
+        return res.status(201).json(newAgent); 
+    } catch (error) {
+        next(error);
+    }
+} 
+
+export const RoundTrip = async(req:Request,res:Response,next:NextFunction)=>{ 
+    try{
+        const {
+            pick_up_location, 
+            drop_off_location,
+            date,
+            return_date,
+            passengers,
+        } = req.body as CreateRoundTripInput;
+        const newAgent = await db
+        .insert(RoundTripTable)
+        .values({
+            pick_up_location,
+            drop_off_location,
+            date,
+            return_date,
+            passengers,
+        })
+        .returning();
+        return res.status(201).json(newAgent);
+    }catch(error){
+        next(error);
+    }
+}

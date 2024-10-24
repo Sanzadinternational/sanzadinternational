@@ -1,5 +1,5 @@
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateAgent,GetAgent,loginAgent,GetBill } from '../controllers'; 
+import { CreateAgent,GetAgent,loginAgent,GetBill,OneWayTrip } from '../controllers'; 
 import { Emailotps } from '../controllers/EmailotpsController'; 
 
 const router = express.Router(); 
@@ -10,5 +10,6 @@ router.get('/loginAgent',loginAgent);
 // router.post('/emailsend',EmailSend);
 router.post('/getbill',GetBill);
 router.post('/Emailotps',Emailotps)
+router.post('/OneWayTrip',OneWayTrip)
 
 export {router as AgentRoute}; 

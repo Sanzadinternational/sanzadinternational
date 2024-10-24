@@ -19,3 +19,25 @@ export const AgentTable=pgTable('Agent_registration',
       Gst_Tax_Certificate:varchar({length:255}).notNull(), 
     }
 )
+
+export const OneWayTripTable =pgTable('OneWayTrip', 
+  {
+      id:integer().primaryKey().generatedAlwaysAsIdentity(),
+      pick_up_location:varchar({length:255}).notNull(),
+      drop_off_location:varchar({length:255}).notNull(),
+      date: date().notNull(),
+      passengers:integer().notNull(), 
+  } 
+) 
+
+export const RoundTripTable =pgTable('RoundTrip', 
+  {
+      id:integer().primaryKey().generatedAlwaysAsIdentity(), 
+      pick_up_location:varchar({length:255}).notNull(), 
+      drop_off_location:varchar({length:255}).notNull(), 
+      date: date().notNull(), 
+      return_date:date().notNull(), 
+      passengers:integer().notNull(), 
+  } 
+) 
+

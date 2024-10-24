@@ -21,3 +21,18 @@ export interface CreateOtpInput {
 //   isVerified:boolean,
   verificationCode: string,
 }
+
+export interface CreateOneWayTripInput {  
+      pick_up_location:string,
+      drop_off_location:string,
+      date: string, 
+      passengers:number, 
+}
+
+export interface CreateRoundTripInput{
+  pick_up_location:string,
+  drop_off_location:string,
+  date: string, 
+  return_date:string, 
+  passengers:number, 
+}
