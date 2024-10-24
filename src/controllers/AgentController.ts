@@ -417,6 +417,20 @@ export const OneWayTrip= async(req:Request,res:Response,next:NextFunction)=>{
     }
 } 
 
+export const GetOneWayTrip = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+           const result = await db.select({
+                pick_up_location:OneWayTripTable.pick_up_location,
+                drop_off_location:OneWayTripTable.drop_off_location,
+                date:OneWayTripTable.date,
+                passengers:OneWayTripTable.passengers,
+           }).from(OneWayTripTable);
+           return res.status(201).json(result);
+    }catch(error){
+        return res.status(404).json("error")
+    }
+}
+
 export const RoundTrip = async(req:Request,res:Response,next:NextFunction)=>{ 
     try{
         const {
@@ -432,12 +446,28 @@ export const RoundTrip = async(req:Request,res:Response,next:NextFunction)=>{
             pick_up_location,
             drop_off_location,
             date,
-            return_date,
+            return_date, 
             passengers,
         })
         .returning();
         return res.status(201).json(newAgent);
     }catch(error){
         next(error);
-    }
+    } 
+}
+
+export const GetRoundTrip= async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const result = await db.select({
+            pick_up_location:RoundTripTable.pick_up_location, 
+            drop_off_location:RoundTripTable.drop_off_location,
+            date:RoundTripTable.date,
+            return_date:RoundTripTable.return_date,
+            passengers:RoundTripTable.passengers,
+        }).from(RoundTripTable);
+        return res.status(201).json(result)
+    }catch(error)
+    {
+        return res.status(404).json(error)
+    };
 }
