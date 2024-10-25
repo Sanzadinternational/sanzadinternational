@@ -29,6 +29,13 @@ export interface CreateOneWayTripInput {
       passengers:number, 
 }
 
+export interface UpdateOneWayTripInput{
+      pick_up_location:string,
+      drop_off_location:string,
+      date: string, 
+      passengers:number, 
+} 
+
 export interface CreateRoundTripInput{
   pick_up_location:string,
   drop_off_location:string,

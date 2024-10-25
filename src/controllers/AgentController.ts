@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateAgentInput,CreateOtpInput,CreateOneWayTripInput,CreateRoundTripInput } from "../dto";
+import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTripInput, UpdateOneWayTripInput } from "../dto"; 
 // import { v4 as uuidv4 } from 'uuid';
 // const { v4: uuidv4 } = require('uuid'); 
 import { db } from "../db/db";
@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 import { eq } from "drizzle-orm";
 const nodemailer = require("nodemailer"); 
 // import jwt from 'jsonwebtoken';
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken'); 
 
 var Mailgen = require('mailgen'); 
 
@@ -405,7 +405,7 @@ export const OneWayTrip= async(req:Request,res:Response,next:NextFunction)=>{
             .insert(OneWayTripTable)
             .values({
                 pick_up_location,
-                drop_off_location,
+                drop_off_location, 
                 date,
                 passengers,
             })
@@ -417,9 +417,72 @@ export const OneWayTrip= async(req:Request,res:Response,next:NextFunction)=>{
     }
 } 
 
+// export const UpdateOneWayTrip = async(req:Request,res:Response,next:NextFunction)=>{
+//     try{
+//           const {
+//             pick_up_location,
+//             drop_off_location,
+//             date,
+//             passengers,
+//           } req.body as UpdateOneWayTripTable;
+
+//           const UpdateOneWayTrip = await db
+//           .update(UpdateOneWayTripTable)
+//           .set({
+//             pick_up_location,
+//             drop_off_location,
+//             date,
+//             passengers,
+//           }).where(eq(UpdateOneWayTripTable.id, id))  // Use the `id` to target the specific row
+//           .returning();  // Return the updated row 
+
+//       if (UpdateOneWayTripTable.length === 0) {
+//           return res.status(404).json({ message: "Trip not found" });
+//       }
+
+//       return res.status(200).json(UpdateOneWayTrip);  // Return the updated trip details
+//     }catch(error)
+//     {
+//         return res.status(404).json(error)
+//     }
+// }
+
+export const UpdateOneWayTrip = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params; 
+        const {
+              // Assuming the `id` of the trip is passed to identify which record to update
+            pick_up_location,
+            drop_off_location, 
+            date,
+            passengers,
+        } = req.body as UpdateOneWayTripInput;
+
+        const updatedTrip = await db
+            .update(OneWayTripTable)  // Use the correct table reference
+            .set({
+                pick_up_location,
+                drop_off_location,
+                date,
+                passengers,
+            })
+            .where(eq(OneWayTripTable.id, id))  // Use the `id` to target the specific row
+            .returning();  // Return the updated row
+
+        // if (updatedTrip.length === 0) {
+        //     return res.status(404).json({ message: "Trip not found" });
+        // }
+
+        return res.status(200).json(updatedTrip);  // Return the updated trip details
+    } catch (error) {
+        next(error);  // Pass errors to error-handling middleware
+    }
+};
+
 export const GetOneWayTrip = async(req:Request,res:Response,next:NextFunction)=>{
     try{
            const result = await db.select({
+                id:OneWayTripTable.id,
                 pick_up_location:OneWayTripTable.pick_up_location,
                 drop_off_location:OneWayTripTable.drop_off_location,
                 date:OneWayTripTable.date,

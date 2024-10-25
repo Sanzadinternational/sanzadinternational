@@ -29,6 +29,15 @@ export const OneWayTripTable =pgTable('OneWayTrip',
       passengers:integer().notNull(), 
   } 
 ) 
+export const UpdateOneWayTripTable =pgTable('OneWayTrip', 
+  {
+      id:integer().primaryKey().generatedAlwaysAsIdentity(),
+      pick_up_location:varchar({length:255}).notNull(),
+      drop_off_location:varchar({length:255}).notNull(),
+      date: date().notNull(),
+      passengers:integer().notNull(), 
+  } 
+) 
 
 export const RoundTripTable =pgTable('RoundTrip', 
   {
