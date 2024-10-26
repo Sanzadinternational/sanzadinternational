@@ -7,13 +7,30 @@ CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"Zip_code" integer NOT NULL,
 	"IATA_Code" integer NOT NULL,
 	"Gst_Vat_Tax_number" integer NOT NULL,
-	"Contact_number" integer NOT NULL,
+	"Contact_Person" varchar(255) NOT NULL,
 	"Email" varchar(255) NOT NULL,
 	"Password" varchar(255) NOT NULL,
 	"Office_number" integer NOT NULL,
 	"Mobile_number" integer NOT NULL,
 	"Currency" varchar(255) NOT NULL,
 	"Gst_Tax_Certificate" varchar(255) NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "OneWayTrip" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "OneWayTrip_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"pick_up_location" varchar(255) NOT NULL,
+	"drop_off_location" varchar(255) NOT NULL,
+	"date" date NOT NULL,
+	"passengers" integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "RoundTrip" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "RoundTrip_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"pick_up_location" varchar(255) NOT NULL,
+	"drop_off_location" varchar(255) NOT NULL,
+	"date" date NOT NULL,
+	"return_date" date NOT NULL,
+	"passengers" integer NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "otps" (
