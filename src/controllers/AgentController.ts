@@ -3,7 +3,9 @@ import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTri
 // import { v4 as uuidv4 } from 'uuid';
 // const { v4: uuidv4 } = require('uuid'); 
 import { db } from "../db/db";
+import { generateOTP, sendOTPEmail } from "../utils";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema');
+const { otpss } = require('../db/schema/OtpSchema');
 const {Emailotps} = require('./EmailotpsController');
 const bcrypt = require('bcrypt'); 
 import { eq } from "drizzle-orm";
@@ -534,3 +536,35 @@ export const GetRoundTrip= async(req:Request,res:Response,next:NextFunction)=>{
         return res.status(404).json(error)
     };
 }
+
+export const sendOtp= async(req:Request,res:Response,next:NextFunction)=>{
+    const { email } = req.body;
+
+    const otp = generateOTP();
+    const expiryTime = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
+  
+    // Save OTP and expiry time in the `otps` table
+    await db.insert(otpss).values({ email, otp, otpExpiry: expiryTime });
+    await sendOTPEmail(email, otp);
+  
+    res.status(200).json({ message: 'OTP sent successfully' });
+}
+
+export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
+    const { email, otp } = req.body;
+
+    // Retrieve all OTP records (not recommended for large datasets)
+    const otpRecords = await db
+        .select()
+        .from(otpss)// Order by expiry time
+
+    // Find the record that matches the provided email
+    const otpRecord = otpRecords.find(record => record.email === email);
+
+    // Check if the OTP record exists and is valid
+    if (!otpRecord || otpRecord.otp !== otp || new Date() > new Date(otpRecord.otpExpiry)) {
+        return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    res.status(200).json({ message: 'OTP verified successfully' });
+};
