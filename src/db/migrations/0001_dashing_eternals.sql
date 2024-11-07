@@ -1,1 +1,0 @@
-ALTER TABLE "supplier_register" ADD COLUMN "password" varchar(255) NOT NULL;

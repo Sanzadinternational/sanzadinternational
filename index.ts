@@ -1,7 +1,7 @@
 import express  from "express";
 import bodyParser from "body-parser";
 import { SupplierRoute } from "./src/routes";
-import {AgentRoute} from "./src/routes";
+import {AgentRoute, LocationRoute} from "./src/routes";
 var cors = require('cors')
 // import {SupplierRoute} from './routes/SupplierRoute';
 // const SupplierRoute = require('./src/routes/SupplierRoute');
@@ -10,7 +10,7 @@ var cors = require('cors')
 const app = express();
 
 app.use(cors({
-    origin:"https://frontend-eight-sage-74.vercel.app/",
+    origin:"http://localhost:3000",
 }));
 // app.use(cors());
 app.use(bodyParser.json());
@@ -24,6 +24,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
 app.use("/Api/V1/Supplier", SupplierRoute);
 app.use('/Api/V1/Agent',AgentRoute);
+app.use('/Api/V1/location',LocationRoute);
 // mongoose.connect(MONGOURI).then((result) => {console.log("success")}).catch((error) => {console.error(error)});
 
 
