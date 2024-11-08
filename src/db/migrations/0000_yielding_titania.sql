@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"Password" varchar(255) NOT NULL,
 	"Office_number" varchar(255) NOT NULL,
 	"Mobile_number" varchar(255) NOT NULL,
-	"Currency" varchar(255) NOT NULL, 
+	"Currency" varchar(255) NOT NULL,
 	"Gst_Tax_Certificate" varchar(255) NOT NULL
 );
 --> statement-breakpoint
