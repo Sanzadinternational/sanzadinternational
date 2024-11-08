@@ -8,6 +8,7 @@ export interface CreateAgentInput {
       Gst_Vat_Tax_number:number, 
       Contact_Person:string,
       Email:string,
+      Otp:number,
       Password:string,
       Office_number:string,
       Mobile_number:string,

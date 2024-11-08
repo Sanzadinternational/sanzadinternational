@@ -1,5 +1,5 @@
 {
-  "id": "54abf913-bad3-450a-9090-fa7671bfcfba",
+  "id": "405fc14c-5010-4a23-bbe0-fbff6c06429b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -76,6 +76,12 @@
         "Email": {
           "name": "Email",
           "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Otp": {
+          "name": "Otp",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },

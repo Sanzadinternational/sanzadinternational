@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"Gst_Vat_Tax_number" integer NOT NULL,
 	"Contact_Person" varchar(255) NOT NULL,
 	"Email" varchar(255) NOT NULL,
+	"Otp" integer NOT NULL,
 	"Password" varchar(255) NOT NULL,
 	"Office_number" integer NOT NULL,
 	"Mobile_number" integer NOT NULL,
