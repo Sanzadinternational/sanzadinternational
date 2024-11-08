@@ -1,5 +1,5 @@
 {
-  "id": "405fc14c-5010-4a23-bbe0-fbff6c06429b",
+  "id": "04629c5b-3d72-4252-a2e5-bd81bc554799",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -51,19 +51,19 @@
         },
         "Zip_code": {
           "name": "Zip_code",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "IATA_Code": {
           "name": "IATA_Code",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "Gst_Vat_Tax_number": {
           "name": "Gst_Vat_Tax_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -81,7 +81,7 @@
         },
         "Otp": {
           "name": "Otp",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -93,13 +93,13 @@
         },
         "Office_number": {
           "name": "Office_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "Mobile_number": {
           "name": "Mobile_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
