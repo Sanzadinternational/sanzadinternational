@@ -8,7 +8,7 @@ const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/Agen
 const { otpss } = require('../db/schema/OtpSchema');
 const {Emailotps} = require('./EmailotpsController');
 const bcrypt = require('bcrypt'); 
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 const nodemailer = require("nodemailer"); 
 // import jwt from 'jsonwebtoken';
 const jwt = require('jsonwebtoken'); 
@@ -550,21 +550,44 @@ export const sendOtp= async(req:Request,res:Response,next:NextFunction)=>{
     res.status(200).json({ message: 'OTP sent successfully' });
 }
 
+// export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
+//     const { email, otp } = req.body;
+
+//     // Retrieve all OTP records (not recommended for large datasets)
+//     const otpRecords = await db
+//         .select()
+//         .from(otpss)// Order by expiry time
+
+//     // Find the record that matches the provided email
+//     const otpRecord = otpRecords.find(record => record.email === email);
+
+//     // Check if the OTP record exists and is valid
+//     if (!otpRecord || otpRecord.otp !== otp || new Date() > new Date(otpRecord.otpExpiry)) {
+//         return res.status(400).json({ message: 'Invalid or expired OTP' });
+//     }
+
+//     res.status(200).json({ message: 'OTP verified successfully' });
+// };
 export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
     const { email, otp } = req.body;
 
-    // Retrieve all OTP records (not recommended for large datasets)
-    const otpRecords = await db
-        .select()
-        .from(otpss)// Order by expiry time
+    try {
+        // Retrieve the most recent OTP record for the provided email
+        const otpRecord = await db
+            .select()
+            .from(otpss)
+            .where(eq(otpss.email, email))
+            .orderBy(desc(otpss.otpExpiry))
+            .limit(1);   // Get the latest OTP record directly
+            const otpRecords = otpRecord[0];
+        // Check if an OTP record exists and if it's valid
+        if (!otpRecords || otpRecords.otp !== otp || new Date() > new Date(otpRecords.otpExpiry)) {
+            return res.status(400).json({ message: 'Invalid or expired OTP' });
+        }
 
-    // Find the record that matches the provided email
-    const otpRecord = otpRecords.find(record => record.email === email);
-
-    // Check if the OTP record exists and is valid
-    if (!otpRecord || otpRecord.otp !== otp || new Date() > new Date(otpRecord.otpExpiry)) {
-        return res.status(400).json({ message: 'Invalid or expired OTP' });
+        res.status(200).json({ message: 'OTP verified successfully' });
+    } catch (error) {
+        console.error('Error verifying OTP:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
-
-    res.status(200).json({ message: 'OTP verified successfully' });
 };
