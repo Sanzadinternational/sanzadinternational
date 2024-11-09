@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/registration', CreateAgent); 
 router.get('/GetAgent',GetAgent); 
-router.get('/login/agent',loginAgent);  
+router.get('/login',loginAgent);  
 // router.post('/emailsend',EmailSend);
 router.post('/getbill',GetBill); 
 router.post('/Emailotps',Emailotps); 
