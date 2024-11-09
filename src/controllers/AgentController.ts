@@ -81,7 +81,7 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
         Zip_code:AgentTable.Zip_code,
         IATA_Code:AgentTable.IATA_Code,
         Gst_Vat_Tax_number:AgentTable.Gst_Vat_Tax_number,
-        Contact_number:AgentTable.Contact_number,
+        Contact_Person:AgentTable.Contact_Person,
         Email:AgentTable.Email,
         Password:AgentTable.Password,
         Office_number:AgentTable.Office_number,
@@ -143,10 +143,10 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         const [agent] = await db
             .select({
                 email: AgentTable.Email,
-                password: AgentTable.Password
+                password: AgentTable.Password 
             })
             .from(AgentTable)
-            .where(eq(AgentTable.Email, Email));
+            .where(eq(AgentTable.Email, Email)); 
 
         // Check if the agent was found
         if (!agent) {

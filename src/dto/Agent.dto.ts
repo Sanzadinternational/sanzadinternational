@@ -1,21 +1,37 @@
+// export interface CreateAgentInput { 
+//       Company_name:string,
+//       Address:string,
+//       Country:string,
+//       City:string,
+//       Zip_code:string,
+//       IATA_Code:string,
+//       Gst_Vat_Tax_number:string, 
+//       Contact_Person:string,
+//       Email:string,
+//       Otp:string,
+//       Password:string,
+//       Office_number:string,
+//       Mobile_number:string,
+//       Currency:string,
+//       Gst_Tax_Certificate:string, 
+// }
 export interface CreateAgentInput { 
-      Company_name:string,
-      Address:string,
-      Country:string,
-      City:string,
-      Zip_code:string,
-      IATA_Code:string,
-      Gst_Vat_Tax_number:string, 
-      Contact_Person:string,
-      Email:string,
-      Otp:string,
-      Password:string,
-      Office_number:string,
-      Mobile_number:string,
-      Currency:string,
-      Gst_Tax_Certificate:string, 
+  Company_name: string;
+  Address: string;
+  Country: string;
+  City: string;
+  Zip_code: string;
+  IATA_Code: string;
+  Gst_Vat_Tax_number: string;
+  Contact_Person: string;
+  Email: string;
+  Otp: string;
+  Password: string;
+  Office_number: string;
+  Mobile_number: string;
+  Currency: string;
+  Gst_Tax_Certificate: string;
 }
-
 export interface CreateOtpInput {
   email:string,
   otp: string,
