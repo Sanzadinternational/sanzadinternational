@@ -4,9 +4,9 @@ import { Emailotps } from '../controllers/EmailotpsController';
 
 const router = express.Router(); 
 
-router.post('/registration', CreateAgent); 
+router.post('/registration',  CreateAgent); 
 router.get('/GetAgent',GetAgent); 
-router.get('/login',loginAgent);  
+router.post('/login',loginAgent);  
 // router.post('/emailsend',EmailSend);
 router.post('/getbill',GetBill); 
 router.post('/Emailotps',Emailotps); 

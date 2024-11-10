@@ -143,7 +143,20 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         const [agent] = await db
             .select({
                 email: AgentTable.Email,
-                password: AgentTable.Password 
+                password: AgentTable.Password ,
+                Company_name:AgentTable.Company_name,
+                Address:AgentTable.Address,
+                Country:AgentTable.Country,
+                City:AgentTable.City,
+                Zip_code:AgentTable.Zip_code,
+                IATA_Code:AgentTable.IATA_Code,
+                Gst_Vat_Tax_number:AgentTable.Gst_Vat_Tax_number,
+                Contact_Person:AgentTable.Contact_Person,
+                Otp:AgentTable.Otp,
+                Office_number:AgentTable.Office_number,
+                Mobile_number:AgentTable.Mobile_number,
+                Currency:AgentTable.Currency,
+                Gst_Tax_Certificate:AgentTable.Gst_Tax_Certificate
             })
             .from(AgentTable)
             .where(eq(AgentTable.Email, Email)); 
@@ -171,6 +184,7 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         return res.status(200).json({
             message: 'Login Successfully',
             token,
+            agent,
         });
 
     } catch (error) {
