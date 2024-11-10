@@ -22,9 +22,9 @@ app.use(bodyParser.urlencoded({extended: true}));
 //     });
 // });
 
-app.use("/Api/V1/Supplier", SupplierRoute);
-app.use('/Api/V1/Agent',AgentRoute);
-app.use('/Api/V1/location',LocationRoute);
+app.use("/api/V1/supplier", SupplierRoute);
+app.use('/api/V1/agent',AgentRoute);
+app.use('/api/V1/location',LocationRoute);
 // mongoose.connect(MONGOURI).then((result) => {console.log("success")}).catch((error) => {console.error(error)});
 
 
