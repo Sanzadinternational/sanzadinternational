@@ -12,7 +12,8 @@ const { registerTable, One_WayTable,supplier_otps} = require('../db/schema/Suppl
 import { generateOTP, sendOTPEmail } from "../utils";
 // const { One_Way_Service_Price_Details } = require('../db/schema/SupplierSchema'); 
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
-// const bcrypt = require('bcrypt'); 
+const bcrypt = require('bcrypt'); 
+const jwt = require('jsonwebtoken'); 
 
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -42,6 +43,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
         // const saltRounds = 10;
         // const hashedPassword = await bcrypt.hash(password, saltRounds);
         // Insert the new supplier
+        const hashedPassword = await bcrypt.hash(Password, 10); 
         const newSupplier = await db
             .insert(registerTable)
             .values({
@@ -60,7 +62,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 PAN_number, 
                 Currency,
                 Gst_Tax_Certificate,
-                Password,
+                Password:hashedPassword,
                 Api_key,
                 Is_up,
                 // password: hashedPassword,
@@ -505,3 +507,67 @@ export const supplierverifyOtp = async (req: Request, res: Response, next: NextF
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+
+const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
+
+export const loginSupplier = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { Email, Password } = req.body; 
+
+        // Fetch the agent by email
+        const [supplier] = await db
+            .select({
+                Company_name:registerTable.Company_name,
+                Owner:registerTable.Owner,
+                Address:registerTable.Address,
+                Country:registerTable.Country, 
+                City:registerTable.City,
+                Zip_code:registerTable.Zip_code,
+                Office_number:registerTable.Office_number,
+                Email:registerTable.Email,
+                Contact_Person:registerTable.Contact_Person,
+                Otp:registerTable.Otp,
+                Mobile_number:registerTable.Mobile_number,
+                Gst_Vat_Tax_number:registerTable.Gst_Vat_Tax_number, 
+                PAN_number:registerTable.PAN_number, 
+                Currency:registerTable.Currency,
+                Gst_Tax_Certificate:registerTable.Gst_Tax_Certificate,
+                Password:registerTable.Password,
+                Api_key:registerTable.Api_key,
+                Is_up:registerTable.Is_up
+            })
+            .from(registerTable)
+            .where(eq(registerTable.Email, Email)); 
+
+        // Check if the agent was found
+        if (!supplier) {
+            return res.status(404).json({ message: "Agent not found" });
+        }
+
+        // Compare the provided password with the hashed password in the database
+        const isPasswordValid = await bcrypt.compare(Password, supplier.Password); // 'password' (lowercase)
+
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // Generate a JWT token
+        const token = jwt.sign(
+            {  email: supplier.Email }, // Use 'agent.email' (lowercase)
+            JWT_SECRET,
+            { expiresIn: '1h' }  // Token valid for 1 hour
+        );
+
+        // Return a successful response with the token
+        return res.status(200).json({
+            message: 'Login Successfully',
+            token,
+            supplier,
+        });
+
+    } catch (error) {
+        next(error); // Pass error to global error handler
+    }
+};
+
