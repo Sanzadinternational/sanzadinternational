@@ -1,11 +1,11 @@
 {
-  "id": "88d4d1ef-6581-4b38-87a5-6819daf5b20a",
+  "id": "b52755aa-eb80-428d-9607-8f938f052bc0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.Agent_registration": {
-      "name": "Agent_registration",
+    "public.Agent": {
+      "name": "Agent",
       "schema": "",
       "columns": {
         "id": {
@@ -15,7 +15,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "Agent_registration_id_seq",
+            "name": "Agent_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -880,8 +880,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.supplier_register": {
-      "name": "supplier_register",
+    "public.supplier": {
+      "name": "supplier",
       "schema": "",
       "columns": {
         "id": {
@@ -891,7 +891,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "supplier_register_id_seq",
+            "name": "supplier_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -933,13 +933,13 @@
         },
         "zipcode": {
           "name": "zipcode",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "office_number": {
           "name": "office_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -951,25 +951,25 @@
         },
         "contact_person": {
           "name": "contact_person",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "mobile_number": {
           "name": "mobile_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "tax_no_or_vat_no": {
           "name": "tax_no_or_vat_no",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "pan_number": {
           "name": "pan_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -990,14 +990,26 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "api_key": {
+          "name": "api_key",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_up": {
+          "name": "is_up",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "supplier_register_email_unique": {
-          "name": "supplier_register_email_unique",
+        "supplier_email_unique": {
+          "name": "supplier_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"

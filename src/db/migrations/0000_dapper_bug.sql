@@ -1,5 +1,5 @@
-CREATE TABLE IF NOT EXISTS "Agent_registration" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Agent_registration_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+CREATE TABLE IF NOT EXISTS "Agent" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Agent_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Company_name" varchar(255) NOT NULL,
 	"Address" varchar(255) NOT NULL,
 	"Country" varchar(255) NOT NULL,
@@ -143,22 +143,24 @@ CREATE TABLE IF NOT EXISTS "Roundtrip_Service_Price_Details" (
 	"new_location" varchar(255) NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "supplier_register" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "supplier_register_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+CREATE TABLE IF NOT EXISTS "supplier" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "supplier_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"company_name_or_owns_car" varchar(255) NOT NULL,
 	"owner_name" varchar(255) NOT NULL,
 	"office_address" varchar(255) NOT NULL,
 	"country" varchar(255) NOT NULL,
 	"city" varchar(255) NOT NULL,
-	"zipcode" integer NOT NULL,
-	"office_number" integer NOT NULL,
+	"zipcode" varchar(255) NOT NULL,
+	"office_number" varchar(255) NOT NULL,
 	"email" varchar(255) NOT NULL,
-	"contact_person" integer NOT NULL,
-	"mobile_number" integer NOT NULL,
-	"tax_no_or_vat_no" integer NOT NULL,
-	"pan_number" integer NOT NULL,
+	"contact_person" varchar(255) NOT NULL,
+	"mobile_number" varchar(255) NOT NULL,
+	"tax_no_or_vat_no" varchar(255) NOT NULL,
+	"pan_number" varchar(255) NOT NULL,
 	"currency" varchar(255) NOT NULL,
 	"image" varchar(255) NOT NULL,
 	"password" varchar(255) NOT NULL,
-	CONSTRAINT "supplier_register_email_unique" UNIQUE("email")
+	"api_key" varchar(255) NOT NULL,
+	"is_up" varchar(255) NOT NULL,
+	CONSTRAINT "supplier_email_unique" UNIQUE("email")
 );

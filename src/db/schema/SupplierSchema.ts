@@ -1,22 +1,24 @@
 import { integer, pgTable, varchar, text, PgTable, date } from 'drizzle-orm/pg-core'; 
 
-export const registerTable = pgTable('supplier_register', {
+export const registerTable = pgTable('supplier', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   company_name_or_owns_car: varchar({ length: 255 }).notNull(),
   owner_name: varchar({ length: 255 }).notNull(),
   office_address: varchar({ length: 255 }).notNull(),
   country: varchar({ length: 255 }).notNull(), 
   city: varchar({ length: 255 }).notNull(),
-  zipcode: integer().notNull(),
-  office_number: integer().notNull(),
+  zipcode: varchar({length:255}).notNull(),
+  office_number: varchar({length:255}).notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
-  contact_person: integer().notNull(),
-  mobile_number: integer().notNull(),
-  tax_no_or_vat_no: integer().notNull(), 
-  pan_number: integer().notNull(), 
+  contact_person: varchar({length:255}).notNull(),
+  mobile_number: varchar({length:255}).notNull(),
+  tax_no_or_vat_no: varchar({length:255}).notNull(), 
+  pan_number: varchar({length:255}).notNull(), 
   currency: varchar({ length: 255 }).notNull(),
   image: varchar({ length: 255 }).notNull(),
   password: varchar({length:255}).notNull(),
+  api_key:varchar({length:255}).notNull(),
+  is_up:varchar({length:255}).notNull(),
   // imagepath: text('image_path').notNull(),  
 });
 

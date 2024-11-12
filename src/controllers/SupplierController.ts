@@ -31,6 +31,9 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             pan_number,
             currency,
             image,
+            password,
+            api_key,
+            is_up,
             // password,
         } = <CreateSupplierInput>req.body;
 
@@ -55,6 +58,9 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 pan_number,
                 currency,
                 image,
+                password,
+                api_key,
+                is_up,
                 // password: hashedPassword,
             })
             .returning(); // Return the newly inserted supplier

@@ -4,16 +4,18 @@ export interface CreateSupplierInput {
     office_address:string,
     country:string, 
     city:string,
-    zipcode:number,
-    office_number:number,
+    zipcode:string,
+    office_number:string,
     email:string,
-    contact_person:number,
-    mobile_number:number,
-    tax_no_or_vat_no:number,
-    pan_number:number,
-    currency:string,
+    contact_person:string,
+    mobile_number:string,
+    tax_no_or_vat_no:string,
+    pan_number:string,
+    currency:string, 
     image:string, 
     password:string, 
+    api_key:string,
+    is_up:string
   }
 
   export interface CreateSupplierOneWayInput{

@@ -20,7 +20,7 @@ import { integer, pgTable, varchar, text, PgTable, date } from 'drizzle-orm/pg-c
 //       Gst_Tax_Certificate:varchar({length:255}).notNull(), 
 //     }
 // )
-export const AgentTable = pgTable('Agent_registration', {
+export const AgentTable = pgTable('Agent', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   Company_name: varchar({ length: 255 }).notNull(),
   Address: varchar({ length: 255 }).notNull(),
