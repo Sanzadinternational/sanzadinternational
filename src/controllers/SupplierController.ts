@@ -2,14 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import { CreateSupplierInput,CreateSupplierDetailServicesInput, CreateSupplierOneWayInput } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto');
 // import { v4 as uuidv4 } from 'uuid';
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 const { v4: uuidv4 } = require('uuid');
 // Make sure db is correctly configured and imported
 import { db } from "../db/db";
-const { registerTable, One_WayTable} = require('../db/schema/SupplierSchema'); 
+const { registerTable, One_WayTable,supplier_otps} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
-
+import { generateOTP, sendOTPEmail } from "../utils";
 // const { One_Way_Service_Price_Details } = require('../db/schema/SupplierSchema'); 
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
 // const bcrypt = require('bcrypt'); 
@@ -17,20 +17,24 @@ const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSch
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {
         const {
-            company_name_or_owns_car, 
-            owner_name, 
-            office_address,
-            country,
-            city,    
-            zipcode,
-            office_number,
-            email,
-            contact_person,
-            mobile_number,
-            tax_no_or_vat_no,
-            pan_number,
-            currency,
-            image,
+            Company_name,
+            Owner,
+            Address,
+            Country, 
+            City,
+            Zip_code,
+            Office_number,
+            Email,
+            Contact_Person,
+            Otp,
+            Mobile_number,
+            Gst_Vat_Tax_number, 
+            PAN_number, 
+            Currency,
+            Gst_Tax_Certificate,
+            Password,
+            Api_key,
+            Is_up,
             // password,
         } = <CreateSupplierInput>req.body;
 
@@ -41,20 +45,24 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
         const newSupplier = await db
             .insert(registerTable)
             .values({
-                company_name_or_owns_car,
-                owner_name,
-                office_address,
-                country,
-                city,
-                zipcode,
-                office_number, 
-                email,
-                contact_person,
-                mobile_number,
-                tax_no_or_vat_no,
-                pan_number,
-                currency,
-                image,
+                Company_name,
+                Owner,
+                Address,
+                Country, 
+                City,
+                Zip_code,
+                Office_number,
+                Email,
+                Contact_Person,
+                Otp,
+                Mobile_number,
+                Gst_Vat_Tax_number, 
+                PAN_number, 
+                Currency,
+                Gst_Tax_Certificate,
+                Password,
+                Api_key,
+                Is_up,
                 // password: hashedPassword,
             })
             .returning(); // Return the newly inserted supplier
@@ -457,5 +465,43 @@ export const One_Way_Details = async (req: Request, res: Response, next: NextFun
     } catch (error) {
         // Pass any error to the error handler middleware
         next(error);
+    }
+};
+
+
+export const suppliersendOtp= async(req:Request,res:Response,next:NextFunction)=>{
+    const { email } = req.body;
+
+    const otp = generateOTP();
+    const expiryTime = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
+  
+    // Save OTP and expiry time in the `otps` table
+    await db.insert(supplier_otps).values({ email, otp, otpExpiry: expiryTime });
+    await sendOTPEmail(email, otp);
+  
+    res.status(200).json({ message: 'OTP sent successfully' });
+}
+
+export const supplierverifyOtp = async (req: Request, res: Response, next: NextFunction) => {
+    const { email, otp } = req.body;
+
+    try {
+        // Retrieve the most recent OTP record for the provided email
+        const otpRecord = await db
+            .select()
+            .from(supplier_otps)
+            .where(eq(supplier_otps.email, email))
+            .orderBy(desc(supplier_otps.otpExpiry))
+            .limit(1);   // Get the latest OTP record directly
+            const otpRecords = otpRecord[0];
+        // Check if an OTP record exists and if it's valid
+        if (!otpRecords || otpRecords.otp !== otp || new Date() > new Date(otpRecords.otpExpiry)) {
+            return res.status(400).json({ message: 'Invalid or expired OTP' });
+        }
+
+        res.status(200).json({ message: 'OTP verified successfully' });
+    } catch (error) {
+        console.error('Error verifying OTP:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 };

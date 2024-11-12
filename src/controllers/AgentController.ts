@@ -4,13 +4,14 @@ import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTri
 // const { v4: uuidv4 } = require('uuid'); 
 import { db } from "../db/db";
 import { generateOTP, sendOTPEmail } from "../utils";
-const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema');
-const { otpss } = require('../db/schema/OtpSchema');
-const {Emailotps} = require('./EmailotpsController');
+const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
+const { otpss } = require('../db/schema/OtpSchema'); 
+const {Emailotps} = require('./EmailotpsController'); 
 const bcrypt = require('bcrypt'); 
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 const nodemailer = require("nodemailer"); 
 // import jwt from 'jsonwebtoken';
+const Crypto = require("crypto");
 const jwt = require('jsonwebtoken'); 
 
 var Mailgen = require('mailgen'); 
@@ -27,6 +28,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Gst_Vat_Tax_number, 
             Contact_Person,
             Email,
+            Otp,
             Password,
             Office_number,
             Mobile_number,
@@ -36,8 +38,8 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
 
         // const id = uuidv4();
 
-        // Hash the password before storing
-        const hashedPassword = await bcrypt.hash(Password, 10);
+        // Hash the password before storing 
+        const hashedPassword = await bcrypt.hash(Password, 10); 
 
         const newAgent = await db
             .insert(AgentTable)
@@ -51,6 +53,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
                 Gst_Vat_Tax_number, 
                 Contact_Person,
                 Email,
+                Otp,
                 Password:hashedPassword, // Save hashed password
                 Office_number,
                 Mobile_number,
@@ -79,7 +82,7 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
         Zip_code:AgentTable.Zip_code,
         IATA_Code:AgentTable.IATA_Code,
         Gst_Vat_Tax_number:AgentTable.Gst_Vat_Tax_number,
-        Contact_number:AgentTable.Contact_number,
+        Contact_Person:AgentTable.Contact_Person,
         Email:AgentTable.Email,
         Password:AgentTable.Password,
         Office_number:AgentTable.Office_number,
@@ -141,10 +144,23 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         const [agent] = await db
             .select({
                 email: AgentTable.Email,
-                password: AgentTable.Password
+                password: AgentTable.Password ,
+                Company_name:AgentTable.Company_name,
+                Address:AgentTable.Address,
+                Country:AgentTable.Country,
+                City:AgentTable.City,
+                Zip_code:AgentTable.Zip_code,
+                IATA_Code:AgentTable.IATA_Code,
+                Gst_Vat_Tax_number:AgentTable.Gst_Vat_Tax_number,
+                Contact_Person:AgentTable.Contact_Person,
+                Otp:AgentTable.Otp,
+                Office_number:AgentTable.Office_number,
+                Mobile_number:AgentTable.Mobile_number,
+                Currency:AgentTable.Currency,
+                Gst_Tax_Certificate:AgentTable.Gst_Tax_Certificate
             })
             .from(AgentTable)
-            .where(eq(AgentTable.Email, Email));
+            .where(eq(AgentTable.Email, Email)); 
 
         // Check if the agent was found
         if (!agent) {
@@ -169,6 +185,7 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         return res.status(200).json({
             message: 'Login Successfully',
             token,
+            agent,
         });
 
     } catch (error) {
@@ -550,21 +567,44 @@ export const sendOtp= async(req:Request,res:Response,next:NextFunction)=>{
     res.status(200).json({ message: 'OTP sent successfully' });
 }
 
+// export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
+//     const { email, otp } = req.body;
+
+//     // Retrieve all OTP records (not recommended for large datasets)
+//     const otpRecords = await db
+//         .select()
+//         .from(otpss)// Order by expiry time
+
+//     // Find the record that matches the provided email
+//     const otpRecord = otpRecords.find(record => record.email === email);
+
+//     // Check if the OTP record exists and is valid
+//     if (!otpRecord || otpRecord.otp !== otp || new Date() > new Date(otpRecord.otpExpiry)) {
+//         return res.status(400).json({ message: 'Invalid or expired OTP' });
+//     }
+
+//     res.status(200).json({ message: 'OTP verified successfully' });
+// };
 export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
     const { email, otp } = req.body;
 
-    // Retrieve all OTP records (not recommended for large datasets)
-    const otpRecords = await db
-        .select()
-        .from(otpss)// Order by expiry time
+    try {
+        // Retrieve the most recent OTP record for the provided email
+        const otpRecord = await db
+            .select()
+            .from(otpss)
+            .where(eq(otpss.email, email))
+            .orderBy(desc(otpss.otpExpiry))
+            .limit(1);   // Get the latest OTP record directly
+            const otpRecords = otpRecord[0];
+        // Check if an OTP record exists and if it's valid
+        if (!otpRecords || otpRecords.otp !== otp || new Date() > new Date(otpRecords.otpExpiry)) {
+            return res.status(400).json({ message: 'Invalid or expired OTP' });
+        }
 
-    // Find the record that matches the provided email
-    const otpRecord = otpRecords.find(record => record.email === email);
-
-    // Check if the OTP record exists and is valid
-    if (!otpRecord || otpRecord.otp !== otp || new Date() > new Date(otpRecord.otpExpiry)) {
-        return res.status(400).json({ message: 'Invalid or expired OTP' });
+        res.status(200).json({ message: 'OTP verified successfully' });
+    } catch (error) {
+        console.error('Error verifying OTP:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
-
-    res.status(200).json({ message: 'OTP verified successfully' });
 };

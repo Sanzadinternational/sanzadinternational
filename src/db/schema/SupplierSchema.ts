@@ -1,23 +1,26 @@
-import { integer, pgTable, varchar, text, PgTable, date } from 'drizzle-orm/pg-core'; 
+import { integer, pgTable, varchar, text,timestamp, PgTable, date } from 'drizzle-orm/pg-core'; 
 
-export const registerTable = pgTable('supplier_register', {
+export const registerTable = pgTable('supplier', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
-  company_name_or_owns_car: varchar({ length: 255 }).notNull(),
-  owner_name: varchar({ length: 255 }).notNull(),
-  office_address: varchar({ length: 255 }).notNull(),
-  country: varchar({ length: 255 }).notNull(), 
-  city: varchar({ length: 255 }).notNull(),
-  zipcode: integer().notNull(),
-  office_number: integer().notNull(),
-  email: varchar({ length: 255 }).notNull().unique(),
-  contact_person: integer().notNull(),
-  mobile_number: integer().notNull(),
-  tax_no_or_vat_no: integer().notNull(), 
-  pan_number: integer().notNull(), 
-  currency: varchar({ length: 255 }).notNull(),
-  image: varchar({ length: 255 }).notNull(),
-  password: varchar({length:255}).notNull(),
-  // imagepath: text('image_path').notNull(),  
+  Company_name: varchar({ length: 255 }).notNull(),
+  Owner: varchar({ length: 255 }).notNull(),
+  Address: varchar({ length: 255 }).notNull(),
+  Country: varchar({ length: 255 }).notNull(), 
+  City: varchar({ length: 255 }).notNull(),
+  Zip_code: varchar({length:255}).notNull(),
+  Office_number: varchar({length:255}).notNull(),
+  Email: varchar({ length: 255 }).notNull().unique(),
+  Contact_Person: varchar({length:255}).notNull(),
+  Otp:varchar({length:255}).notNull(),
+  Mobile_number: varchar({length:255}).notNull(),
+  Gst_Vat_Tax_number: varchar({length:255}).notNull(), 
+  PAN_number: varchar({length:255}).notNull(), 
+  Currency: varchar({ length: 255 }).notNull(),
+  Gst_Tax_Certificate: varchar({ length: 255 }).notNull(),
+  Password: varchar({length:255}).notNull(),
+  Api_key:varchar({length:255}),
+  Is_up:varchar({length:255}),
+ 
 });
 
 export const One_WayTable = pgTable('One_Way_Service_Details',{
@@ -64,3 +67,17 @@ export const Roundtrip_Service_Price_Details = pgTable('Roundtrip_Service_Price_
   price: integer().notNull(), 
   new_location: varchar({ length: 255 }).notNull(), 
 }); 
+
+export const supplier_otps = pgTable('supplier_otps', {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    email: text('email').notNull(),
+    otp: text('otp').notNull(),
+    otpExpiry: timestamp('otpExpiry').notNull(),
+});
+
+export type supplier_otps = {
+    id: number;
+    email: string;
+    otp: string;
+    otpExpiry: Date;
+  };

@@ -1,11 +1,11 @@
 {
-  "id": "54abf913-bad3-450a-9090-fa7671bfcfba",
+  "id": "f380065e-5d39-4861-9c63-e8f03508ef52",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.Agent_registration": {
-      "name": "Agent_registration",
+    "public.Agent": {
+      "name": "Agent",
       "schema": "",
       "columns": {
         "id": {
@@ -15,7 +15,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "Agent_registration_id_seq",
+            "name": "Agent_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -51,19 +51,19 @@
         },
         "Zip_code": {
           "name": "Zip_code",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "IATA_Code": {
           "name": "IATA_Code",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "Gst_Vat_Tax_number": {
           "name": "Gst_Vat_Tax_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -79,6 +79,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "Otp": {
+          "name": "Otp",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
         "Password": {
           "name": "Password",
           "type": "varchar(255)",
@@ -87,13 +93,13 @@
         },
         "Office_number": {
           "name": "Office_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
         "Mobile_number": {
           "name": "Mobile_number",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
@@ -874,8 +880,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.supplier_register": {
-      "name": "supplier_register",
+    "public.supplier": {
+      "name": "supplier",
       "schema": "",
       "columns": {
         "id": {
@@ -885,7 +891,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "supplier_register_id_seq",
+            "name": "supplier_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -895,93 +901,164 @@
             "cycle": false
           }
         },
-        "company_name_or_owns_car": {
-          "name": "company_name_or_owns_car",
+        "Company_name": {
+          "name": "Company_name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "owner_name": {
-          "name": "owner_name",
+        "Owner": {
+          "name": "Owner",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "office_address": {
-          "name": "office_address",
+        "Address": {
+          "name": "Address",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "country": {
-          "name": "country",
+        "Country": {
+          "name": "Country",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "city": {
-          "name": "city",
+        "City": {
+          "name": "City",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "zipcode": {
-          "name": "zipcode",
+        "Zip_code": {
+          "name": "Zip_code",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Office_number": {
+          "name": "Office_number",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Email": {
+          "name": "Email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Contact_Person": {
+          "name": "Contact_Person",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Otp": {
+          "name": "Otp",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Mobile_number": {
+          "name": "Mobile_number",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Gst_Vat_Tax_number": {
+          "name": "Gst_Vat_Tax_number",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "PAN_number": {
+          "name": "PAN_number",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Currency": {
+          "name": "Currency",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Gst_Tax_Certificate": {
+          "name": "Gst_Tax_Certificate",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Password": {
+          "name": "Password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Api_key": {
+          "name": "Api_key",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Is_up": {
+          "name": "Is_up",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "supplier_Email_unique": {
+          "name": "supplier_Email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "Email"
+          ]
+        }
+      }
+    },
+    "public.supplier_otps": {
+      "name": "supplier_otps",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
           "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "office_number": {
-          "name": "office_number",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "supplier_otps_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "email": {
           "name": "email",
-          "type": "varchar(255)",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "contact_person": {
-          "name": "contact_person",
-          "type": "integer",
+        "otp": {
+          "name": "otp",
+          "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "mobile_number": {
-          "name": "mobile_number",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "tax_no_or_vat_no": {
-          "name": "tax_no_or_vat_no",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "pan_number": {
-          "name": "pan_number",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "currency": {
-          "name": "currency",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "image": {
-          "name": "image",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "password": {
-          "name": "password",
-          "type": "varchar(255)",
+        "otpExpiry": {
+          "name": "otpExpiry",
+          "type": "timestamp",
           "primaryKey": false,
           "notNull": true
         }
@@ -989,15 +1066,7 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {
-        "supplier_register_email_unique": {
-          "name": "supplier_register_email_unique",
-          "nullsNotDistinct": false,
-          "columns": [
-            "email"
-          ]
-        }
-      }
+      "uniqueConstraints": {}
     }
   },
   "enums": {},
