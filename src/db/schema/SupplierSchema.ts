@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, text, PgTable, date } from 'drizzle-orm/pg-core'; 
+import { integer, pgTable, varchar, text,timestamp, PgTable, date } from 'drizzle-orm/pg-core'; 
 
 export const registerTable = pgTable('supplier', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -67,3 +67,17 @@ export const Roundtrip_Service_Price_Details = pgTable('Roundtrip_Service_Price_
   price: integer().notNull(), 
   new_location: varchar({ length: 255 }).notNull(), 
 }); 
+
+export const supplier_otps = pgTable('supplier_otps', {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
+    email: text('email').notNull(),
+    otp: text('otp').notNull(),
+    otpExpiry: timestamp('otpExpiry').notNull(),
+});
+
+export type supplier_otps = {
+    id: number;
+    email: string;
+    otp: string;
+    otpExpiry: Date;
+  };

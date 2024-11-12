@@ -165,3 +165,10 @@ CREATE TABLE IF NOT EXISTS "supplier" (
 	"Is_up" varchar(255),
 	CONSTRAINT "supplier_Email_unique" UNIQUE("Email")
 );
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "supplier_otps" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "supplier_otps_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"email" text NOT NULL,
+	"otp" text NOT NULL,
+	"otpExpiry" timestamp NOT NULL
+);
