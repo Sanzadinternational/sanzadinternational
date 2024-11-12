@@ -1,5 +1,5 @@
 {
-  "id": "b52755aa-eb80-428d-9607-8f938f052bc0",
+  "id": "f3f6649c-539b-4f12-b332-42d6646d42e2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -901,118 +901,124 @@
             "cycle": false
           }
         },
-        "company_name_or_owns_car": {
-          "name": "company_name_or_owns_car",
+        "Company_name": {
+          "name": "Company_name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "owner_name": {
-          "name": "owner_name",
+        "Owner": {
+          "name": "Owner",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "office_address": {
-          "name": "office_address",
+        "Address": {
+          "name": "Address",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "country": {
-          "name": "country",
+        "Country": {
+          "name": "Country",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "city": {
-          "name": "city",
+        "City": {
+          "name": "City",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "zipcode": {
-          "name": "zipcode",
+        "Zip_code": {
+          "name": "Zip_code",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "office_number": {
-          "name": "office_number",
+        "Office_number": {
+          "name": "Office_number",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "email": {
-          "name": "email",
+        "Email": {
+          "name": "Email",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "contact_person": {
-          "name": "contact_person",
+        "Contact_Person": {
+          "name": "Contact_Person",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "mobile_number": {
-          "name": "mobile_number",
+        "Otp": {
+          "name": "Otp",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "tax_no_or_vat_no": {
-          "name": "tax_no_or_vat_no",
+        "Mobile_number": {
+          "name": "Mobile_number",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "pan_number": {
-          "name": "pan_number",
+        "Gst_Vat_Tax_number": {
+          "name": "Gst_Vat_Tax_number",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "currency": {
-          "name": "currency",
+        "PAN_number": {
+          "name": "PAN_number",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "image": {
-          "name": "image",
+        "Currency": {
+          "name": "Currency",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "password": {
-          "name": "password",
+        "Gst_Tax_Certificate": {
+          "name": "Gst_Tax_Certificate",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "api_key": {
-          "name": "api_key",
+        "Password": {
+          "name": "Password",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "is_up": {
-          "name": "is_up",
+        "Api_key": {
+          "name": "Api_key",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "Is_up": {
+          "name": "Is_up",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "supplier_email_unique": {
-          "name": "supplier_email_unique",
+        "supplier_Email_unique": {
+          "name": "supplier_Email_unique",
           "nullsNotDistinct": false,
           "columns": [
-            "email"
+            "Email"
           ]
         }
       }
