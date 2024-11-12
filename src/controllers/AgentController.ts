@@ -4,13 +4,14 @@ import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTri
 // const { v4: uuidv4 } = require('uuid'); 
 import { db } from "../db/db";
 import { generateOTP, sendOTPEmail } from "../utils";
-const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema');
-const { otpss } = require('../db/schema/OtpSchema');
-const {Emailotps} = require('./EmailotpsController');
+const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
+const { otpss } = require('../db/schema/OtpSchema'); 
+const {Emailotps} = require('./EmailotpsController'); 
 const bcrypt = require('bcrypt'); 
 import { desc, eq } from "drizzle-orm";
 const nodemailer = require("nodemailer"); 
 // import jwt from 'jsonwebtoken';
+const Crypto = require("crypto");
 const jwt = require('jsonwebtoken'); 
 
 var Mailgen = require('mailgen'); 
@@ -37,8 +38,8 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
 
         // const id = uuidv4();
 
-        // Hash the password before storing
-        const hashedPassword = await bcrypt.hash(Password, 10);
+        // Hash the password before storing 
+        const hashedPassword = await bcrypt.hash(Password, 10); 
 
         const newAgent = await db
             .insert(AgentTable)
