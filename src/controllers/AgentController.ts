@@ -3,15 +3,17 @@ import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTri
 // import { v4 as uuidv4 } from 'uuid';
 // const { v4: uuidv4 } = require('uuid'); 
 import { db } from "../db/db";
-import { generateOTP, sendOTPEmail } from "../utils";
-const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
+const generateResetToken = require('../utils/forget_password')
+// import {generateResetToken} from "../utils/forget_password";
+import { generateOTP, sendOTPEmail} from "../utils";
+const { AgentTable,OneWayTripTable,RoundTripTable,forget_password } = require('../db/schema/AgentSchema'); 
 const { otpss } = require('../db/schema/OtpSchema'); 
 const {Emailotps} = require('./EmailotpsController'); 
 const bcrypt = require('bcrypt'); 
-import { desc, eq } from "drizzle-orm";
+import { desc} from "drizzle-orm";
 const nodemailer = require("nodemailer"); 
 // import jwt from 'jsonwebtoken';
-const Crypto = require("crypto");
+const eq = require('drizzle-orm');
 const jwt = require('jsonwebtoken'); 
 
 var Mailgen = require('mailgen'); 
@@ -608,3 +610,80 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+
+export const forgotpassword = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { Email } = req.body;
+
+  // Step 1: Check if the user exists
+//   const user = await db.select().from(forget_password).where(forget_password.Email.eq(Email));
+const user = await db
+  .select()
+  .from(forget_password)
+  .where(forget_password.email.eq(Email));
+
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+
+  // Step 2: Generate token and set expiry time (e.g., 1 hour from now)
+  const resetToken = generateResetToken();
+  const resetTokenExpires = new Date(Date.now() + 3600000); // 1 hour expiry 
+
+  // Step 3: Store the token and expiry in the database
+  await db
+    .update(forget_password)
+    .set({
+      resetToken,
+      resetTokenExpires,
+    })
+    .where(forget_password.Email.eq(Email));
+
+  // Step 4: Send the reset token to the user's email
+  // Placeholder for sending email function
+  console.log(`Send this token to the user's email: ${resetToken}`);
+
+  res.json({ message: 'Password reset link sent to email' });
+    } catch (error) {
+        next(error); // Pass the error to the next middleware
+    }
+};
+
+export const resetpassword = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        
+          const { token, newPassword } = req.body;
+        
+          // Step 1: Find the user with the matching token
+          const user = await db
+            .select(forget_password)
+            .from(forget_password)
+            .where(forget_password.resetToken.eq(token).and(
+            forget_password.resetTokenExpires.gt(new Date())
+              ));
+        
+          if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired token' });
+          }
+        
+          // Step 2: Hash the new password
+          const hashedPassword = await bcrypt.hash(newPassword, 10);
+        
+          // Step 3: Update the user’s password and clear the reset token fields
+          await db
+            .update(forget_password)
+            .set({
+              password: hashedPassword,
+              resetToken: null,
+              resetTokenExpires: null,
+            })
+            .where(forget_password.email.eq(forget_password.email));
+        
+          res.json({ message: 'Password has been reset successfully' });
+    
+        
+    }catch(error){
+        next(error)
+    }
+}
