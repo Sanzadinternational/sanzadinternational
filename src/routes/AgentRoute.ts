@@ -1,11 +1,11 @@
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateAgent,GetAgent,loginAgent,GetBill,OneWayTrip,RoundTrip,GetOneWayTrip,GetRoundTrip,UpdateOneWayTrip, sendOtp, verifyOtp,forgotpassword,resetpassword } from '../controllers'; 
+import { CreateAgent,GetAgent,loginAgent,GetBill,OneWayTrip,RoundTrip,GetOneWayTrip,GetRoundTrip,UpdateOneWayTrip, sendOtp, verifyOtp,forgotPassword,resetpassword } from '../controllers'; 
 import { Emailotps } from '../controllers/EmailotpsController'; 
 
 const router = express.Router(); 
 
 router.post('/registration',  CreateAgent); 
-router.post('/forgotpassword',forgotpassword); 
+router.post('/forgotpassword',forgotPassword); 
 router.post('/resetpassword',resetpassword);
 router.get('/GetAgent',GetAgent); 
 router.post('/login',loginAgent);  

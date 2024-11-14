@@ -11,6 +11,7 @@ const { otpss } = require('../db/schema/OtpSchema');
 const {Emailotps} = require('./EmailotpsController'); 
 const bcrypt = require('bcrypt'); 
 import { desc} from "drizzle-orm";
+import crypto from 'crypto';
 const nodemailer = require("nodemailer"); 
 // import jwt from 'jsonwebtoken';
 const eq = require('drizzle-orm');
@@ -611,43 +612,41 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
+// Forgot Password API
+export const forgotPassword = async (req:Request, res:Response) => {
+  const { Email } = req.body;
 
-export const forgotpassword = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { Email } = req.body;
+  // Generate token
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  const resetTokenExpires = new Date(Date.now() + 3600000).toISOString(); // 1 hour from now
 
-  // Step 1: Check if the user exists
-//   const user = await db.select().from(forget_password).where(forget_password.Email.eq(Email));
-const user = await db
-  .select()
-  .from(forget_password)
-  .where(forget_password.email.eq(Email));
-
-  if (!user) {
-    return res.status(404).json({ message: 'User not found' });
-  }
-
-  // Step 2: Generate token and set expiry time (e.g., 1 hour from now)
-  const resetToken = generateResetToken();
-  const resetTokenExpires = new Date(Date.now() + 3600000); // 1 hour expiry 
-
-  // Step 3: Store the token and expiry in the database
-  await db
-    .update(forget_password)
+  // Update user in database with token and expiry
+  await db.update(forget_password)
     .set({
       resetToken,
-      resetTokenExpires,
+      resetTokenExpires
     })
-    .where(forget_password.Email.eq(Email));
-
-  // Step 4: Send the reset token to the user's email
-  // Placeholder for sending email function
-  console.log(`Send this token to the user's email: ${resetToken}`);
-
-  res.json({ message: 'Password reset link sent to email' });
-    } catch (error) {
-        next(error); // Pass the error to the next middleware
+    .where(eq(forget_password.Email, Email)); 
+   
+  // Set up nodemailer
+  const transporter = nodemailer.createTransport({
+    service: 'gmail', // configure with your email service
+    auth: {
+        user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+        pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
     }
+  });
+
+  // Send reset link via email
+  const resetUrl = `http://localhost:8000/reset-password?token=${resetToken}&email=${Email}`;
+  await transporter.sendMail({
+    from: 'jugalkishor556455@gmail.com',
+    to: Email, 
+    subject: 'Password Reset',
+    html: `<p>You requested a password reset. Click <a href="${resetUrl}">here</a> to reset your password.</p>`
+  });
+
+  res.send({ message: 'Password reset link sent to your email.' });
 };
 
 export const resetpassword = async(req:Request,res:Response,next:NextFunction)=>{
@@ -678,7 +677,7 @@ export const resetpassword = async(req:Request,res:Response,next:NextFunction)=>
               resetToken: null,
               resetTokenExpires: null,
             })
-            .where(forget_password.email.eq(forget_password.email));
+            .where(forget_password.Email.eq(forget_password.Email));
         
           res.json({ message: 'Password has been reset successfully' });
     
