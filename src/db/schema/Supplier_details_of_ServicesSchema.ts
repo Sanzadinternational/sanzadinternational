@@ -1,7 +1,7 @@
 import { integer, pgTable, varchar, text, boolean,uuid } from 'drizzle-orm/pg-core'; 
 
 export const registerTable2 = pgTable('supplier_details', {
-  id: uuid('id').primaryKey().defaultRandom(),
+  id: integer().primaryKey().generatedAlwaysAsIdentity(),
   Vehicle_type: varchar({length:255}).notNull(),
   Vehicle_brand: varchar({length:255}).notNull(), 
   Type_service: varchar({length:255}).notNull(),

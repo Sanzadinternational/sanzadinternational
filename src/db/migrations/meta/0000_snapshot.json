@@ -1,5 +1,5 @@
 {
-  "id": "faba8cce-b112-4a2f-b6d0-3bd878d66c14",
+  "id": "f6f1e61f-ba8a-46da-9a5b-5a4f4c86b2cf",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -467,10 +467,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "integer",
           "primaryKey": true,
           "notNull": true,
-          "default": "gen_random_uuid()"
+          "identity": {
+            "type": "always",
+            "name": "supplier_details_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "Vehicle_type": {
           "name": "Vehicle_type",

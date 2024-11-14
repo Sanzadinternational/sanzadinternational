@@ -239,7 +239,7 @@ export const Supplier_details = async (req: Request, res: Response, next: NextFu
         const newSupplier = await db
             .insert(registerTable2) // Assuming `registerTable2` is your Drizzle ORM table
             .values({
-                id, // Include the generated UUID
+                
                 Vehicle_type,
                 Vehicle_brand, 
                 Type_service,
