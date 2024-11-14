@@ -1,5 +1,5 @@
-CREATE TABLE IF NOT EXISTS "Agent" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Agent_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+CREATE TABLE IF NOT EXISTS "Agent_registration" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Agent_registration_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Company_name" varchar(255) NOT NULL,
 	"Address" varchar(255) NOT NULL,
 	"Country" varchar(255) NOT NULL,
@@ -32,6 +32,14 @@ CREATE TABLE IF NOT EXISTS "RoundTrip" (
 	"date" date NOT NULL,
 	"return_date" date NOT NULL,
 	"passengers" integer NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "forget_password" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "forget_password_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"email" varchar(255) NOT NULL,
+	"password" varchar(255) NOT NULL,
+	"resetToken" varchar(255),
+	"resetTokenExpires" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "otps" (
@@ -67,36 +75,36 @@ CREATE TABLE IF NOT EXISTS "users" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supplier_details" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"vehicle_type" text NOT NULL,
-	"vehicle_brand" text NOT NULL,
-	"type_service" varchar(255) NOT NULL,
-	"vehicle_model" integer NOT NULL,
-	"doors" varchar(255) NOT NULL,
-	"seats" varchar(255) NOT NULL,
-	"category_space" integer,
-	"max_number_pax_accommodate" varchar(255) NOT NULL,
-	"luggage_information" varchar(255) NOT NULL,
-	"max_number_medium_suitcase" varchar(255) NOT NULL,
-	"max_number_carbin_bag" varchar(255) NOT NULL,
-	"space_available_other_luggage" integer NOT NULL,
-	"location_details" varchar(255) NOT NULL,
-	"transfer_information" varchar(255) NOT NULL,
-	"service_providing_location" varchar(255) NOT NULL,
-	"airport" varchar(255) NOT NULL,
-	"port_cruise" varchar(255) NOT NULL,
-	"station" varchar(255) NOT NULL,
-	"city_center" varchar(255) NOT NULL,
-	"vehicle_for" varchar(255) NOT NULL,
-	"half_day_city_limit_4hrs" boolean DEFAULT false,
-	"half_day_city_limit_8hrs" boolean DEFAULT false,
-	"inclusions" boolean DEFAULT true,
-	"vehicle_rent" integer NOT NULL,
-	"fuel" varchar(255) NOT NULL,
-	"driver" varchar(255) NOT NULL,
-	"parking_fees" integer NOT NULL,
-	"toll_or_taxes" integer NOT NULL,
-	"driver_tips" integer NOT NULL,
-	"other" varchar(255) NOT NULL
+	"Vehicle_type" varchar(255) NOT NULL,
+	"Vehicle_brand" varchar(255) NOT NULL,
+	"Type_service" varchar(255) NOT NULL,
+	"Vehicle_model" varchar(255) NOT NULL,
+	"Doors" varchar(255) NOT NULL,
+	"Seats" varchar(255) NOT NULL,
+	"Category_space" varchar(255),
+	"Max_number_pax_accommodate" varchar(255) NOT NULL,
+	"Luggage_information" varchar(255) NOT NULL,
+	"Max_number_medium_suitcase" varchar(255) NOT NULL,
+	"Max_number_carbin_bag" varchar(255) NOT NULL,
+	"Space_available_other_luggage" varchar(255) NOT NULL,
+	"Location_details" varchar(255) NOT NULL,
+	"Transfer_information" varchar(255) NOT NULL,
+	"Service_providing_location" varchar(255) NOT NULL,
+	"Airport" varchar(255) NOT NULL,
+	"Port_cruise" varchar(255) NOT NULL,
+	"Station" varchar(255) NOT NULL,
+	"City_center" varchar(255) NOT NULL,
+	"Vehicle_for" varchar(255) NOT NULL,
+	"Half_day_city_limit_4hrs" varchar(255),
+	"Full_day_city_limit_8hrs" varchar(255),
+	"Inclusions" varchar(255),
+	"Vehicle_rent" varchar(255) NOT NULL,
+	"Fuel" varchar(255) NOT NULL,
+	"Driver" varchar(255) NOT NULL,
+	"Parking_fees" varchar(255) NOT NULL,
+	"Toll_or_taxes" varchar(255) NOT NULL,
+	"Driver_tips" varchar(255) NOT NULL,
+	"Other" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "One_Way_Service_Details" (

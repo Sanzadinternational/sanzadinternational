@@ -1,11 +1,11 @@
 {
-  "id": "8b36ee75-b2e8-49b0-b625-1d2a93e6829f",
+  "id": "faba8cce-b112-4a2f-b6d0-3bd878d66c14",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
-    "public.Agent": {
-      "name": "Agent",
+    "public.Agent_registration": {
+      "name": "Agent_registration",
       "schema": "",
       "columns": {
         "id": {
@@ -15,7 +15,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "Agent_id_seq",
+            "name": "Agent_registration_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -229,6 +229,57 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.forget_password": {
+      "name": "forget_password",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "forget_password_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "resetToken": {
+          "name": "resetToken",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "resetTokenExpires": {
+          "name": "resetTokenExpires",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.otps": {
       "name": "otps",
       "schema": "",
@@ -421,188 +472,185 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "vehicle_type": {
-          "name": "vehicle_type",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "vehicle_brand": {
-          "name": "vehicle_brand",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "type_service": {
-          "name": "type_service",
+        "Vehicle_type": {
+          "name": "Vehicle_type",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "vehicle_model": {
-          "name": "vehicle_model",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "doors": {
-          "name": "doors",
+        "Vehicle_brand": {
+          "name": "Vehicle_brand",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "seats": {
-          "name": "seats",
+        "Type_service": {
+          "name": "Type_service",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "category_space": {
-          "name": "category_space",
-          "type": "integer",
+        "Vehicle_model": {
+          "name": "Vehicle_model",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Doors": {
+          "name": "Doors",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Seats": {
+          "name": "Seats",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Category_space": {
+          "name": "Category_space",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "max_number_pax_accommodate": {
-          "name": "max_number_pax_accommodate",
+        "Max_number_pax_accommodate": {
+          "name": "Max_number_pax_accommodate",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "luggage_information": {
-          "name": "luggage_information",
+        "Luggage_information": {
+          "name": "Luggage_information",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "max_number_medium_suitcase": {
-          "name": "max_number_medium_suitcase",
+        "Max_number_medium_suitcase": {
+          "name": "Max_number_medium_suitcase",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "max_number_carbin_bag": {
-          "name": "max_number_carbin_bag",
+        "Max_number_carbin_bag": {
+          "name": "Max_number_carbin_bag",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "space_available_other_luggage": {
-          "name": "space_available_other_luggage",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "location_details": {
-          "name": "location_details",
+        "Space_available_other_luggage": {
+          "name": "Space_available_other_luggage",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "transfer_information": {
-          "name": "transfer_information",
+        "Location_details": {
+          "name": "Location_details",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "service_providing_location": {
-          "name": "service_providing_location",
+        "Transfer_information": {
+          "name": "Transfer_information",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "airport": {
-          "name": "airport",
+        "Service_providing_location": {
+          "name": "Service_providing_location",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "port_cruise": {
-          "name": "port_cruise",
+        "Airport": {
+          "name": "Airport",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "station": {
-          "name": "station",
+        "Port_cruise": {
+          "name": "Port_cruise",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "city_center": {
-          "name": "city_center",
+        "Station": {
+          "name": "Station",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "vehicle_for": {
-          "name": "vehicle_for",
+        "City_center": {
+          "name": "City_center",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "half_day_city_limit_4hrs": {
-          "name": "half_day_city_limit_4hrs",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "half_day_city_limit_8hrs": {
-          "name": "half_day_city_limit_8hrs",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "inclusions": {
-          "name": "inclusions",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": true
-        },
-        "vehicle_rent": {
-          "name": "vehicle_rent",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "fuel": {
-          "name": "fuel",
+        "Vehicle_for": {
+          "name": "Vehicle_for",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "driver": {
-          "name": "driver",
+        "Half_day_city_limit_4hrs": {
+          "name": "Half_day_city_limit_4hrs",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Full_day_city_limit_8hrs": {
+          "name": "Full_day_city_limit_8hrs",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Inclusions": {
+          "name": "Inclusions",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Vehicle_rent": {
+          "name": "Vehicle_rent",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
         },
-        "parking_fees": {
-          "name": "parking_fees",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "toll_or_taxes": {
-          "name": "toll_or_taxes",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "driver_tips": {
-          "name": "driver_tips",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "other": {
-          "name": "other",
+        "Fuel": {
+          "name": "Fuel",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "Driver": {
+          "name": "Driver",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Parking_fees": {
+          "name": "Parking_fees",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Toll_or_taxes": {
+          "name": "Toll_or_taxes",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Driver_tips": {
+          "name": "Driver_tips",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Other": {
+          "name": "Other",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
