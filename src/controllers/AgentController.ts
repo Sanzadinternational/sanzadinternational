@@ -3,18 +3,15 @@ import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTri
 // import { v4 as uuidv4 } from 'uuid';
 // const { v4: uuidv4 } = require('uuid'); 
 import { db } from "../db/db";
-const generateResetToken = require('../utils/forget_password')
-// import {generateResetToken} from "../utils/forget_password";
-import { generateOTP, sendOTPEmail} from "../utils";
-const { AgentTable,OneWayTripTable,RoundTripTable,forget_password } = require('../db/schema/AgentSchema'); 
+import { generateOTP, sendOTPEmail } from "../utils";
+const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
 const { otpss } = require('../db/schema/OtpSchema'); 
 const {Emailotps} = require('./EmailotpsController'); 
 const bcrypt = require('bcrypt'); 
-import { desc} from "drizzle-orm";
-import crypto from 'crypto';
+import { desc, eq } from "drizzle-orm";
 const nodemailer = require("nodemailer"); 
-// import jwt from 'jsonwebtoken';
-const eq = require('drizzle-orm');
+// import jwt from 'jsonwebtoken'; 
+const Crypto = require("crypto");
 const jwt = require('jsonwebtoken'); 
 
 var Mailgen = require('mailgen'); 
@@ -37,15 +34,15 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Mobile_number,
             Currency,
             Gst_Tax_Certificate,
-        } = req.body as CreateAgentInput;
+        } = req.body as CreateAgentInput; 
 
         // const id = uuidv4();
 
         // Hash the password before storing 
-        const hashedPassword = await bcrypt.hash(Password, 10); 
-
+        const hashedPassword = await bcrypt.hash(Password, 10);  
+        
         const newAgent = await db
-            .insert(AgentTable)
+            .insert(AgentTable) 
             .values({
                 Company_name,
                 Address,
@@ -74,7 +71,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
 export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
 {
     try{
-
+    
     const result = await db
     .select({
         id:AgentTable.id,
@@ -611,78 +608,3 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
-
-// Forgot Password API
-export const forgotPassword = async (req:Request, res:Response) => {
-  const { Email } = req.body;
-
-  // Generate token
-  const resetToken = crypto.randomBytes(32).toString('hex');
-  const resetTokenExpires = new Date(Date.now() + 3600000).toISOString(); // 1 hour from now
-
-  // Update user in database with token and expiry
-  await db.update(forget_password)
-    .set({
-      resetToken,
-      resetTokenExpires
-    })
-    .where(eq(forget_password.Email, Email)); 
-   
-  // Set up nodemailer
-  const transporter = nodemailer.createTransport({
-    service: 'gmail', // configure with your email service
-    auth: {
-        user: 'jugalkishor556455@gmail.com', // Email address from environment variable
-        pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
-    }
-  });
-
-  // Send reset link via email
-  const resetUrl = `http://localhost:8000/reset-password?token=${resetToken}&email=${Email}`;
-  await transporter.sendMail({
-    from: 'jugalkishor556455@gmail.com',
-    to: Email, 
-    subject: 'Password Reset',
-    html: `<p>You requested a password reset. Click <a href="${resetUrl}">here</a> to reset your password.</p>`
-  });
-
-  res.send({ message: 'Password reset link sent to your email.' });
-};
-
-export const resetpassword = async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-        
-          const { token, newPassword } = req.body;
-        
-          // Step 1: Find the user with the matching token
-          const user = await db
-            .select(forget_password)
-            .from(forget_password)
-            .where(forget_password.resetToken.eq(token).and(
-            forget_password.resetTokenExpires.gt(new Date())
-              ));
-        
-          if (!user) {
-            return res.status(400).json({ message: 'Invalid or expired token' });
-          }
-        
-          // Step 2: Hash the new password
-          const hashedPassword = await bcrypt.hash(newPassword, 10);
-        
-          // Step 3: Update the user’s password and clear the reset token fields
-          await db
-            .update(forget_password)
-            .set({
-              password: hashedPassword,
-              resetToken: null,
-              resetTokenExpires: null,
-            })
-            .where(forget_password.Email.eq(forget_password.Email));
-        
-          res.json({ message: 'Password has been reset successfully' });
-    
-        
-    }catch(error){
-        next(error)
-    }
-}
