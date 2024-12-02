@@ -143,8 +143,8 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         // Fetch the agent by email
         const [user] = await db
             .select({
-                email: AgentTable.Email,
-                password: AgentTable.Password ,
+                Email: AgentTable.Email,
+                Password: AgentTable.Password ,
                 Company_name:AgentTable.Company_name,
                 Address:AgentTable.Address,
                 Country:AgentTable.Country,
@@ -168,7 +168,7 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         }
 
         // Compare the provided password with the hashed password in the database
-        const isPasswordValid = await bcrypt.compare(Password, user.password); // 'password' (lowercase)
+        const isPasswordValid = await bcrypt.compare(Password, user.Password); // 'password' (lowercase)
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid credentials' });
@@ -176,7 +176,7 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
 
         // Generate a JWT token
         const token = jwt.sign(
-            {  email: user.email }, // Use 'agent.email' (lowercase)
+            {  email: user.Email }, // Use 'agent.email' (lowercase)
             JWT_SECRET,
             { expiresIn: '1h' }  // Token valid for 1 hour
         );
