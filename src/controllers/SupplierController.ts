@@ -519,7 +519,7 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
         const { Email, Password } = req.body; 
 
         // Fetch the agent by email
-        const [supplier] = await db
+        const [user] = await db
             .select({
                 Company_name:registerTable.Company_name,
                 Owner:registerTable.Owner,
@@ -544,12 +544,12 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
             .where(eq(registerTable.Email, Email)); 
 
         // Check if the agent was found
-        if (!supplier) {
+        if (!user) {
             return res.status(404).json({ message: "Agent not found" });
         }
 
         // Compare the provided password with the hashed password in the database
-        const isPasswordValid = await bcrypt.compare(Password, supplier.Password); // 'password' (lowercase)
+        const isPasswordValid = await bcrypt.compare(Password, user.Password); // 'password' (lowercase)
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid credentials' });
@@ -557,7 +557,7 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
 
         // Generate a JWT token
         const token = jwt.sign(
-            {  email: supplier.Email }, // Use 'agent.email' (lowercase)
+            {  email: user.Email }, // Use 'agent.email' (lowercase)
             JWT_SECRET,
             { expiresIn: '1h' }  // Token valid for 1 hour
         );
@@ -566,7 +566,7 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
         return res.status(200).json({
             message: 'Login Successfully',
             token,
-            supplier,
+            user,
         });
 
     } catch (error) {
