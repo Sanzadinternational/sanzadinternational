@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateSupplierInput,CreateSupplierDetailServicesInput, CreateSupplierOneWayInput } from "../dto";
+import { CreateSupplierInput,CreateSupplierDetailServicesInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto');
 // import { v4 as uuidv4 } from 'uuid';
 import { desc, eq } from "drizzle-orm";
 const { v4: uuidv4 } = require('uuid');
 // Make sure db is correctly configured and imported
 import { db } from "../db/db";
-const { registerTable, One_WayTable,supplier_otps} = require('../db/schema/SupplierSchema'); 
+const { registerTable, One_WayTable,supplier_otps,SupplierApidataTable} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
 import { generateOTP, sendOTPEmail } from "../utils";
@@ -574,3 +574,31 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
     }
 };
 
+export const CreateSupplierApi = async (req: Request, res: Response, next: NextFunction) => { 
+    try {
+        // Destructure request body 
+        const { Api_Name, Api_User, Api_Password, Api_Supplier_Foreign } = req.body;
+
+        // Validate input
+        if (!Api_Name || !Api_User || !Api_Password || !Api_Supplier_Foreign) {
+            return res.status(400).json({ error: "All fields are required." });
+        }
+
+        // Insert new supplier record
+        const newSupplier = await db
+            .insert(SupplierApidataTable)
+            .values({
+                Api_Name,
+                Api_User,
+                Api_Password,
+                Api_Supplier_Foreign,
+            })
+            .returning();
+
+        // Return success response with new supplier details
+        return res.status(201).json(newSupplier); 
+    } catch (error) {
+        // Handle any errors
+        next(error);
+    }
+}; 

@@ -55,7 +55,14 @@ export interface CreateSupplierInput {
     half_day_city_limit_4hrs:string,
     full_day_city_limit_8hrs:string,
     from_date:string,
-    to_date:string,
+    to_date:string, 
     price:number,
     new_location:string
   }
+
+  export interface CreateSupplierApidata{ 
+    Api_Name:string,
+    Api_User:string,
+    Api_Password:string,
+    Api_Supplier_Foreign:number
+  } 

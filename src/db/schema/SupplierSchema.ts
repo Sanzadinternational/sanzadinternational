@@ -1,7 +1,7 @@
 import { integer, pgTable, varchar, text,timestamp, PgTable, date } from 'drizzle-orm/pg-core'; 
 
-export const registerTable = pgTable('supplier', {
-  id: integer().primaryKey().generatedAlwaysAsIdentity(),
+export const registerTable = pgTable('supplier', { 
+  id: integer().primaryKey().generatedAlwaysAsIdentity(), 
   Company_name: varchar({ length: 255 }).notNull(),
   Owner: varchar({ length: 255 }).notNull(),
   Address: varchar({ length: 255 }).notNull(),
@@ -9,18 +9,18 @@ export const registerTable = pgTable('supplier', {
   City: varchar({ length: 255 }).notNull(),
   Zip_code: varchar({length:255}).notNull(),
   Office_number: varchar({length:255}).notNull(),
-  Email: varchar({ length: 255 }).notNull().unique(),
+  Email: varchar({ length: 255 }).notNull().unique(), 
   Contact_Person: varchar({length:255}).notNull(),
   Otp:varchar({length:255}).notNull(),
   Mobile_number: varchar({length:255}).notNull(),
   Gst_Vat_Tax_number: varchar({length:255}).notNull(), 
   PAN_number: varchar({length:255}).notNull(), 
   Currency: varchar({ length: 255 }).notNull(),
-  Gst_Tax_Certificate: varchar({ length: 255 }).notNull(),
+  Gst_Tax_Certificate: varchar({ length: 255 }).notNull(), 
   Password: varchar({length:255}).notNull(),
   Api_key:varchar({length:255}),
   Is_up:varchar({length:255}),
- 
+
 });
 
 export const One_WayTable = pgTable('One_Way_Service_Details',{
@@ -80,4 +80,14 @@ export type supplier_otps = {
     email: string;
     otp: string;
     otpExpiry: Date;
-  };
+  }; 
+ 
+  export const SupplierApidataTable = pgTable('Supplier_Apidata', {
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(), // Primary key auto-incrementing ID
+    Api_Name: varchar({ length: 255 }), // Optional API name
+    Api_User: varchar({ length: 255 }).notNull(), // Not null API user
+    Api_Password: varchar({ length: 255 }).notNull(), // Not null API password
+    Api_Supplier_Foreign: integer('Api_Supplier_Foreign') 
+      .references(() => registerTable.id), // References the `id` column in `registerTable`
+  }); 
+  

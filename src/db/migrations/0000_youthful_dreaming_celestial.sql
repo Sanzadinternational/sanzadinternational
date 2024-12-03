@@ -151,6 +151,14 @@ CREATE TABLE IF NOT EXISTS "Roundtrip_Service_Price_Details" (
 	"new_location" varchar(255) NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Supplier_Apidata_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Api_Name" varchar(255),
+	"Api_User" varchar(255) NOT NULL,
+	"Api_Password" varchar(255) NOT NULL,
+	"Api_Supplier_Foreign" integer
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supplier" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "supplier_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Company_name" varchar(255) NOT NULL,
@@ -180,3 +188,9 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 	"otp" text NOT NULL,
 	"otpExpiry" timestamp NOT NULL
 );
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Supplier_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Supplier_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;

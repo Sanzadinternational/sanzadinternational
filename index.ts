@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 // app.use("/admin", AdminRoute);
 // app.use("/", (req, res) => {
 //     res.json({
-//         "message":"done",
+//         "message":"done", 
 //     });
 // });
 

@@ -1,5 +1,5 @@
 {
-  "id": "f6f1e61f-ba8a-46da-9a5b-5a4f4c86b2cf",
+  "id": "4d83280d-07ed-4fb7-bbff-ce22fc7f8300",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -935,6 +935,71 @@
       },
       "indexes": {},
       "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.Supplier_Apidata": {
+      "name": "Supplier_Apidata",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "Supplier_Apidata_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "Api_Name": {
+          "name": "Api_Name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Api_User": {
+          "name": "Api_User",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Api_Password": {
+          "name": "Api_Password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Api_Supplier_Foreign": {
+          "name": "Api_Supplier_Foreign",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Supplier_Apidata_Api_Supplier_Foreign_supplier_id_fk": {
+          "name": "Supplier_Apidata_Api_Supplier_Foreign_supplier_id_fk",
+          "tableFrom": "Supplier_Apidata",
+          "tableTo": "supplier",
+          "columnsFrom": [
+            "Api_Supplier_Foreign"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
