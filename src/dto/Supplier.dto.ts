@@ -61,7 +61,7 @@ export interface CreateSupplierInput {
   }
 
   export interface CreateSupplierApidata{ 
-    Api_Name:string,
+    Api:string,
     Api_User:string,
     Api_Password:string,
     Api_Id_Foreign:number

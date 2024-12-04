@@ -1,5 +1,5 @@
 {
-  "id": "556aa49e-a77a-42fe-8039-3cc7bc3545c6",
+  "id": "55d441a9-dd14-4829-9296-3c4f81e03975",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -959,8 +959,8 @@
             "cycle": false
           }
         },
-        "Api_Name": {
-          "name": "Api_Name",
+        "Api": {
+          "name": "Api",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

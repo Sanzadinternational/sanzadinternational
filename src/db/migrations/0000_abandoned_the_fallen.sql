@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS "Roundtrip_Service_Price_Details" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Supplier_Apidata_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Api_Name" varchar(255),
+	"Api" varchar(255),
 	"Api_User" varchar(255) NOT NULL,
 	"Api_Password" varchar(255) NOT NULL,
 	"Api_Id_Foreign" integer

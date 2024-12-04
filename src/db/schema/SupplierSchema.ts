@@ -84,7 +84,7 @@ export type supplier_otps = {
  
   export const SupplierApidataTable = pgTable('Supplier_Apidata', {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), // Primary key auto-incrementing ID
-    Api_Name: varchar({ length: 255 }), // Optional API name
+    Api: varchar({ length: 255 }), // Optional API name
     Api_User: varchar({ length: 255 }).notNull(), // Not null API user
     Api_Password: varchar({ length: 255 }).notNull(), // Not null API password
     Api_Id_Foreign: integer('Api_Id_Foreign') 
