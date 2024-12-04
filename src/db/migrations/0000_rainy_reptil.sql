@@ -156,7 +156,7 @@ CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
 	"Api_Name" varchar(255),
 	"Api_User" varchar(255) NOT NULL,
 	"Api_Password" varchar(255) NOT NULL,
-	"Api_Supplier_Foreign" integer
+	"Api_Id_Foreign" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supplier" (
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Supplier_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Supplier_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Id_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

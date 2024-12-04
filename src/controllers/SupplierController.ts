@@ -521,6 +521,7 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
         // Fetch the agent by email
         const [user] = await db
             .select({
+                id:registerTable.id,
                 Company_name:registerTable.Company_name,
                 Owner:registerTable.Owner,
                 Address:registerTable.Address,
@@ -555,8 +556,8 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        // Generate a JWT token
-        const token = jwt.sign(
+        // Generate a JWT token 
+        const token = jwt.sign( 
             {  email: user.Email }, // Use 'agent.email' (lowercase)
             JWT_SECRET,
             { expiresIn: '1h' }  // Token valid for 1 hour
@@ -564,7 +565,7 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
 
         // Return a successful response with the token
         return res.status(200).json({
-            message: 'Login Successfully',
+            message: 'Login Successfully', 
             token,
             user,
         });
@@ -577,10 +578,10 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
 export const CreateSupplierApi = async (req: Request, res: Response, next: NextFunction) => { 
     try {
         // Destructure request body 
-        const { Api_Name, Api_User, Api_Password, Api_Supplier_Foreign } = req.body;
+        const { Api, Api_User, Api_Password, Api_Id_Foreign } = req.body; 
 
         // Validate input
-        if (!Api_Name || !Api_User || !Api_Password || !Api_Supplier_Foreign) {
+        if (!Api || !Api_User || !Api_Password || !Api_Id_Foreign) {
             return res.status(400).json({ error: "All fields are required." });
         }
 
@@ -588,10 +589,10 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
         const newSupplier = await db
             .insert(SupplierApidataTable)
             .values({
-                Api_Name,
+                Api,
                 Api_User,
                 Api_Password,
-                Api_Supplier_Foreign,
+                Api_Id_Foreign,
             })
             .returning();
 

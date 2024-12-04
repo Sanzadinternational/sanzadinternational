@@ -64,5 +64,5 @@ export interface CreateSupplierInput {
     Api_Name:string,
     Api_User:string,
     Api_Password:string,
-    Api_Supplier_Foreign:number
+    Api_Id_Foreign:number
   } 

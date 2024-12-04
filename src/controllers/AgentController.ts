@@ -72,7 +72,7 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
 {
     try{
     
-    const result = await db
+    const result = await db 
     .select({
         id:AgentTable.id,
         Company_name:AgentTable.Company_name,
@@ -143,7 +143,8 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         // Fetch the agent by email
         const [user] = await db
             .select({
-                Email: AgentTable.Email,
+                Id:AgentTable.id, 
+                Email: AgentTable.Email, 
                 Password: AgentTable.Password ,
                 Company_name:AgentTable.Company_name,
                 Address:AgentTable.Address,

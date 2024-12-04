@@ -1,5 +1,5 @@
 {
-  "id": "4d83280d-07ed-4fb7-bbff-ce22fc7f8300",
+  "id": "556aa49e-a77a-42fe-8039-3cc7bc3545c6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -977,8 +977,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "Api_Supplier_Foreign": {
-          "name": "Api_Supplier_Foreign",
+        "Api_Id_Foreign": {
+          "name": "Api_Id_Foreign",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -986,12 +986,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "Supplier_Apidata_Api_Supplier_Foreign_supplier_id_fk": {
-          "name": "Supplier_Apidata_Api_Supplier_Foreign_supplier_id_fk",
+        "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk": {
+          "name": "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk",
           "tableFrom": "Supplier_Apidata",
           "tableTo": "supplier",
           "columnsFrom": [
-            "Api_Supplier_Foreign"
+            "Api_Id_Foreign"
           ],
           "columnsTo": [
             "id"

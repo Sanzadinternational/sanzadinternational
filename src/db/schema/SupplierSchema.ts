@@ -87,7 +87,7 @@ export type supplier_otps = {
     Api_Name: varchar({ length: 255 }), // Optional API name
     Api_User: varchar({ length: 255 }).notNull(), // Not null API user
     Api_Password: varchar({ length: 255 }).notNull(), // Not null API password
-    Api_Supplier_Foreign: integer('Api_Supplier_Foreign') 
+    Api_Id_Foreign: integer('Api_Id_Foreign') 
       .references(() => registerTable.id), // References the `id` column in `registerTable`
   }); 
   
