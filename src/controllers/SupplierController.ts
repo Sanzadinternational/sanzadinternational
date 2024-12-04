@@ -597,7 +597,7 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
             .returning();
 
         // Return success response with new supplier details
-        return res.status(201).json(newSupplier); 
+        return res.status(200).json(newSupplier); 
     } catch (error) {
         // Handle any errors
         next(error);
