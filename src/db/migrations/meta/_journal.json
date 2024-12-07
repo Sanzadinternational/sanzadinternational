@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1733271149028,
-      "tag": "0000_abandoned_the_fallen",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1733529859741,
-      "tag": "0001_brown_microbe",
+      "when": 1733601889278,
+      "tag": "0000_bitter_mandrill",
       "breakpoints": true
     }
   ]

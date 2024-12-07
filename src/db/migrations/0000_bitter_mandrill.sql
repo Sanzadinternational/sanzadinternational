@@ -129,6 +129,28 @@ CREATE TABLE IF NOT EXISTS "One_Way_Service_Details" (
 	"new_location" varchar(255) NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "price" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "price_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"country" varchar(255),
+	"city" varchar(255),
+	"location_from_airport" varchar(255),
+	"location_from_port_cruise" varchar(255),
+	"location_from_station" varchar(255),
+	"location_from_city_center" varchar(255),
+	"location_to_airport" varchar(255),
+	"location_to_port_cruise" varchar(255),
+	"location_to_station" varchar(255),
+	"location_to_city_center" varchar(255),
+	"night_time_supplement" varchar(255),
+	"vice_versa" varchar(255),
+	"half_day_city_limit_4hrs" varchar(255),
+	"full_day_city_limit_8hrs" varchar(255),
+	"from_date" varchar(255),
+	"to_date" varchar(255),
+	"price" varchar(255),
+	"new_location" varchar(255)
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Roundtrip_Service_Price_Details" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Roundtrip_Service_Price_Details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"country" varchar(255) NOT NULL,
@@ -157,6 +179,17 @@ CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
 	"Api_User" varchar(255) NOT NULL,
 	"Api_Password" varchar(255) NOT NULL,
 	"Api_Id_Foreign" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "transport_nodes" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "transport_nodes_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"formatted_address" varchar(255),
+	"location_lat" varchar(255),
+	"location_lon" varchar(255),
+	"description" varchar(255),
+	"place_id" varchar(255),
+	"country" varchar(255),
+	"airport_or_establishment" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supplier" (
