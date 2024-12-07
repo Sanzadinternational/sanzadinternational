@@ -1,3 +1,4 @@
+import { Supplier_price, TransportNode } from './../controllers/SupplierController';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
 import { CreateSupplier,GetSupplier,loginSupplier,suppliersendOtp,supplierverifyOtp,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
@@ -13,6 +14,8 @@ router.get('/GetSupplier_details',GetSupplier_details);
 router.delete('/deleteUserById/:id', deleteUserById);
 router.post('One_Way_Service_Details', One_Way_Details);
 router.post('/CreateSupplierApi',CreateSupplierApi);
+router.post('/Supplier_price',Supplier_price);
+router.post('/TransportNode',TransportNode);
 // router.get('/products', GetProducts); 
 // router.get('/product/:id', GetProductById);
 // router.get('/product/:Keyword', SearchProduct); 

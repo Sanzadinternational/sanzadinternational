@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateSupplierInput,CreateSupplierDetailServicesInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
+import { CreateSupplierInput,CreateSupplierDetailServicesInput,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto');
 // import { v4 as uuidv4 } from 'uuid';
 import { desc, eq } from "drizzle-orm";
 const { v4: uuidv4 } = require('uuid');
 // Make sure db is correctly configured and imported
 import { db } from "../db/db";
-const { registerTable, One_WayTable,supplier_otps,SupplierApidataTable} = require('../db/schema/SupplierSchema'); 
+const { registerTable, One_WayTable,supplier_otps,PriceTable,SupplierApidataTable,TransportNodes} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
 import { generateOTP, sendOTPEmail } from "../utils";
@@ -37,7 +37,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             Api_key,
             Is_up,
             // password,
-        } = <CreateSupplierInput>req.body;
+        } = <CreateSupplierInput>req.body; 
 
         const id = uuidv4(); // Generate UUID for the new supplier
         // const saltRounds = 10;
@@ -195,7 +195,86 @@ export const GetSupplier = async (req: Request, res: Response, next: NextFunctio
 //     }
 
 // }
+export const TransportNode = async(req:Request,res:Response,next:NextFunction)=>{ 
+   try{
+        const {
+            formatted_address,
+            location_lat,
+            location_lon,
+            description,
+            place_id,
+            country,
+            airport_or_establishment,
+        }= <CreateTransportNodesInput>req.body;
 
+        const TransportNode = await db.insert(TransportNodes)
+        .values({
+            formatted_address,
+            location_lat,
+            location_lon,
+            description,
+            place_id,
+            country,
+            airport_or_establishment,
+        })
+        .returning();
+        return res.status(200).json(TransportNode);
+   }catch(error){
+    next(error)
+   }
+}
+export const Supplier_price = async (req:Request,res:Response,next:NextFunction)=>{
+    try{
+          const {
+            country,
+            city,
+            location_from_airport,
+            location_from_port_cruise,
+            location_from_station,
+            location_from_city_center, 
+            location_to_airport,
+            location_to_port_cruise,
+            location_to_station,
+            location_to_city_center,
+            night_time_supplement,
+            vice_versa,
+            half_day_city_limit_4hrs,
+            full_day_city_limit_8hrs,
+            from_date, 
+            to_date,   
+            price, 
+            new_location,
+          }=<SupplierPriceInput>req.body;
+
+          const Supplier_Price= await db.insert(PriceTable)
+          .values({
+            country,
+            city,
+            location_from_airport,
+            location_from_port_cruise,
+            location_from_station,
+            location_from_city_center, 
+            location_to_airport,
+            location_to_port_cruise,
+            location_to_station,
+            location_to_city_center,
+            night_time_supplement,
+            vice_versa,
+            half_day_city_limit_4hrs,
+            full_day_city_limit_8hrs,
+            from_date, 
+            to_date,   
+            price, 
+            new_location,
+          })
+          .returning();
+
+          return res.status(201).json(Supplier_Price);
+
+    }catch(error){
+        next(error);
+    }
+}
 
 export const Supplier_details = async (req: Request, res: Response, next: NextFunction) => {   
     try {
@@ -239,7 +318,7 @@ export const Supplier_details = async (req: Request, res: Response, next: NextFu
         const newSupplier = await db
             .insert(registerTable2) // Assuming `registerTable2` is your Drizzle ORM table
             .values({
-                
+
                 Vehicle_type,
                 Vehicle_brand, 
                 Type_service,

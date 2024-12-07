@@ -18,7 +18,35 @@ export interface CreateSupplierInput {
   Api_key:string,
   Is_up:string,
   }
-
+export interface SupplierPriceInput{
+  country:string,
+  city:string,
+  location_from_airport:string,
+  location_from_port_cruise:string,
+  location_from_station:string,
+  location_from_city_center:string, 
+  location_to_airport:string,
+  location_to_port_cruise:string,
+  location_to_station:string,
+  location_to_city_center:string,
+  night_time_supplement:string,
+  vice_versa:string,
+  half_day_city_limit_4hrs:string,
+  full_day_city_limit_8hrs:string,
+  from_date: string, 
+  to_date: string,   
+  price: string, 
+  new_location: string,
+} 
+  export interface CreateTransportNodesInput{
+  formatted_address:string,
+  location_lat:string,
+  location_lon:string,
+  description:string,
+  place_id:string,
+  country:string,
+  airport_or_establishment:string,
+  }
   export interface CreateSupplierOneWayInput{
     country:string,
     city:string,

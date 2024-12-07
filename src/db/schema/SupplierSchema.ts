@@ -43,9 +43,43 @@ export const One_WayTable = pgTable('One_Way_Service_Details',{
     to_date: date().notNull(),   
     price: integer().notNull(), 
     new_location: varchar({ length: 255 }).notNull(),
+  
+}); 
+ 
+export const PriceTable = pgTable('price',{
+  id:integer().primaryKey().generatedAlwaysAsIdentity(), 
+    country:varchar({length:255}),
+    city:varchar({length:255}),
+    location_from_airport:varchar({length:255}),
+    location_from_port_cruise:varchar({length:255}), 
+    location_from_station:varchar({length:255}),
+    location_from_city_center:varchar({length:255}), 
+    location_to_airport:varchar({length:255}),
+    location_to_port_cruise:varchar({length:255}),
+    location_to_station:varchar({length:255}),
+    location_to_city_center:varchar({length:255}),
+    night_time_supplement:varchar({length:255}),
+    vice_versa:varchar({length:255}),
+    half_day_city_limit_4hrs:varchar({length:255}),
+    full_day_city_limit_8hrs:varchar({length:255}),
+    from_date: varchar({length:255}), 
+    to_date: varchar({length:255}),   
+    price: varchar({length:255}), 
+    new_location: varchar({ length: 255 }),
+})
 
-});
+export const TransportNodes = pgTable('transport_nodes',{
 
+  id:integer().primaryKey().generatedAlwaysAsIdentity(), 
+  formatted_address:varchar({length:255}),
+  location_lat:varchar({length:255}),
+  location_lon:varchar({length:255}),
+  description:varchar({length:255}),
+  place_id:varchar({length:255}),
+  country:varchar({length:255}),
+  airport_or_establishment:varchar({length:255}),
+
+})
 export const Roundtrip_Service_Price_Details = pgTable('Roundtrip_Service_Price_Details',{
   id:integer().primaryKey().generatedAlwaysAsIdentity(),
   country:varchar({length:255}).notNull(),
