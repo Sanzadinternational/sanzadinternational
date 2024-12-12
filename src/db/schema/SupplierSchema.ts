@@ -123,5 +123,32 @@ export type supplier_otps = {
     Api_Password: varchar({ length: 255 }).notNull(), // Not null API password
     Api_Id_Foreign: integer('Api_Id_Foreign') 
       .references(() => registerTable.id), // References the `id` column in `registerTable`
-  }); 
-  
+  });
+
+  export const SupplierCarDetailsTable = pgTable('Car_Details',{
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+    Vehicle_type:varchar({length:255}),
+    Vehicle_brand:varchar({length:255}),
+    Service_type:varchar({length:255}),
+    Vehicle_model:varchar({length:255}),
+    Doors:varchar({length:255}),
+    Seats:varchar({length:255}), 
+    Cargo_space:varchar({length:255}),
+    Passenger:varchar({length:255}),
+    Medium_bag:varchar({length:255}),
+    Small_bag:varchar({length:255}),
+    Extra_space:varchar({length:255}),
+    Transfer_from:varchar({length:255}),
+    Transfer_to:varchar({length:255}),
+    Vice_versa:varchar({length:255}),
+    Price:varchar({length:255}),
+    Half_day_ride_4hrs:varchar({length:255}),
+    Full_day_ride_8hrs:varchar({length:255}),
+    Vehicle_rent:varchar({length:255}),
+    Fuel:varchar({length:255}),
+    Driver:varchar({length:255}),
+    Parking_fee:varchar({length:255}),
+    Toll_or_taxes:varchar({length:255}),
+    Driver_tips:varchar({length:255}),
+    Other:varchar({length:255})
+  })

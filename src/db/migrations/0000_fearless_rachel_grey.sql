@@ -181,6 +181,34 @@ CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
 	"Api_Id_Foreign" integer
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Car_Details" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Car_Details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Vehicle_type" varchar(255),
+	"Vehicle_brand" varchar(255),
+	"Service_type" varchar(255),
+	"Vehicle_model" varchar(255),
+	"Doors" varchar(255),
+	"Seats" varchar(255),
+	"Cargo_space" varchar(255),
+	"Passenger" varchar(255),
+	"Medium_bag" varchar(255),
+	"Small_bag" varchar(255),
+	"Extra_space" varchar(255),
+	"Transfer_from" varchar(255),
+	"Transfer_to" varchar(255),
+	"Vice_versa" varchar(255) DEFAULT 'No',
+	"Price" varchar(255),
+	"Half_day_ride_4hrs" varchar(255),
+	"Full_day_ride_8hrs" varchar(255),
+	"Vehicle_rent" varchar(255),
+	"Fuel" varchar(255),
+	"Driver" varchar(255),
+	"Parking_fee" varchar(255),
+	"Toll_or_taxes" varchar(255),
+	"Driver_tips" varchar(255),
+	"Other" varchar(255)
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transport_nodes" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "transport_nodes_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"formatted_address" varchar(255),

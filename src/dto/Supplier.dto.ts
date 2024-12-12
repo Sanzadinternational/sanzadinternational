@@ -94,3 +94,58 @@ export interface SupplierPriceInput{
     Api_Password:string,
     Api_Id_Foreign:number
   } 
+
+export interface CreateCartDetails{
+  Vehicle_type:string,
+  Vehicle_brand:string,
+  Service_type:string,
+  Vehicle_model:string,
+  Doors:string,
+  Seats:string, 
+  Cargo_space:string,
+  Passenger:string,
+  Medium_bag:string,
+  Small_bag:string,
+  Extra_space:string,
+  Transfer_from:string,
+  Transfer_to:string,
+  Vice_versa:{
+    type:string,
+    default:'No',
+    enum:['Yes','No',]
+  },
+  Price:string,
+  Half_day_ride_4hrs:{
+    type:string,
+    default:"No",
+    enum:['Yes','No']
+  },
+  Full_day_ride_8hrs:{
+    type:string,
+    default:"No",
+    enum:['Yes','No']
+  },
+  Vehicle_rent:string,
+  Fuel:{
+    type:string,
+    default:"No",
+    enum:['Yes','No']
+  },
+  Driver:string,
+  Parking_fee:{
+    type:string,
+    default:"No",
+    enum:['Yes','No']
+  },
+  Toll_or_taxes:{
+    type:string,
+    default:"No",
+    enum:['Yes','No']
+  },
+  Driver_tips:{
+    type:string,
+    default:"No",
+    enum:['Yes','No']
+  },
+  Other:string
+}

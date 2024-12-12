@@ -1,12 +1,13 @@
-import { Request, Response, NextFunction } from "express";
-import { CreateSupplierInput,CreateSupplierDetailServicesInput,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
-// const {One_Way_Service_Details = require('../dto/Supplier.dto');
-// import { v4 as uuidv4 } from 'uuid';
-import { desc, eq } from "drizzle-orm";
-const { v4: uuidv4 } = require('uuid');
-// Make sure db is correctly configured and imported
-import { db } from "../db/db";
-const { registerTable, One_WayTable,supplier_otps,PriceTable,SupplierApidataTable,TransportNodes} = require('../db/schema/SupplierSchema'); 
+
+import { Request, Response, NextFunction } from "express"; 
+import { CreateSupplierInput,CreateCartDetails,CreateSupplierDetailServicesInput,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
+// const {One_Way_Service_Details = require('../dto/Supplier.dto'); 
+// import { v4 as uuidv4 } from 'uuid'; 
+import { desc, eq } from "drizzle-orm"; 
+const { v4: uuidv4 } = require('uuid'); 
+// Make sure db is correctly configured and imported 
+import { db } from "../db/db"; 
+const { registerTable, One_WayTable,supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
 import { generateOTP, sendOTPEmail } from "../utils";
@@ -16,9 +17,9 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); 
 
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
-    try {
-        const {
-            Company_name,
+    try { 
+        const { 
+            Company_name, 
             Owner,
             Address,
             Country, 
@@ -682,3 +683,64 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
         next(error);
     }
 }; 
+
+export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const {  Vehicle_type,
+            Vehicle_brand,
+            Service_type,
+            Vehicle_model,
+            Doors,
+            Seats, 
+            Cargo_space,
+            Passenger,
+            Medium_bag,
+            Small_bag,
+            Extra_space,
+            Transfer_from,
+            Transfer_to,
+            Vice_versa,
+            Price,
+            Half_day_ride_4hrs,
+            Full_day_ride_8hrs,
+            Vehicle_rent,
+            Fuel,
+            Driver,
+            Parking_fee,
+            Toll_or_taxes,
+            Driver_tips,
+            Other} =<CreateCartDetails>req.body;
+
+            const CartDetails = await db.insert(SupplierCarDetailsTable)
+            .values({
+                Vehicle_type,
+            Vehicle_brand,
+            Service_type,
+            Vehicle_model,
+            Doors,
+            Seats, 
+            Cargo_space,
+            Passenger,
+            Medium_bag,
+            Small_bag,
+            Extra_space,
+            Transfer_from,
+            Transfer_to,
+            Vice_versa,
+            Price,
+            Half_day_ride_4hrs,
+            Full_day_ride_8hrs,
+            Vehicle_rent,
+            Fuel,
+            Driver,
+            Parking_fee,
+            Toll_or_taxes,
+            Driver_tips,
+            Other
+            })
+            .returning(); 
+            return res.status(200).json(CartDetails);
+    }catch(error){
+        next(error)
+    }
+}
