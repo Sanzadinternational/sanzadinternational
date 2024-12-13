@@ -1,13 +1,14 @@
-
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,CreateCartDetails,CreateSupplierDetailServicesInput,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
+import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,VehicleModel,
+    CreateCartDetails,CreateSupplierDetailServicesInput,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto'); 
 // import { v4 as uuidv4 } from 'uuid'; 
 import { desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 // Make sure db is correctly configured and imported 
 import { db } from "../db/db"; 
-const { registerTable, One_WayTable,supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
+const { registerTable, One_WayTable,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,
+    supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
 import { generateOTP, sendOTPEmail } from "../utils";
@@ -785,3 +786,53 @@ export const GetCarDetails = async (req: Request, res: Response, next: NextFunct
         next(error);
     }
 };
+
+export const CreateVehicleType=async(req:Request,res:Response,next:NextFunction)=>{
+   try{
+        const {Vehicle_type}=<VehicleType>req.body;
+
+        const NewVehicleType = await db.insert(VehicleTypeTable)
+        .values({Vehicle_type })
+        .returning();
+        return res.status(200).json(NewVehicleType)
+   }catch(error){
+    next(error)
+   }
+}
+
+export const CreateVehicleBrand = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const {Vehicle_brand}=<VehicleBrand>req.body;
+
+        const NewVehicleBrand = await db.insert(VehicleBrandTable)
+        .values({Vehicle_brand})
+        .returning()
+        return res.status(200).json(NewVehicleBrand);
+    }catch(error){
+        next(error)
+    }
+}
+
+export const CreateServiceType = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const {Service_type}=<ServiceType>req.body;
+        const NewServiceType = await db.insert(ServiceTypeTable)
+        .values({Service_type}) 
+        .returning()
+        return res.status(200).json(NewServiceType) 
+    }catch(error){
+        next(error) 
+    }
+}
+
+export const CreateVehicleModel = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+          const { Vehicle_model }=<VehicleModel>req.body;
+          const NewVehicleModel= await db.insert(VehicleModelTable) 
+          .values({Vehicle_model})
+          .returning()
+          return res.status(200).json(NewVehicleModel) 
+    }catch(error){
+        next(error)
+    }
+}

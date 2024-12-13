@@ -152,3 +152,24 @@ export type supplier_otps = {
     Driver_tips:varchar({length:255}),
     Other:varchar({length:255})
   })
+
+  export const VehicleTypeTable=pgTable('Vehicle_types',{
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+    Vehicle_type:varchar({length:255})
+  })
+
+  export const VehicleBrandTable=pgTable('Vehicle_brand',{
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+    Vehicle_brand:varchar({length:255})
+  })
+
+export const ServiceTypeTable=pgTable('Service_type',{
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+  Service_type:varchar({length:255})
+}) 
+
+export const VehicleModelTable=pgTable('Vehicle_model',{
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+  Vehicle_model:varchar({length:255})
+})
+

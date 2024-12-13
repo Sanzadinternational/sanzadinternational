@@ -149,3 +149,19 @@ export interface CreateCartDetails{
   },
   Other:string
 }
+
+export interface VehicleType{
+  Vehicle_type:string
+}
+
+export interface VehicleBrand{
+  Vehicle_brand:string
+}
+
+export interface ServiceType{
+  Service_type:string
+}
+
+export interface VehicleModel{
+  Vehicle_model:string
+}

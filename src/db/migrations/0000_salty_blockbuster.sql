@@ -173,6 +173,11 @@ CREATE TABLE IF NOT EXISTS "Roundtrip_Service_Price_Details" (
 	"new_location" varchar(255) NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Service_type" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Service_type_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Service_type" varchar(255)
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Supplier_Apidata_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Api" varchar(255),
@@ -196,7 +201,7 @@ CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"Extra_space" varchar(255),
 	"Transfer_from" varchar(255),
 	"Transfer_to" varchar(255),
-	"Vice_versa" varchar(255) DEFAULT 'No',
+	"Vice_versa" varchar(255),
 	"Price" varchar(255),
 	"Half_day_ride_4hrs" varchar(255),
 	"Full_day_ride_8hrs" varchar(255),
@@ -218,6 +223,21 @@ CREATE TABLE IF NOT EXISTS "transport_nodes" (
 	"place_id" varchar(255),
 	"country" varchar(255),
 	"airport_or_establishment" varchar(255)
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Vehicle_brand" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Vehicle_brand_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Vehicle_brand" varchar(255)
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Vehicle_model" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Vehicle_model_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Vehicle_model" varchar(255)
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Vehicle_types" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Vehicle_types_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Vehicle_type" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supplier" (

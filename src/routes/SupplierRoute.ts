@@ -1,6 +1,7 @@
 import { Supplier_price, TransportNode } from './../controllers/SupplierController';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,GetSupplier,GetCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+import { CreateSupplier,GetSupplier,CreateVehicleType,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,
+    GetCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
 const router = express.Router(); 
 
@@ -18,6 +19,11 @@ router.post('/Supplier_price',Supplier_price);
 router.post('/TransportNode',TransportNode);
 router.post('/CreateCartDetail',CreateCartDetail);
 router.get('/getCarDetails',GetCarDetails); 
+router.post('/CreateVehicleType',CreateVehicleType);
+router.post('/CreateVehicleBrand',CreateVehicleBrand);
+router.post('/CreateServiceType',CreateServiceType);
+router.post('/CreateVehicleModel',CreateVehicleModel)
+
 // router.get('/products', GetProducts); 
 // router.get('/product/:id', GetProductById);
 // router.get('/product/:Keyword', SearchProduct); 
