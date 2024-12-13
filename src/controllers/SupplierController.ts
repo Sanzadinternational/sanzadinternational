@@ -540,12 +540,12 @@ export const One_Way_Details = async (req: Request, res: Response, next: NextFun
             from_date, 
             to_date,   
             price, 
-            new_location,
+            new_location, 
             })
             .returning(); // Return the newly inserted supplier details 
 
         // Respond with the newly created supplier
-        return res.status(201).json(newSupplier);
+        return res.status(201).json(newSupplier); 
 
     } catch (error) {
         // Pass any error to the error handler middleware
@@ -684,7 +684,7 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
     }
 }; 
 
-export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{
+export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{ 
     try{
          const {  Vehicle_type,
             Vehicle_brand,
@@ -744,3 +744,44 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
         next(error)
     }
 }
+
+export const GetCarDetails = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Fetch all suppliers from the database
+        const result = await db 
+            .select({
+                id:SupplierCarDetailsTable.id,
+                Vehicle_type:SupplierCarDetailsTable.Vehicle_type,
+                Vehicle_brand:SupplierCarDetailsTable.Vehicle_brand,
+                Service_type:SupplierCarDetailsTable.Service_type,
+                Vehicle_model:SupplierCarDetailsTable.Vehicle_model,
+                Doors:SupplierCarDetailsTable.Doors,
+                Seats:SupplierCarDetailsTable.Seats, 
+                Cargo_space:SupplierCarDetailsTable.Cargo_space,
+                Passenger:SupplierCarDetailsTable.Passenger, 
+                Medium_bag:SupplierCarDetailsTable.Medium_bag,
+                Small_bag:SupplierCarDetailsTable.Small_bag,
+                Extra_space:SupplierCarDetailsTable.Extra_space,
+                Transfer_from:SupplierCarDetailsTable.Transfer_from, 
+                Transfer_to:SupplierCarDetailsTable.Transfer_to,
+                Vice_versa:SupplierCarDetailsTable.Vice_versa,
+                Price:SupplierCarDetailsTable.Price,
+                Half_day_ride_4hrs:SupplierCarDetailsTable.Half_day_ride_4hrs,
+                Full_day_ride_8hrs:SupplierCarDetailsTable.Full_day_ride_8hrs,
+                Vehicle_rent:SupplierCarDetailsTable.Vehicle_rent,
+                Fuel:SupplierCarDetailsTable.Fuel, 
+                Driver:SupplierCarDetailsTable.Driver,
+                Parking_fee:SupplierCarDetailsTable.Parking_fee,
+                Toll_or_taxes:SupplierCarDetailsTable.Toll_or_taxes,
+                Driver_tips:SupplierCarDetailsTable.Driver_tips,
+                Other:SupplierCarDetailsTable.Other
+            })
+            .from(SupplierCarDetailsTable);
+
+        return res.status(200).json(result); 
+
+    } catch (error) {
+        // Pass the error to the error handler middleware
+        next(error);
+    }
+};

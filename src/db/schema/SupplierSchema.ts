@@ -123,8 +123,8 @@ export type supplier_otps = {
     Api_Password: varchar({ length: 255 }).notNull(), // Not null API password
     Api_Id_Foreign: integer('Api_Id_Foreign') 
       .references(() => registerTable.id), // References the `id` column in `registerTable`
-  });
-
+  }); 
+ 
   export const SupplierCarDetailsTable = pgTable('Car_Details',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
     Vehicle_type:varchar({length:255}),
