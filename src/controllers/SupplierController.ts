@@ -746,9 +746,9 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
     }
 }
 
-export const GetCarDetails = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        // Fetch all suppliers from the database
+export const GetCarDetails = async (req: Request, res: Response, next: NextFunction) => { 
+    try { 
+        // Fetch all suppliers from the database 
         const result = await db 
             .select({
                 id:SupplierCarDetailsTable.id,
@@ -799,6 +799,25 @@ export const CreateVehicleType=async(req:Request,res:Response,next:NextFunction)
     next(error)
    }
 }
+
+export const GetVehicleType = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const result = await db.select({
+            id: VehicleTypeTable.id,
+            Vehicle_type: VehicleTypeTable.Vehicle_type,
+        }).from(VehicleTypeTable);
+
+        // Standardized response
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        console.error("Error fetching vehicle types:", error);
+        next(error); // Pass the error to the centralized error handler
+    }
+};
+
 
 export const CreateVehicleBrand = async(req:Request,res:Response,next:NextFunction)=>{
     try{

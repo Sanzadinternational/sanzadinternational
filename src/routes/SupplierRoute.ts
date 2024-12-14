@@ -1,13 +1,13 @@
 import { Supplier_price, TransportNode } from './../controllers/SupplierController';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,GetSupplier,CreateVehicleType,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,
+import { CreateSupplier,GetSupplier,CreateVehicleType,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
     GetCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
 const router = express.Router(); 
 
 router.post('/registration', CreateSupplier); 
-router.post('/send-otp', suppliersendOtp);
-router.post('/verify-otp', supplierverifyOtp)
+router.post('/send-otp', suppliersendOtp); 
+router.post('/verify-otp', supplierverifyOtp); 
 router.post('/login',loginSupplier);
 router.get('/GetSupplier',GetSupplier);
 router.post('/Supplier_details', Supplier_details); 
@@ -20,10 +20,10 @@ router.post('/TransportNode',TransportNode);
 router.post('/CreateCartDetail',CreateCartDetail);
 router.get('/getCarDetails',GetCarDetails); 
 router.post('/CreateVehicleType',CreateVehicleType);
-router.post('/CreateVehicleBrand',CreateVehicleBrand);
+router.post('/CreateVehicleBrand',CreateVehicleBrand); 
 router.post('/CreateServiceType',CreateServiceType);
-router.post('/CreateVehicleModel',CreateVehicleModel)
-
+router.post('/CreateVehicleModel',CreateVehicleModel); 
+router.get('/GetVehicleType',GetVehicleType)
 // router.get('/products', GetProducts); 
 // router.get('/product/:id', GetProductById);
 // router.get('/product/:Keyword', SearchProduct); 
