@@ -739,7 +739,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             // Transfer_from,
             // Transfer_to,
             // Vice_versa:Vice_versa || 'No',
-            // Price,
+            // Price, 
             Half_day_ride_4hrs:Half_day_ride_4hrs || 'no',
             Full_day_ride_8hrs:Full_day_ride_8hrs || 'no',
             Vehicle_rent,

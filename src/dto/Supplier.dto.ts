@@ -109,10 +109,10 @@ export interface CreateCartDetails{
   Vehicle_model:string,
   Doors:string,
   Seats:string, 
-  Cargo_space:string,
+  Cargo_space:string, 
   Passenger:string,
   Medium_bag:string,
-  Small_bag:string,
+  Small_bag:string, 
   Extra_space:string,
   Rows:[
     {
@@ -132,35 +132,35 @@ export interface CreateCartDetails{
   // Price:string,
   Half_day_ride_4hrs:{
     type:string,
-    default:"No",
-    enum:['Yes','No']
+    default:"no",
+    enum:['yes','no']
   },
   Full_day_ride_8hrs:{
     type:string,
-    default:"No",
-    enum:['Yes','No']
+    default:"no",
+    enum:['yes','no']
   },
   Vehicle_rent:string,
   Fuel:{
     type:string,
-    default:"No",
-    enum:['Yes','No']
+    default:"no",
+    enum:['yes','no']
   },
   Driver:string,
   Parking_fee:{
     type:string,
-    default:"No",
-    enum:['Yes','No']
+    default:"no",
+    enum:['yes','no']
   },
   Toll_taxes:{
     type:string,
-    default:"No",
-    enum:['Yes','No']
+    default:"no",
+    enum:['yes','no']
   },
   Driver_tips:{
     type:string,
-    default:"No",
-    enum:['Yes','No']
+    default:"no",
+    enum:['yes','no']
   },
   Toll_fee:string,
   Parking:string,
