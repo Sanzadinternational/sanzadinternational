@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, text,timestamp, PgTable, date } from 'drizzle-orm/pg-core'; 
+import { integer, pgTable, varchar, text,timestamp, PgTable, date, jsonb } from 'drizzle-orm/pg-core'; 
 
 export const registerTable = pgTable('supplier', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(), 
@@ -138,18 +138,18 @@ export type supplier_otps = {
     Medium_bag:varchar({length:255}),
     Small_bag:varchar({length:255}),
     Extra_space:varchar({length:255}),
-    Transfer_from:varchar({length:255}),
-    Transfer_to:varchar({length:255}),
-    Vice_versa:varchar({length:255}),
-    Price:varchar({length:255}),
+    Rows: jsonb().array(),
     Half_day_ride_4hrs:varchar({length:255}),
     Full_day_ride_8hrs:varchar({length:255}),
     Vehicle_rent:varchar({length:255}),
-    Fuel:varchar({length:255}),
+    Fuel:varchar({length:255}), 
     Driver:varchar({length:255}),
     Parking_fee:varchar({length:255}),
-    Toll_or_taxes:varchar({length:255}),
+    Toll_taxes:varchar({length:255}),
     Driver_tips:varchar({length:255}),
+    Toll_fee:varchar({length:255}),
+    Parking:varchar({length:255}),
+    Currency:varchar({length:255}),
     Other:varchar({length:255})
   })
 

@@ -199,18 +199,18 @@ CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"Medium_bag" varchar(255),
 	"Small_bag" varchar(255),
 	"Extra_space" varchar(255),
-	"Transfer_from" varchar(255),
-	"Transfer_to" varchar(255),
-	"Vice_versa" varchar(255),
-	"Price" varchar(255),
+	"Rows" jsonb[],
 	"Half_day_ride_4hrs" varchar(255),
 	"Full_day_ride_8hrs" varchar(255),
 	"Vehicle_rent" varchar(255),
 	"Fuel" varchar(255),
 	"Driver" varchar(255),
 	"Parking_fee" varchar(255),
-	"Toll_or_taxes" varchar(255),
+	"Toll_taxes" varchar(255),
 	"Driver_tips" varchar(255),
+	"Toll_fee" varchar(255),
+	"Parking" varchar(255),
+	"Currency" varchar(255),
 	"Other" varchar(255)
 );
 --> statement-breakpoint

@@ -1,5 +1,5 @@
 {
-  "id": "463d8a19-678e-4416-b00f-d3b98e17fbe9",
+  "id": "7839b4b3-f53d-46de-83de-534a3bebb11d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1258,27 +1258,9 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Transfer_from": {
-          "name": "Transfer_from",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Transfer_to": {
-          "name": "Transfer_to",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Vice_versa": {
-          "name": "Vice_versa",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Price": {
-          "name": "Price",
-          "type": "varchar(255)",
+        "Rows": {
+          "name": "Rows",
+          "type": "jsonb[]",
           "primaryKey": false,
           "notNull": false
         },
@@ -1318,14 +1300,32 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Toll_or_taxes": {
-          "name": "Toll_or_taxes",
+        "Toll_taxes": {
+          "name": "Toll_taxes",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
         "Driver_tips": {
           "name": "Driver_tips",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Toll_fee": {
+          "name": "Toll_fee",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Parking": {
+          "name": "Parking",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Currency": {
+          "name": "Currency",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

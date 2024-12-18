@@ -552,7 +552,7 @@ export const One_Way_Details = async (req: Request, res: Response, next: NextFun
         // Pass any error to the error handler middleware
         next(error);
     }
-};
+}; 
 
 
 export const suppliersendOtp= async(req:Request,res:Response,next:NextFunction)=>{
@@ -682,11 +682,11 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
     } catch (error) {
         // Handle any errors
         next(error);
-    }
+    } 
 }; 
-
+    
 export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{ 
-    try{
+    try{ 
          const {  Vehicle_type,
             Vehicle_brand,
             Service_type,
@@ -698,19 +698,24 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Medium_bag,
             Small_bag,
             Extra_space,
-            Transfer_from,
-            Transfer_to,
-            Vice_versa,
-            Price,
+            Rows:[{
+                Transfer_from,
+                 Transfer_to,
+                 Vice_versa,
+                 Price,
+            }],
             Half_day_ride_4hrs,
             Full_day_ride_8hrs,
             Vehicle_rent,
             Fuel,
             Driver,
             Parking_fee,
-            Toll_or_taxes,
+            Toll_taxes,
+            Toll_fee,
+            Parking,
+            Currency,
             Driver_tips,
-            Other} =<CreateCartDetails>req.body;
+            Other} =<CreateCartDetails>req.body; 
 
             const CartDetails = await db.insert(SupplierCarDetailsTable)
             .values({
@@ -725,18 +730,27 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Medium_bag,
             Small_bag,
             Extra_space,
-            Transfer_from,
-            Transfer_to,
-            Vice_versa:Vice_versa || 'No',
-            Price,
-            Half_day_ride_4hrs:Half_day_ride_4hrs || 'No',
-            Full_day_ride_8hrs:Full_day_ride_8hrs || 'No',
+            Rows:[{
+                Transfer_from,
+                 Transfer_to,
+                 Vice_versa,
+                 Price,
+            }],
+            // Transfer_from,
+            // Transfer_to,
+            // Vice_versa:Vice_versa || 'No',
+            // Price,
+            Half_day_ride_4hrs:Half_day_ride_4hrs || 'no',
+            Full_day_ride_8hrs:Full_day_ride_8hrs || 'no',
             Vehicle_rent,
-            Fuel:Fuel || 'No',
+            Fuel:Fuel || 'no',
             Driver,
-            Parking_fee:Parking_fee || 'No',
-            Toll_or_taxes:Toll_or_taxes || 'No',
-            Driver_tips:Driver_tips || 'No',
+            Parking_fee:Parking_fee || 'no',
+            Toll_taxes:Toll_taxes || 'no',
+            Driver_tips:Driver_tips || 'no',
+            Toll_fee,
+            Parking,
+            Currency,
             Other
             })
             .returning(); 

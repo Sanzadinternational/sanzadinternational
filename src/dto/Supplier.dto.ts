@@ -1,4 +1,5 @@
-export interface CreateSupplierInput {
+import { defaults } from './../../node_modules/@types/pg/index.d';
+export interface CreateSupplierInput { 
   Company_name:string,
   Owner: string,
   Address: string,
@@ -94,7 +95,13 @@ export interface SupplierPriceInput{
     Api_Password:string,
     Api_Id_Foreign:number
   } 
-
+  // export interface RowDetails {
+  //   Transfer_from: string;
+  //   Transfer_to: string;
+  //   Vice_versa: string;
+  //   Price: string;
+  // }
+  
 export interface CreateCartDetails{
   Vehicle_type:string,
   Vehicle_brand:string,
@@ -107,14 +114,22 @@ export interface CreateCartDetails{
   Medium_bag:string,
   Small_bag:string,
   Extra_space:string,
-  Transfer_from:string,
-  Transfer_to:string,
-  Vice_versa:{
-    type:string,
-    default:'No',
-    enum:['Yes','No',]
-  },
-  Price:string,
+  Rows:[
+    {
+      Transfer_from: string;
+      Transfer_to: string;
+      Vice_versa: boolean;
+      Price: string;
+    }
+  ],
+  // Transfer_from:string,
+  // Transfer_to:string,
+  // Vice_versa:{
+  //   type:string,
+  //   default:'No',
+  //   enum:['Yes','No',]
+  // },
+  // Price:string,
   Half_day_ride_4hrs:{
     type:string,
     default:"No",
@@ -137,7 +152,7 @@ export interface CreateCartDetails{
     default:"No",
     enum:['Yes','No']
   },
-  Toll_or_taxes:{
+  Toll_taxes:{
     type:string,
     default:"No",
     enum:['Yes','No']
@@ -147,6 +162,9 @@ export interface CreateCartDetails{
     default:"No",
     enum:['Yes','No']
   },
+  Toll_fee:string,
+  Parking:string,
+  Currency:string,
   Other:string
 }
 
