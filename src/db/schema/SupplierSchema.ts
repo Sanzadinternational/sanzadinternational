@@ -141,7 +141,7 @@ export type supplier_otps = {
     // Rows: jsonb().array(),
     Rows: integer("rows") // Foreign key to another table (assuming SupplierApidataTable.id)
     .references(() => CreateTransferCar.id, { onDelete: "cascade" }),
-    Extra_space:integer("ExtraSpace")
+    ExtraSpace:integer("ExtraSpace")
     .references(()=>CreateExtraSpaces.id,{ onDelete: "cascade" }),
     Half_day_ride_4hrs:varchar({length:255}),
     Full_day_ride_8hrs:varchar({length:255}),

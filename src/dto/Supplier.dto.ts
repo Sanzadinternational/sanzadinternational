@@ -127,7 +127,7 @@ export interface CreateCartDetails{
   Passenger:string,
   Medium_bag:string,
   Small_bag:string, 
-  Extra_space:number,
+  ExtraSpace:number,
   Rows:number,
   // Transfer_from:string,
   // Transfer_to:string,
