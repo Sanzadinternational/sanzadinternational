@@ -107,6 +107,21 @@ CREATE TABLE IF NOT EXISTS "supplier_details" (
 	"Other" varchar(255)
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "ExtraSpace" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "ExtraSpace_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Roof_rock" boolean,
+	"Trailer_hitech" boolean,
+	"Extended_cargo_space" boolean
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "TransferCar" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "TransferCar_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Transfer_from" varchar(255),
+	"Transfer_to" varchar(255),
+	"Vice_versa" boolean,
+	"Price" varchar(255)
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "One_Way_Service_Details" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "One_Way_Service_Details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"country" varchar(255) NOT NULL,
@@ -198,8 +213,8 @@ CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"Passenger" varchar(255),
 	"Medium_bag" varchar(255),
 	"Small_bag" varchar(255),
-	"Extra_space" varchar(255),
-	"Rows" jsonb[],
+	"rows" integer,
+	"ExtraSpace" integer,
 	"Half_day_ride_4hrs" varchar(255),
 	"Full_day_ride_8hrs" varchar(255),
 	"Vehicle_rent" varchar(255),
@@ -272,6 +287,18 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Id_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_rows_TransferCar_id_fk" FOREIGN KEY ("rows") REFERENCES "public"."TransferCar"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_ExtraSpace_ExtraSpace_id_fk" FOREIGN KEY ("ExtraSpace") REFERENCES "public"."ExtraSpace"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

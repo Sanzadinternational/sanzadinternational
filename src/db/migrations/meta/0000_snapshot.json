@@ -1,5 +1,5 @@
 {
-  "id": "7839b4b3-f53d-46de-83de-534a3bebb11d",
+  "id": "a0387653-291b-4259-8f8f-9ceff6731b61",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -668,6 +668,102 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.ExtraSpace": {
+      "name": "ExtraSpace",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "ExtraSpace_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "Roof_rock": {
+          "name": "Roof_rock",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Trailer_hitech": {
+          "name": "Trailer_hitech",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Extended_cargo_space": {
+          "name": "Extended_cargo_space",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.TransferCar": {
+      "name": "TransferCar",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "TransferCar_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "Transfer_from": {
+          "name": "Transfer_from",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Transfer_to": {
+          "name": "Transfer_to",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Vice_versa": {
+          "name": "Vice_versa",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Price": {
+          "name": "Price",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.One_Way_Service_Details": {
       "name": "One_Way_Service_Details",
       "schema": "",
@@ -1252,15 +1348,15 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Extra_space": {
-          "name": "Extra_space",
-          "type": "varchar(255)",
+        "rows": {
+          "name": "rows",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "Rows": {
-          "name": "Rows",
-          "type": "jsonb[]",
+        "ExtraSpace": {
+          "name": "ExtraSpace",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
@@ -1338,7 +1434,34 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "Car_Details_rows_TransferCar_id_fk": {
+          "name": "Car_Details_rows_TransferCar_id_fk",
+          "tableFrom": "Car_Details",
+          "tableTo": "TransferCar",
+          "columnsFrom": [
+            "rows"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "Car_Details_ExtraSpace_ExtraSpace_id_fk": {
+          "name": "Car_Details_ExtraSpace_ExtraSpace_id_fk",
+          "tableFrom": "Car_Details",
+          "tableTo": "ExtraSpace",
+          "columnsFrom": [
+            "ExtraSpace"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },

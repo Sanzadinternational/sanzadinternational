@@ -1,3 +1,4 @@
+import { integer } from 'drizzle-orm/pg-core';
 import { defaults } from './../../node_modules/@types/pg/index.d';
 export interface CreateSupplierInput { 
   Company_name:string,
@@ -102,6 +103,19 @@ export interface SupplierPriceInput{
   //   Price: string;
   // }
   
+export interface CreateTransferCars{
+    Transfer_from:string,
+    Transfer_to:string,
+    Vice_versa:boolean,
+    Price:string
+}
+
+export interface CreateExtraSpace{
+    Roof_rock:boolean,
+    Trailer_hitech:boolean,
+    Extended_cargo_space:boolean
+}
+
 export interface CreateCartDetails{
   Vehicle_type:string,
   Vehicle_brand:string,
@@ -113,15 +127,8 @@ export interface CreateCartDetails{
   Passenger:string,
   Medium_bag:string,
   Small_bag:string, 
-  Extra_space:string,
-  Rows:[
-    {
-      Transfer_from: string;
-      Transfer_to: string;
-      Vice_versa: boolean;
-      Price: string;
-    }
-  ],
+  Extra_space:number,
+  Rows:number,
   // Transfer_from:string,
   // Transfer_to:string,
   // Vice_versa:{

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,VehicleModel,
+import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,CreateExtraSpace,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto'); 
 // import { v4 as uuidv4 } from 'uuid'; 
@@ -7,8 +7,8 @@ import { desc, eq } from "drizzle-orm";
 const { v4: uuidv4 } = require('uuid'); 
 // Make sure db is correctly configured and imported 
 import { db } from "../db/db"; 
-const { registerTable, One_WayTable,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,
-    supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
+const { registerTable, One_WayTable,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
+    supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable,CreateExtraSpaces} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
 import { generateOTP, sendOTPEmail } from "../utils";
@@ -684,7 +684,44 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
         next(error);
     } 
 }; 
-    
+
+export const CreateTransferCarDetails=async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const {Transfer_from,
+            Transfer_to,
+            Vice_versa,
+            Price}=<CreateTransferCars>req.body;
+ 
+         const TransferCar = await db.insert(CreateTransferCar)
+         .values({  Transfer_from,
+            Transfer_to,
+            Vice_versa,
+            Price })
+         .returning();
+         return res.status(200).json(TransferCar)
+    }catch(error){
+     next(error)
+    } 
+ }   
+     
+export const Extra_space = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const { Roof_rock,
+                 Trailer_hitech, 
+                 Extended_cargo_space }=<CreateExtraSpace>req.body;
+         const Extra_spaces=await db.insert(CreateExtraSpaces)
+         .values({
+            Roof_rock,
+                 Trailer_hitech,
+                 Extended_cargo_space
+         })
+         .returning();
+         return res.status(200).json(Extra_spaces);
+    }catch(error){
+        next(error)
+    }
+}
+
 export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
          const {  Vehicle_type,
@@ -696,14 +733,9 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Cargo_space,
             Passenger,
             Medium_bag,
-            Small_bag,
-            Extra_space,
-            Rows:[{
-                Transfer_from,
-                 Transfer_to,
-                 Vice_versa,
-                 Price,
-            }],
+            Small_bag, 
+            Extra_space, 
+            Rows,
             Half_day_ride_4hrs,
             Full_day_ride_8hrs,
             Vehicle_rent,
@@ -730,12 +762,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Medium_bag,
             Small_bag,
             Extra_space,
-            Rows:[{
-                Transfer_from,
-                 Transfer_to,
-                 Vice_versa,
-                 Price,
-            }],
+            Rows,
             // Transfer_from,
             // Transfer_to,
             // Vice_versa:Vice_versa || 'No',
@@ -759,6 +786,8 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
         next(error)
     }
 }
+
+
 
 export const GetCarDetails = async (req: Request, res: Response, next: NextFunction) => { 
     try { 
@@ -846,6 +875,20 @@ export const CreateVehicleBrand = async(req:Request,res:Response,next:NextFuncti
     }
 }
 
+export const GetVehicleBrand = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+          const result = db.select({
+            id:VehicleBrandTable.id,
+            Vehicle_brand:VehicleBrandTable.Vehicle_brand
+          })
+          .from(VehicleBrandTable)
+          return res.status(200).json(result);
+    }catch(error){
+        console.log(error);
+        next(error);
+    }
+}
+
 export const CreateServiceType = async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const {Service_type}=<ServiceType>req.body;
@@ -858,6 +901,22 @@ export const CreateServiceType = async(req:Request,res:Response,next:NextFunctio
     }
 }
 
+export const GetServiceType=async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const result = db.select({
+            id:ServiceTypeTable.id,
+            Service_type:ServiceTypeTable.Service_type
+         })
+         .from(ServiceTypeTable)
+         return res.status(200).send({
+            message:'Get all data',
+            data:result
+         })
+    }catch(error){
+    next(error)
+    }
+}
+
 export const CreateVehicleModel = async(req:Request,res:Response,next:NextFunction)=>{
     try{
           const { Vehicle_model }=<VehicleModel>req.body;
@@ -865,6 +924,22 @@ export const CreateVehicleModel = async(req:Request,res:Response,next:NextFuncti
           .values({Vehicle_model})
           .returning()
           return res.status(200).json(NewVehicleModel) 
+    }catch(error){
+        next(error)
+    }
+}
+
+export const GetVehicleModel = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const result = db.select({
+            id:VehicleModelTable.id,
+            Vehicle_model:VehicleModelTable.Vehicle_model
+        }) 
+        .from(VehicleModelTable) 
+        return res.status(200).send({
+            message:'Get all data of vehicle model',
+            data:result
+        })
     }catch(error){
         next(error)
     }

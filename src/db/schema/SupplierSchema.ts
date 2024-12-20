@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, text,timestamp, PgTable, date, jsonb } from 'drizzle-orm/pg-core'; 
+import { integer, pgTable, varchar, text,timestamp, date, jsonb, boolean } from 'drizzle-orm/pg-core'; 
 
 export const registerTable = pgTable('supplier', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(), 
@@ -137,8 +137,12 @@ export type supplier_otps = {
     Passenger:varchar({length:255}),
     Medium_bag:varchar({length:255}),
     Small_bag:varchar({length:255}),
-    Extra_space:varchar({length:255}),
-    Rows: jsonb().array(),
+    // Extra_space:varchar({length:255}),
+    // Rows: jsonb().array(),
+    Rows: integer("rows") // Foreign key to another table (assuming SupplierApidataTable.id)
+    .references(() => CreateTransferCar.id, { onDelete: "cascade" }),
+    Extra_space:integer("ExtraSpace")
+    .references(()=>CreateExtraSpaces.id,{ onDelete: "cascade" }),
     Half_day_ride_4hrs:varchar({length:255}),
     Full_day_ride_8hrs:varchar({length:255}),
     Vehicle_rent:varchar({length:255}),
@@ -151,7 +155,23 @@ export type supplier_otps = {
     Parking:varchar({length:255}),
     Currency:varchar({length:255}),
     Other:varchar({length:255})
+  }) 
+  
+  export const CreateExtraSpaces = pgTable('ExtraSpace',{
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+    Roof_rock:boolean(),
+    Trailer_hitech:boolean(),
+    Extended_cargo_space:boolean()
   })
+
+  export const CreateTransferCar=pgTable('TransferCar',{
+    id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+    Transfer_from:varchar({length:255}),
+    Transfer_to:varchar({length:255}),
+    Vice_versa:boolean(),
+    Price:varchar({length:255})
+  })
+  
 
   export const VehicleTypeTable=pgTable('Vehicle_types',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
