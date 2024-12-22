@@ -787,53 +787,18 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
     }
 }
 
+export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const CarDetailsId = req.params.id;
 
-
-export const GetCarDetails = async (req: Request, res: Response, next: NextFunction) => { 
-    try { 
-        // Fetch all suppliers from the database 
-        const result = await db 
-            .select({
-                id:SupplierCarDetailsTable.id,
-                Vehicle_type:SupplierCarDetailsTable.Vehicle_type,
-                Vehicle_brand:SupplierCarDetailsTable.Vehicle_brand,
-                Service_type:SupplierCarDetailsTable.Service_type,
-                Vehicle_model:SupplierCarDetailsTable.Vehicle_model,
-                Doors:SupplierCarDetailsTable.Doors,
-                Seats:SupplierCarDetailsTable.Seats, 
-                Cargo_space:SupplierCarDetailsTable.Cargo_space, 
-                Passenger:SupplierCarDetailsTable.Passenger, 
-                Medium_bag:SupplierCarDetailsTable.Medium_bag, 
-                Small_bag:SupplierCarDetailsTable.Small_bag,
-                ExtraSpace:CreateExtraSpaces.ExtraSpace
-                // Transfer_from:SupplierCarDetailsTable.Transfer_from, 
-                // Transfer_to:SupplierCarDetailsTable.Transfer_to,
-                // Vice_versa:SupplierCarDetailsTable.Vice_versa,
-                // Price:SupplierCarDetailsTable.Price,
-                // Half_day_ride_4hrs:SupplierCarDetailsTable.Half_day_ride_4hrs,
-                // Full_day_ride_8hrs:SupplierCarDetailsTable.Full_day_ride_8hrs,
-                // Vehicle_rent:SupplierCarDetailsTable.Vehicle_rent,
-                // Fuel:SupplierCarDetailsTable.Fuel, 
-                // Driver:SupplierCarDetailsTable.Driver,
-                // Parking_fee:SupplierCarDetailsTable.Parking_fee,
-                // Toll_or_taxes:SupplierCarDetailsTable.Toll_or_taxes,
-                // Driver_tips:SupplierCarDetailsTable.Driver_tips,
-                // Other:SupplierCarDetailsTable.Other
-            })
-            .from(SupplierCarDetailsTable)
-            .innerJoin(
-                CreateExtraSpaces, // Table to join with
-                eq(SupplierCarDetailsTable.Extrapace, CreateExtraSpaces.id) // Join condition
-            );
-
-
-        return res.status(200).json(result); 
-
-    } catch (error) {
-        // Pass the error to the error handler middleware
-        next(error);
+         const result= await db.select()
+         .from(SupplierCarDetailsTable) 
+         .where(eq(SupplierCarDetailsTable.id, CarDetailsId))
+         res.status(200).json(result)
+    }catch(error){
+        res.status(404).json({message:'Data is not found'})
     }
-};
+}
 
 export const CreateVehicleType=async(req:Request,res:Response,next:NextFunction)=>{
    try{
