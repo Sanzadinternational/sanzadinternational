@@ -1,4 +1,4 @@
-import { integer } from 'drizzle-orm/pg-core';
+import { date, integer } from 'drizzle-orm/pg-core';
 import { defaults } from './../../node_modules/@types/pg/index.d';
 export interface CreateSupplierInput { 
   Company_name:string,
@@ -106,7 +106,13 @@ export interface SupplierPriceInput{
 export interface CreateTransferCars{
     Transfer_from:string,
     Transfer_to:string,
-    Vice_versa:boolean,
+    Vice_versa:boolean, 
+    NightTime:{ 
+      type:string, 
+      default:"no",
+      enum:['yes','no']
+    },
+    NightTime_Price:string,
     Price:string
 }
 
@@ -116,77 +122,86 @@ export interface CreateExtraSpace{
     Extended_cargo_space:boolean
 }
 
-export interface CreateCartDetails{
-  Vehicle_type:string,
-  Vehicle_brand:string,
-  Service_type:string,
-  Vehicle_model:string,
+export interface CreateCartDetails{ 
+  VehicleType:number,
+  VehicleBrand:number,
+  ServiceType:number,
+  VehicleModel:number,
   Doors:string,
   Seats:string, 
-  Cargo_space:string, 
-  Passenger:string,
-  Medium_bag:string,
-  Small_bag:string, 
+  Cargo:string, 
+  City:string,
+  Passengers:string,
+  MediumBag:string,
+  SmallBag:string, 
+  TransferInfo:string,
   ExtraSpace:number,
+  DateRange:number,
   Rows:number,
-  // Transfer_from:string,
-  // Transfer_to:string,
-  // Vice_versa:{
-  //   type:string,
-  //   default:'No',
-  //   enum:['Yes','No',]
-  // },
-  // Price:string,
-  Half_day_ride_4hrs:{
+  HalfDayRide:{
     type:string,
     default:"no",
     enum:['yes','no']
   },
-  Full_day_ride_8hrs:{
+  FullDayRide:{ 
     type:string,
     default:"no",
     enum:['yes','no']
   },
-  Vehicle_rent:string,
+  HalfFullNightTime:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  HalfFullNightTimePrice:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  VehicleRent:string,
   Fuel:{
     type:string,
     default:"no",
     enum:['yes','no']
   },
   Driver:string,
-  Parking_fee:{
+  ParkingFee:{
     type:string,
     default:"no",
     enum:['yes','no']
   },
-  Toll_taxes:{
+  TollTax:{
     type:string,
     default:"no",
     enum:['yes','no']
   },
-  Driver_tips:{
+  Tip:{
     type:string,
     default:"no",
     enum:['yes','no']
   },
-  Toll_fee:string,
+  TollFee:string,
   Parking:string,
   Currency:string,
-  Other:string
-}
+  Others:string
+} 
 
+export interface DateRanges{
+  from:Date,
+  to:Date
+}
 export interface VehicleType{
-  Vehicle_type:string
+  VehicleType:string
 }
 
 export interface VehicleBrand{
-  Vehicle_brand:string
+  VehicleBrand:string
 }
 
 export interface ServiceType{
-  Service_type:string
+  ServiceType:string
 }
 
 export interface VehicleModel{
-  Vehicle_model:string
+  VehicleModel:string
 }

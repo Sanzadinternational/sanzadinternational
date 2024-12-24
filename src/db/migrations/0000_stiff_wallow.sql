@@ -107,6 +107,12 @@ CREATE TABLE IF NOT EXISTS "supplier_details" (
 	"Other" varchar(255)
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "DateRange" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "DateRange_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"from" date,
+	"to" date
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ExtraSpace" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "ExtraSpace_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Roof_rock" boolean,
@@ -119,6 +125,8 @@ CREATE TABLE IF NOT EXISTS "TransferCar" (
 	"Transfer_from" varchar(255),
 	"Transfer_to" varchar(255),
 	"Vice_versa" boolean,
+	"NightTime" varchar(255),
+	"NightTime_Price" varchar(255),
 	"Price" varchar(255)
 );
 --> statement-breakpoint
@@ -188,9 +196,9 @@ CREATE TABLE IF NOT EXISTS "Roundtrip_Service_Price_Details" (
 	"new_location" varchar(255) NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Service_type" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Service_type_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Service_type" varchar(255)
+CREATE TABLE IF NOT EXISTS "ServiceType" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "ServiceType_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"ServiceType" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
@@ -203,30 +211,35 @@ CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Car_Details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Vehicle_type" varchar(255),
-	"Vehicle_brand" varchar(255),
-	"Service_type" varchar(255),
-	"Vehicle_model" varchar(255),
+	"VehicleType" integer,
+	"VehicleBrand" integer,
+	"VehicleService" integer,
+	"VehicleModel" integer,
 	"Doors" varchar(255),
 	"Seats" varchar(255),
-	"Cargo_space" varchar(255),
-	"Passenger" varchar(255),
-	"Medium_bag" varchar(255),
-	"Small_bag" varchar(255),
+	"Cargo" varchar(255),
+	"City" varchar(255),
+	"Passengers" varchar(255),
+	"MediumBag" varchar(255),
+	"SmallBag" varchar(255),
+	"TransferInfo" varchar(255),
+	"DateRange" integer,
 	"rows" integer,
 	"ExtraSpace" integer,
-	"Half_day_ride_4hrs" varchar(255),
-	"Full_day_ride_8hrs" varchar(255),
-	"Vehicle_rent" varchar(255),
+	"HalfDayRide" varchar(255),
+	"FullDayRide" varchar(255),
+	"HalfFullNightTime" varchar(255),
+	"HalfFullNightTimePrice" varchar(255),
+	"VehicleRent" varchar(255),
 	"Fuel" varchar(255),
 	"Driver" varchar(255),
-	"Parking_fee" varchar(255),
-	"Toll_taxes" varchar(255),
-	"Driver_tips" varchar(255),
-	"Toll_fee" varchar(255),
+	"ParkingFee" varchar(255),
+	"TollTax" varchar(255),
+	"Tip" varchar(255),
+	"TollFee" varchar(255),
 	"Parking" varchar(255),
 	"Currency" varchar(255),
-	"Other" varchar(255)
+	"Others" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transport_nodes" (
@@ -240,19 +253,19 @@ CREATE TABLE IF NOT EXISTS "transport_nodes" (
 	"airport_or_establishment" varchar(255)
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Vehicle_brand" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Vehicle_brand_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Vehicle_brand" varchar(255)
+CREATE TABLE IF NOT EXISTS "VehicleBrand" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "VehicleBrand_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"VehicleBrand" varchar(255)
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Vehicle_model" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Vehicle_model_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Vehicle_model" varchar(255)
+CREATE TABLE IF NOT EXISTS "VehicleModel" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "VehicleModel_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"VehicleModel" varchar(255)
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Vehicle_types" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Vehicle_types_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Vehicle_type" varchar(255)
+CREATE TABLE IF NOT EXISTS "VehicleType" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "VehicleType_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"VehicleType" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supplier" (
@@ -287,6 +300,36 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Id_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_VehicleType_VehicleType_id_fk" FOREIGN KEY ("VehicleType") REFERENCES "public"."VehicleType"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_VehicleBrand_VehicleBrand_id_fk" FOREIGN KEY ("VehicleBrand") REFERENCES "public"."VehicleBrand"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_VehicleService_ServiceType_id_fk" FOREIGN KEY ("VehicleService") REFERENCES "public"."ServiceType"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_VehicleModel_VehicleModel_id_fk" FOREIGN KEY ("VehicleModel") REFERENCES "public"."VehicleModel"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_DateRange_DateRange_id_fk" FOREIGN KEY ("DateRange") REFERENCES "public"."DateRange"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

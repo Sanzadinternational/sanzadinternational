@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,CreateExtraSpace,
+import { CreateSupplierInput,VehicleType,DateRanges,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,CreateExtraSpace,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto'); 
 // import { v4 as uuidv4 } from 'uuid'; 
@@ -7,7 +7,7 @@ import { desc, eq } from "drizzle-orm";
 const { v4: uuidv4 } = require('uuid'); 
 // Make sure db is correctly configured and imported 
 import { db } from "../db/db"; 
-const { registerTable, One_WayTable,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
+const { registerTable, One_WayTable,CreateDateRanges,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
     supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable,CreateExtraSpaces} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
@@ -720,65 +720,88 @@ export const Extra_space = async(req:Request,res:Response,next:NextFunction)=>{
     }catch(error){
         next(error)
     }
-}
+}      
 
+export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{ 
+    try{ 
+          const result = await db.select({ 
+            id:CreateExtraSpaces.id,
+            Roof_rock:CreateExtraSpaces.Roof_rock,
+            Trailer_hitech:CreateExtraSpaces.Trailer_hitech, 
+            Extended_cargo_space:CreateExtraSpaces.Extended_cargo_space
+          }) 
+          .from(CreateExtraSpaces)
+          res.status(200).json(result)
+         
+    }catch(error){ 
+        res.status(404).json({message:"Data is not found"}) 
+    }
+} 
+        
 export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
-         const {  Vehicle_type,
-            Vehicle_brand,
-            Service_type,
-            Vehicle_model,
+         const {  VehicleType, 
+            VehicleBrand,
+            ServiceType,
+            VehicleModel,
             Doors,
             Seats, 
-            Cargo_space,
-            Passenger,
-            Medium_bag,
-            Small_bag, 
+            Cargo,
+            City,
+            Passengers,
+            MediumBag,
+            SmallBag, 
+            TransferInfo, 
             ExtraSpace, 
+            DateRange,
             Rows,
-            Half_day_ride_4hrs,
-            Full_day_ride_8hrs,
-            Vehicle_rent,
+            HalfDayRide,
+            FullDayRide,
+            HalfFullNightTime,
+            HalfFullNightTimePrice,
+            VehicleRent,
             Fuel,
             Driver,
-            Parking_fee,
-            Toll_taxes,
-            Toll_fee,
+            ParkingFee,
+            TollTax,
+            TollFee,
             Parking,
             Currency,
-            Driver_tips,
-            Other} =<CreateCartDetails>req.body; 
+            Tip,
+            Others
+        } =<CreateCartDetails>req.body; 
 
             const CartDetails = await db.insert(SupplierCarDetailsTable)
             .values({
-                Vehicle_type,
-            Vehicle_brand,
-            Service_type,
-            Vehicle_model,
+            VehicleType,
+            VehicleBrand,
+            ServiceType,
+            VehicleModel,
             Doors,
             Seats, 
-            Cargo_space,
-            Passenger,
-            Medium_bag,
-            Small_bag,
-            ExtraSpace,
+            Cargo,
+            City,
+            Passengers,
+            MediumBag,
+            SmallBag, 
+            TransferInfo, 
+            ExtraSpace, 
+            DateRange,
             Rows,
-            // Transfer_from,
-            // Transfer_to,
-            // Vice_versa:Vice_versa || 'No',
-            // Price, 
-            Half_day_ride_4hrs:Half_day_ride_4hrs || 'no',
-            Full_day_ride_8hrs:Full_day_ride_8hrs || 'no',
-            Vehicle_rent,
-            Fuel:Fuel || 'no',
+            HalfDayRide:HalfDayRide || 'no',
+            FullDayRide:FullDayRide || 'no',
+            HalfFullNightTime:HalfFullNightTime || 'no',
+            HalfFullNightTimePrice:HalfFullNightTimePrice || 'no',
+            VehicleRent,
+            Fuel, 
             Driver,
-            Parking_fee:Parking_fee || 'no',
-            Toll_taxes:Toll_taxes || 'no',
-            Driver_tips:Driver_tips || 'no',
-            Toll_fee,
+            ParkingFee:ParkingFee || 'no',
+            TollTax:TollTax || 'no',
+            TollFee,
             Parking,
             Currency,
-            Other
+            Tip:Tip || 'no',
+            Others
             })
             .returning(); 
             return res.status(200).json(CartDetails);
@@ -800,12 +823,40 @@ export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>
     }
 }
 
+export const CreateDateRange = async(req:Request,res:Response,next:NextFunction)=>{
+   try{
+    const {
+        from,
+        to
+    } = <DateRanges>req.body;
+    const DateRan=await db.insert(CreateDateRanges) 
+    .values({from,to})
+    .returning()
+     return res.status(200).json(DateRan) 
+   }catch(error){ 
+    next(error) 
+   }
+   } 
+
+export const GetDateRange= async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+          const result= await db.select({
+            id:CreateDateRanges.id,
+            from:CreateDateRanges.from,
+            to:CreateDateRanges.to
+          })
+          .from(CreateDateRanges) 
+          res.status(200).json(result) 
+    }catch(error){
+        res.status(404).json({message:'Data is not found'})
+    }
+}
+
 export const CreateVehicleType=async(req:Request,res:Response,next:NextFunction)=>{
    try{
-        const {Vehicle_type}=<VehicleType>req.body;
-
-        const NewVehicleType = await db.insert(VehicleTypeTable)
-        .values({Vehicle_type })
+        const {VehicleType}=<VehicleType>req.body; 
+        const NewVehicleType = await db.insert(VehicleTypeTable) 
+        .values({VehicleType }) 
         .returning();
         return res.status(200).json(NewVehicleType)
    }catch(error){
@@ -817,7 +868,7 @@ export const GetVehicleType = async (req: Request, res: Response, next: NextFunc
     try {
         const result = await db.select({
             id: VehicleTypeTable.id,
-            Vehicle_type: VehicleTypeTable.Vehicle_type,
+            VehicleType: VehicleTypeTable.VehicleType,
         }).from(VehicleTypeTable);
 
         // Standardized response
@@ -832,39 +883,41 @@ export const GetVehicleType = async (req: Request, res: Response, next: NextFunc
 };
 
 
-export const CreateVehicleBrand = async(req:Request,res:Response,next:NextFunction)=>{
+export const CreateVehicleBrand = async(req:Request,res:Response,next:NextFunction)=>{ 
     try{
-        const {Vehicle_brand}=<VehicleBrand>req.body;
+        const {VehicleBrand}=<VehicleBrand>req.body;
 
-        const NewVehicleBrand = await db.insert(VehicleBrandTable)
-        .values({Vehicle_brand})
+        const NewVehicleBrand = await db.insert(VehicleBrandTable) 
+        .values({VehicleBrand})
         .returning()
-        return res.status(200).json(NewVehicleBrand);
+        return res.status(200).json(NewVehicleBrand); 
     }catch(error){
         next(error)
     }
 }
 
-export const GetVehicleBrand = async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-          const result = db.select({
-            id:VehicleBrandTable.id,
-            Vehicle_brand:VehicleBrandTable.Vehicle_brand
-          })
-          .from(VehicleBrandTable)
-          return res.status(200).json(result);
-    }catch(error){
-        console.log(error);
-        next(error);
+export const GetVehicleBrand = async (req: Request, res: Response, next: NextFunction) => {
+    try { 
+      const result = await db
+        .select({
+          id: VehicleBrandTable.id, 
+          VehicleBrand: VehicleBrandTable.VehicleBrand 
+        })
+        .from(VehicleBrandTable);
+  
+      return res.status(200).json(result); // Send the fetched data as a JSON response
+    } catch (error) {
+      console.error("Error fetching vehicle brands:", error); // Better error logging
+      next(error); // Pass the error to the error-handling middleware
     }
-}
+  };
 
 export const CreateServiceType = async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const {Service_type}=<ServiceType>req.body;
+        const {ServiceType}=<ServiceType>req.body;
         const NewServiceType = await db.insert(ServiceTypeTable)
-        .values({Service_type}) 
-        .returning()
+        .values({ServiceType}) 
+        .returning() 
         return res.status(200).json(NewServiceType) 
     }catch(error){
         next(error) 
@@ -873,10 +926,10 @@ export const CreateServiceType = async(req:Request,res:Response,next:NextFunctio
 
 export const GetServiceType=async(req:Request,res:Response,next:NextFunction)=>{
     try{
-         const result = db.select({
+         const result = await db.select({
             id:ServiceTypeTable.id,
-            Service_type:ServiceTypeTable.Service_type
-         })
+            ServiceType:ServiceTypeTable.ServiceType 
+         }) 
          .from(ServiceTypeTable)
          return res.status(200).send({
             message:'Get all data',
@@ -889,10 +942,10 @@ export const GetServiceType=async(req:Request,res:Response,next:NextFunction)=>{
 
 export const CreateVehicleModel = async(req:Request,res:Response,next:NextFunction)=>{
     try{
-          const { Vehicle_model }=<VehicleModel>req.body;
+          const { VehicleModel }=<VehicleModel>req.body;
           const NewVehicleModel= await db.insert(VehicleModelTable) 
-          .values({Vehicle_model})
-          .returning()
+          .values({VehicleModel}) 
+          .returning() 
           return res.status(200).json(NewVehicleModel) 
     }catch(error){
         next(error)
@@ -901,9 +954,9 @@ export const CreateVehicleModel = async(req:Request,res:Response,next:NextFuncti
 
 export const GetVehicleModel = async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const result = db.select({
+        const result = await db.select({
             id:VehicleModelTable.id,
-            Vehicle_model:VehicleModelTable.Vehicle_model
+            VehicleModel:VehicleModelTable.VehicleModel
         }) 
         .from(VehicleModelTable) 
         return res.status(200).send({

@@ -1,5 +1,5 @@
 {
-  "id": "a0387653-291b-4259-8f8f-9ceff6731b61",
+  "id": "9b5bc6a3-6373-4e1f-baa5-e971a450bbc9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -668,6 +668,45 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.DateRange": {
+      "name": "DateRange",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "DateRange_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "from": {
+          "name": "from",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "to": {
+          "name": "to",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.ExtraSpace": {
       "name": "ExtraSpace",
       "schema": "",
@@ -749,6 +788,18 @@
         "Vice_versa": {
           "name": "Vice_versa",
           "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "NightTime": {
+          "name": "NightTime",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "NightTime_Price": {
+          "name": "NightTime_Price",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
@@ -1169,8 +1220,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.Service_type": {
-      "name": "Service_type",
+    "public.ServiceType": {
+      "name": "ServiceType",
       "schema": "",
       "columns": {
         "id": {
@@ -1180,7 +1231,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "Service_type_id_seq",
+            "name": "ServiceType_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -1190,8 +1241,8 @@
             "cycle": false
           }
         },
-        "Service_type": {
-          "name": "Service_type",
+        "ServiceType": {
+          "name": "ServiceType",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -1288,27 +1339,27 @@
             "cycle": false
           }
         },
-        "Vehicle_type": {
-          "name": "Vehicle_type",
-          "type": "varchar(255)",
+        "VehicleType": {
+          "name": "VehicleType",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "Vehicle_brand": {
-          "name": "Vehicle_brand",
-          "type": "varchar(255)",
+        "VehicleBrand": {
+          "name": "VehicleBrand",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "Service_type": {
-          "name": "Service_type",
-          "type": "varchar(255)",
+        "VehicleService": {
+          "name": "VehicleService",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "Vehicle_model": {
-          "name": "Vehicle_model",
-          "type": "varchar(255)",
+        "VehicleModel": {
+          "name": "VehicleModel",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
@@ -1324,27 +1375,45 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Cargo_space": {
-          "name": "Cargo_space",
+        "Cargo": {
+          "name": "Cargo",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "Passenger": {
-          "name": "Passenger",
+        "City": {
+          "name": "City",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "Medium_bag": {
-          "name": "Medium_bag",
+        "Passengers": {
+          "name": "Passengers",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "Small_bag": {
-          "name": "Small_bag",
+        "MediumBag": {
+          "name": "MediumBag",
           "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "SmallBag": {
+          "name": "SmallBag",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "TransferInfo": {
+          "name": "TransferInfo",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "DateRange": {
+          "name": "DateRange",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
@@ -1360,20 +1429,32 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Half_day_ride_4hrs": {
-          "name": "Half_day_ride_4hrs",
+        "HalfDayRide": {
+          "name": "HalfDayRide",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "Full_day_ride_8hrs": {
-          "name": "Full_day_ride_8hrs",
+        "FullDayRide": {
+          "name": "FullDayRide",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "Vehicle_rent": {
-          "name": "Vehicle_rent",
+        "HalfFullNightTime": {
+          "name": "HalfFullNightTime",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "HalfFullNightTimePrice": {
+          "name": "HalfFullNightTimePrice",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "VehicleRent": {
+          "name": "VehicleRent",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -1390,26 +1471,26 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Parking_fee": {
-          "name": "Parking_fee",
+        "ParkingFee": {
+          "name": "ParkingFee",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "Toll_taxes": {
-          "name": "Toll_taxes",
+        "TollTax": {
+          "name": "TollTax",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "Driver_tips": {
-          "name": "Driver_tips",
+        "Tip": {
+          "name": "Tip",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "Toll_fee": {
-          "name": "Toll_fee",
+        "TollFee": {
+          "name": "TollFee",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -1426,8 +1507,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Other": {
-          "name": "Other",
+        "Others": {
+          "name": "Others",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -1435,6 +1516,71 @@
       },
       "indexes": {},
       "foreignKeys": {
+        "Car_Details_VehicleType_VehicleType_id_fk": {
+          "name": "Car_Details_VehicleType_VehicleType_id_fk",
+          "tableFrom": "Car_Details",
+          "tableTo": "VehicleType",
+          "columnsFrom": [
+            "VehicleType"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "Car_Details_VehicleBrand_VehicleBrand_id_fk": {
+          "name": "Car_Details_VehicleBrand_VehicleBrand_id_fk",
+          "tableFrom": "Car_Details",
+          "tableTo": "VehicleBrand",
+          "columnsFrom": [
+            "VehicleBrand"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "Car_Details_VehicleService_ServiceType_id_fk": {
+          "name": "Car_Details_VehicleService_ServiceType_id_fk",
+          "tableFrom": "Car_Details",
+          "tableTo": "ServiceType",
+          "columnsFrom": [
+            "VehicleService"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "Car_Details_VehicleModel_VehicleModel_id_fk": {
+          "name": "Car_Details_VehicleModel_VehicleModel_id_fk",
+          "tableFrom": "Car_Details",
+          "tableTo": "VehicleModel",
+          "columnsFrom": [
+            "VehicleModel"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "Car_Details_DateRange_DateRange_id_fk": {
+          "name": "Car_Details_DateRange_DateRange_id_fk",
+          "tableFrom": "Car_Details",
+          "tableTo": "DateRange",
+          "columnsFrom": [
+            "DateRange"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
         "Car_Details_rows_TransferCar_id_fk": {
           "name": "Car_Details_rows_TransferCar_id_fk",
           "tableFrom": "Car_Details",
@@ -1534,8 +1680,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.Vehicle_brand": {
-      "name": "Vehicle_brand",
+    "public.VehicleBrand": {
+      "name": "VehicleBrand",
       "schema": "",
       "columns": {
         "id": {
@@ -1545,7 +1691,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "Vehicle_brand_id_seq",
+            "name": "VehicleBrand_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -1555,8 +1701,8 @@
             "cycle": false
           }
         },
-        "Vehicle_brand": {
-          "name": "Vehicle_brand",
+        "VehicleBrand": {
+          "name": "VehicleBrand",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -1567,8 +1713,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.Vehicle_model": {
-      "name": "Vehicle_model",
+    "public.VehicleModel": {
+      "name": "VehicleModel",
       "schema": "",
       "columns": {
         "id": {
@@ -1578,7 +1724,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "Vehicle_model_id_seq",
+            "name": "VehicleModel_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -1588,8 +1734,8 @@
             "cycle": false
           }
         },
-        "Vehicle_model": {
-          "name": "Vehicle_model",
+        "VehicleModel": {
+          "name": "VehicleModel",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -1600,8 +1746,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.Vehicle_types": {
-      "name": "Vehicle_types",
+    "public.VehicleType": {
+      "name": "VehicleType",
       "schema": "",
       "columns": {
         "id": {
@@ -1611,7 +1757,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "Vehicle_types_id_seq",
+            "name": "VehicleType_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -1621,8 +1767,8 @@
             "cycle": false
           }
         },
-        "Vehicle_type": {
-          "name": "Vehicle_type",
+        "VehicleType": {
+          "name": "VehicleType",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

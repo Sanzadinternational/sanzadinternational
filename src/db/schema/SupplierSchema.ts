@@ -124,39 +124,57 @@ export type supplier_otps = {
     Api_Id_Foreign: integer('Api_Id_Foreign') 
       .references(() => registerTable.id), // References the `id` column in `registerTable`
   }); 
- 
-  export const SupplierCarDetailsTable = pgTable('Car_Details',{
+            
+  export const SupplierCarDetailsTable = pgTable('Car_Details',{ 
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-    Vehicle_type:varchar({length:255}),
-    Vehicle_brand:varchar({length:255}),
-    Service_type:varchar({length:255}),
-    Vehicle_model:varchar({length:255}),
+    VehicleType: integer('VehicleType')
+    .references(() => VehicleTypeTable.id, { onDelete: "cascade" }), 
+    VehicleBrand:integer('VehicleBrand')
+    .references(() => VehicleBrandTable.id, { onDelete: "cascade" }), 
+    ServiceType:integer('VehicleService')
+    .references(() => ServiceTypeTable.id, { onDelete: "cascade" }), 
+    VehicleModel:integer('VehicleModel')
+    .references(() => VehicleModelTable.id, { onDelete: "cascade" }), 
     Doors:varchar({length:255}),
     Seats:varchar({length:255}), 
-    Cargo_space:varchar({length:255}),
-    Passenger:varchar({length:255}),
-    Medium_bag:varchar({length:255}),
-    Small_bag:varchar({length:255}),
+    Cargo:varchar({length:255}),
+    City:varchar({length:255}),
+    Passengers:varchar({length:255}), 
+    MediumBag:varchar({length:255}),
+    SmallBag:varchar({length:255}),
+    TransferInfo:varchar({length:255}),
     // Extra_space:varchar({length:255}),
     // Rows: jsonb().array(),
+    DateRange:integer("DateRange")
+    .references(()=>CreateDateRanges.id, { onDelete: "cascade" }),
     Rows: integer("rows") // Foreign key to another table (assuming SupplierApidataTable.id)
     .references(() => CreateTransferCar.id, { onDelete: "cascade" }),
     ExtraSpace:integer("ExtraSpace")
-    .references(()=>CreateExtraSpaces.id,{ onDelete: "cascade" }),
-    Half_day_ride_4hrs:varchar({length:255}),
-    Full_day_ride_8hrs:varchar({length:255}),
-    Vehicle_rent:varchar({length:255}),
+    .references(()=>CreateExtraSpaces.id,{ onDelete: "cascade" }), 
+    HalfDayRide:varchar({length:255}),
+    FullDayRide:varchar({length:255}),
+    HalfFullNightTime:varchar({length:255}),
+    HalfFullNightTimePrice:varchar({length:255}), 
+    VehicleRent:varchar({length:255}),
     Fuel:varchar({length:255}), 
     Driver:varchar({length:255}),
-    Parking_fee:varchar({length:255}),
-    Toll_taxes:varchar({length:255}),
-    Driver_tips:varchar({length:255}),
-    Toll_fee:varchar({length:255}),
+    ParkingFee:varchar({length:255}), 
+    TollTax:varchar({length:255}),
+    Tip:varchar({length:255}),
+    TollFee:varchar({length:255}),
     Parking:varchar({length:255}),
     Currency:varchar({length:255}),
-    Other:varchar({length:255})
+    Others:varchar({length:255}) 
   }) 
   
+  export const CreateDateRanges = pgTable('DateRange', {
+    id: integer('id')
+      .primaryKey()
+      .generatedAlwaysAsIdentity(), // Auto-incrementing primary key
+    from: date('from'), // "from" column with a DATE type
+    to: date('to')      // "to" column with a DATE type
+  });
+
   export const CreateExtraSpaces = pgTable('ExtraSpace',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
     Roof_rock:boolean(),
@@ -169,27 +187,29 @@ export type supplier_otps = {
     Transfer_from:varchar({length:255}),
     Transfer_to:varchar({length:255}),
     Vice_versa:boolean(),
+    NightTime:varchar({length:255}), 
+    NightTime_Price:varchar({length:255}), 
     Price:varchar({length:255})
   })
   
 
-  export const VehicleTypeTable=pgTable('Vehicle_types',{
+  export const VehicleTypeTable=pgTable('VehicleType',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-    Vehicle_type:varchar({length:255})
+    VehicleType:varchar({length:255})
   })
 
-  export const VehicleBrandTable=pgTable('Vehicle_brand',{
+  export const VehicleBrandTable=pgTable('VehicleBrand',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-    Vehicle_brand:varchar({length:255})
+    VehicleBrand:varchar({length:255})
   })
 
-export const ServiceTypeTable=pgTable('Service_type',{
+export const ServiceTypeTable=pgTable('ServiceType',{
   id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-  Service_type:varchar({length:255})
+  ServiceType:varchar({length:255})
 }) 
 
-export const VehicleModelTable=pgTable('Vehicle_model',{
+export const VehicleModelTable=pgTable('VehicleModel',{
   id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-  Vehicle_model:varchar({length:255})
-})
+  VehicleModel:varchar({length:255})
+}) 
 
