@@ -94,7 +94,7 @@ export interface SupplierPriceInput{
     Api:string,
     Api_User:string,
     Api_Password:string,
-    Api_Id_Foreign:number
+    Api_Id_Foreign:number 
   } 
   // export interface RowDetails {
   //   Transfer_from: string;
@@ -113,31 +113,34 @@ export interface CreateTransferCars{
       enum:['yes','no']
     },
     NightTime_Price:string,
-    Price:string
+    Price:string,
+    SupplierCarDetailsforeign:number
 }
 
 export interface CreateExtraSpace{
     Roof_rock:boolean,
     Trailer_hitech:boolean,
-    Extended_cargo_space:boolean
+    Extended_cargo_space:boolean,
+    SupplierCarDetailsforeign:number
 }
 
 export interface CreateCartDetails{ 
-  VehicleType:number,
-  VehicleBrand:number,
-  ServiceType:number,
-  VehicleModel:number,
+  VehicleType:string,
+  VehicleBrand:string,
+  ServiceType:string,
+  VehicleModel:string, 
   Doors:string,
   Seats:string, 
   Cargo:string, 
   City:string,
+  Country:string,
   Passengers:string,
   MediumBag:string,
   SmallBag:string, 
   TransferInfo:string,
   ExtraSpace:number,
   DateRange:number,
-  Rows:number,
+  Rows:string,
   HalfDayRide:{
     type:string,
     default:"no",

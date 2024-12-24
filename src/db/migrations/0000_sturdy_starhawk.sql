@@ -127,7 +127,8 @@ CREATE TABLE IF NOT EXISTS "TransferCar" (
 	"Vice_versa" boolean,
 	"NightTime" varchar(255),
 	"NightTime_Price" varchar(255),
-	"Price" varchar(255)
+	"Price" varchar(255),
+	"SupplierCarDetailsTable" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "One_Way_Service_Details" (
@@ -211,20 +212,21 @@ CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Car_Details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"VehicleType" integer,
-	"VehicleBrand" integer,
-	"VehicleService" integer,
-	"VehicleModel" integer,
+	"VehicleType" varchar(255),
+	"VehicleBrand" varchar(255),
+	"ServiceType" varchar(255),
+	"VehicleModel" varchar(255),
 	"Doors" varchar(255),
 	"Seats" varchar(255),
 	"Cargo" varchar(255),
 	"City" varchar(255),
+	"Country" varchar(255),
 	"Passengers" varchar(255),
 	"MediumBag" varchar(255),
 	"SmallBag" varchar(255),
 	"TransferInfo" varchar(255),
 	"DateRange" integer,
-	"rows" integer,
+	"Rows" varchar(255),
 	"ExtraSpace" integer,
 	"HalfDayRide" varchar(255),
 	"FullDayRide" varchar(255),
@@ -299,43 +301,19 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "TransferCar" ADD CONSTRAINT "TransferCar_SupplierCarDetailsTable_Car_Details_id_fk" FOREIGN KEY ("SupplierCarDetailsTable") REFERENCES "public"."Car_Details"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Id_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_VehicleType_VehicleType_id_fk" FOREIGN KEY ("VehicleType") REFERENCES "public"."VehicleType"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_VehicleBrand_VehicleBrand_id_fk" FOREIGN KEY ("VehicleBrand") REFERENCES "public"."VehicleBrand"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_VehicleService_ServiceType_id_fk" FOREIGN KEY ("VehicleService") REFERENCES "public"."ServiceType"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_VehicleModel_VehicleModel_id_fk" FOREIGN KEY ("VehicleModel") REFERENCES "public"."VehicleModel"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_DateRange_DateRange_id_fk" FOREIGN KEY ("DateRange") REFERENCES "public"."DateRange"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "Car_Details" ADD CONSTRAINT "Car_Details_rows_TransferCar_id_fk" FOREIGN KEY ("rows") REFERENCES "public"."TransferCar"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

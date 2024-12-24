@@ -685,25 +685,50 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
     } 
 }; 
 
-export const CreateTransferCarDetails=async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-         const {Transfer_from,
-            Transfer_to,
-            Vice_versa,
-            Price}=<CreateTransferCars>req.body;
+// export const CreateTransferCarDetails=async(req:Request,res:Response,next:NextFunction)=>{ 
+    // try{
+    //      const {Transfer_from,
+    //         Transfer_to,
+    //         Vice_versa,
+    //         Price,
+    //         SupplierCarDetailsforeign
+    //     }=<CreateTransferCars>req.body;
  
-         const TransferCar = await db.insert(CreateTransferCar)
-         .values({  Transfer_from,
-            Transfer_to,
-            Vice_versa,
-            Price })
-         .returning();
-         return res.status(200).json(TransferCar)
-    }catch(error){
-     next(error)
-    } 
- }   
-     
+    //      const TransferCar = await db.insert(CreateTransferCar)
+    //      .values({  Transfer_from,
+    //         Transfer_to,
+    //         Vice_versa,
+    //         Price,
+    //         SupplierCarDetailsforeign
+    //      }) 
+    //      .returning();
+    //      return res.status(200).json(TransferCar)
+    // }catch(error){
+    //  next(error)
+    // } 
+
+//  }   
+ export const CreateTransferCarDetails = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const transferCarDetails = req.body as CreateTransferCars[]; // Expecting an array of transfer car details
+  
+      // Map the input data to create the structure for insertion
+      const valuesToInsert = transferCarDetails.map((detail) => ({
+        Transfer_from: detail.Transfer_from,
+        Transfer_to: detail.Transfer_to,
+        Vice_versa: detail.Vice_versa,
+        Price: detail.Price,
+        SupplierCarDetailsforeign: detail.SupplierCarDetailsforeign
+      }));
+  
+      // Insert all mapped values into the database
+      const TransferCar = await db.insert(CreateTransferCar).values(valuesToInsert).returning();
+  
+      return res.status(200).json(TransferCar); // Return the inserted rows
+    } catch (error) {
+      next(error); // Pass the error to the error-handling middleware
+    }
+  };
 export const Extra_space = async(req:Request,res:Response,next:NextFunction)=>{
     try{
          const { Roof_rock,
@@ -748,6 +773,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Seats, 
             Cargo,
             City,
+            Country,
             Passengers,
             MediumBag,
             SmallBag, 
@@ -781,6 +807,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Seats, 
             Cargo,
             City,
+            Country,
             Passengers,
             MediumBag,
             SmallBag, 

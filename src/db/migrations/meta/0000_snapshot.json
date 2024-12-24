@@ -1,5 +1,5 @@
 {
-  "id": "9b5bc6a3-6373-4e1f-baa5-e971a450bbc9",
+  "id": "34cbc6a3-b407-4e46-8eb9-a00a6d1b174f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -808,10 +808,30 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+        },
+        "SupplierCarDetailsTable": {
+          "name": "SupplierCarDetailsTable",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "TransferCar_SupplierCarDetailsTable_Car_Details_id_fk": {
+          "name": "TransferCar_SupplierCarDetailsTable_Car_Details_id_fk",
+          "tableFrom": "TransferCar",
+          "tableTo": "Car_Details",
+          "columnsFrom": [
+            "SupplierCarDetailsTable"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -1341,25 +1361,25 @@
         },
         "VehicleType": {
           "name": "VehicleType",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
         "VehicleBrand": {
           "name": "VehicleBrand",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "VehicleService": {
-          "name": "VehicleService",
-          "type": "integer",
+        "ServiceType": {
+          "name": "ServiceType",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
         "VehicleModel": {
           "name": "VehicleModel",
-          "type": "integer",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
@@ -1383,6 +1403,12 @@
         },
         "City": {
           "name": "City",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Country": {
+          "name": "Country",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -1417,9 +1443,9 @@
           "primaryKey": false,
           "notNull": false
         },
-        "rows": {
-          "name": "rows",
-          "type": "integer",
+        "Rows": {
+          "name": "Rows",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
@@ -1516,77 +1542,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "Car_Details_VehicleType_VehicleType_id_fk": {
-          "name": "Car_Details_VehicleType_VehicleType_id_fk",
-          "tableFrom": "Car_Details",
-          "tableTo": "VehicleType",
-          "columnsFrom": [
-            "VehicleType"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "Car_Details_VehicleBrand_VehicleBrand_id_fk": {
-          "name": "Car_Details_VehicleBrand_VehicleBrand_id_fk",
-          "tableFrom": "Car_Details",
-          "tableTo": "VehicleBrand",
-          "columnsFrom": [
-            "VehicleBrand"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "Car_Details_VehicleService_ServiceType_id_fk": {
-          "name": "Car_Details_VehicleService_ServiceType_id_fk",
-          "tableFrom": "Car_Details",
-          "tableTo": "ServiceType",
-          "columnsFrom": [
-            "VehicleService"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "Car_Details_VehicleModel_VehicleModel_id_fk": {
-          "name": "Car_Details_VehicleModel_VehicleModel_id_fk",
-          "tableFrom": "Car_Details",
-          "tableTo": "VehicleModel",
-          "columnsFrom": [
-            "VehicleModel"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
         "Car_Details_DateRange_DateRange_id_fk": {
           "name": "Car_Details_DateRange_DateRange_id_fk",
           "tableFrom": "Car_Details",
           "tableTo": "DateRange",
           "columnsFrom": [
             "DateRange"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "Car_Details_rows_TransferCar_id_fk": {
-          "name": "Car_Details_rows_TransferCar_id_fk",
-          "tableFrom": "Car_Details",
-          "tableTo": "TransferCar",
-          "columnsFrom": [
-            "rows"
           ],
           "columnsTo": [
             "id"

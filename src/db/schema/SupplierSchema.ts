@@ -127,37 +127,33 @@ export type supplier_otps = {
             
   export const SupplierCarDetailsTable = pgTable('Car_Details',{ 
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-    VehicleType: integer('VehicleType')
-    .references(() => VehicleTypeTable.id, { onDelete: "cascade" }), 
-    VehicleBrand:integer('VehicleBrand')
-    .references(() => VehicleBrandTable.id, { onDelete: "cascade" }), 
-    ServiceType:integer('VehicleService')
-    .references(() => ServiceTypeTable.id, { onDelete: "cascade" }), 
-    VehicleModel:integer('VehicleModel')
-    .references(() => VehicleModelTable.id, { onDelete: "cascade" }), 
-    Doors:varchar({length:255}),
+    VehicleType: varchar({length:255}), 
+    VehicleBrand:varchar({length:255}), 
+    ServiceType:varchar({length:255}), 
+    VehicleModel:varchar({length:255}), 
+    Doors:varchar({length:255}), 
     Seats:varchar({length:255}), 
     Cargo:varchar({length:255}),
     City:varchar({length:255}),
+    Country:varchar({length:255}),
     Passengers:varchar({length:255}), 
     MediumBag:varchar({length:255}),
     SmallBag:varchar({length:255}),
     TransferInfo:varchar({length:255}),
     // Extra_space:varchar({length:255}),
-    // Rows: jsonb().array(),
-    DateRange:integer("DateRange")
+    // Rows: jsonb().array(), 
+    DateRange:integer("DateRange") 
     .references(()=>CreateDateRanges.id, { onDelete: "cascade" }),
-    Rows: integer("rows") // Foreign key to another table (assuming SupplierApidataTable.id)
-    .references(() => CreateTransferCar.id, { onDelete: "cascade" }),
-    ExtraSpace:integer("ExtraSpace")
-    .references(()=>CreateExtraSpaces.id,{ onDelete: "cascade" }), 
+    Rows: varchar({length:255}),
+    ExtraSpace:integer("ExtraSpace") 
+    .references(()=>CreateExtraSpace.id, { onDelete: "cascade" }),  
     HalfDayRide:varchar({length:255}),
     FullDayRide:varchar({length:255}),
     HalfFullNightTime:varchar({length:255}),
     HalfFullNightTimePrice:varchar({length:255}), 
     VehicleRent:varchar({length:255}),
     Fuel:varchar({length:255}), 
-    Driver:varchar({length:255}),
+    Driver:varchar({length:255}), 
     ParkingFee:varchar({length:255}), 
     TollTax:varchar({length:255}),
     Tip:varchar({length:255}),
@@ -175,21 +171,24 @@ export type supplier_otps = {
     to: date('to')      // "to" column with a DATE type
   });
 
-  export const CreateExtraSpaces = pgTable('ExtraSpace',{
+  export const CreateExtraSpace = pgTable('ExtraSpace',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
     Roof_rock:boolean(),
     Trailer_hitech:boolean(),
-    Extended_cargo_space:boolean()
+    Extended_cargo_space:boolean() 
+
   })
 
-  export const CreateTransferCar=pgTable('TransferCar',{
+  export const CreateTransferCar=pgTable('TransferCar',{ 
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
     Transfer_from:varchar({length:255}),
     Transfer_to:varchar({length:255}),
     Vice_versa:boolean(),
     NightTime:varchar({length:255}), 
     NightTime_Price:varchar({length:255}), 
-    Price:varchar({length:255})
+    Price:varchar({length:255}),
+    SupplierCarDetailsforeign:integer("SupplierCarDetailsTable")
+    .references(()=>SupplierCarDetailsTable.id,{ onDelete: "cascade" }),
   })
   
 
