@@ -1,5 +1,5 @@
 {
-  "id": "34cbc6a3-b407-4e46-8eb9-a00a6d1b174f",
+  "id": "93d2b21d-c689-49a2-ad33-1b2f456d3bd8",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -809,8 +809,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "SupplierCarDetailsTable": {
-          "name": "SupplierCarDetailsTable",
+        "SupplierCarDetailsforeign": {
+          "name": "SupplierCarDetailsforeign",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -818,12 +818,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "TransferCar_SupplierCarDetailsTable_Car_Details_id_fk": {
-          "name": "TransferCar_SupplierCarDetailsTable_Car_Details_id_fk",
+        "TransferCar_SupplierCarDetailsforeign_Car_Details_id_fk": {
+          "name": "TransferCar_SupplierCarDetailsforeign_Car_Details_id_fk",
           "tableFrom": "TransferCar",
           "tableTo": "Car_Details",
           "columnsFrom": [
-            "SupplierCarDetailsTable"
+            "SupplierCarDetailsforeign"
           ],
           "columnsTo": [
             "id"

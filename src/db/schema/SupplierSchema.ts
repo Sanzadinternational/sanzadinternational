@@ -179,18 +179,18 @@ export type supplier_otps = {
 
   })
 
-  export const CreateTransferCar=pgTable('TransferCar',{ 
+  export const CreateTransferCar = pgTable('TransferCar', { 
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-    Transfer_from:varchar({length:255}),
-    Transfer_to:varchar({length:255}),
-    Vice_versa:boolean(),
-    NightTime:varchar({length:255}), 
-    NightTime_Price:varchar({length:255}), 
-    Price:varchar({length:255}),
-    SupplierCarDetailsforeign:integer("SupplierCarDetailsTable")
-    .references(()=>SupplierCarDetailsTable.id,{ onDelete: "cascade" }),
-  })
-  
+    Transfer_from: varchar({ length: 255 }),
+    Transfer_to: varchar({ length: 255 }), 
+    Vice_versa: boolean(),
+    NightTime: varchar({ length: 255 }), 
+    NightTime_Price: varchar({ length: 255 }), 
+    Price: varchar({ length: 255 }),
+    SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
+        .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
+});
+
 
   export const VehicleTypeTable=pgTable('VehicleType',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 

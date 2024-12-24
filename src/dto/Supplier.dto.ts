@@ -104,7 +104,7 @@ export interface SupplierPriceInput{
   // }
   
 export interface CreateTransferCars{
-    Transfer_from:string,
+    Transfer_from:string, 
     Transfer_to:string,
     Vice_versa:boolean, 
     NightTime:{ 

@@ -128,7 +128,7 @@ CREATE TABLE IF NOT EXISTS "TransferCar" (
 	"NightTime" varchar(255),
 	"NightTime_Price" varchar(255),
 	"Price" varchar(255),
-	"SupplierCarDetailsTable" integer
+	"SupplierCarDetailsforeign" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "One_Way_Service_Details" (
@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 );
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "TransferCar" ADD CONSTRAINT "TransferCar_SupplierCarDetailsTable_Car_Details_id_fk" FOREIGN KEY ("SupplierCarDetailsTable") REFERENCES "public"."Car_Details"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "TransferCar" ADD CONSTRAINT "TransferCar_SupplierCarDetailsforeign_Car_Details_id_fk" FOREIGN KEY ("SupplierCarDetailsforeign") REFERENCES "public"."Car_Details"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
