@@ -757,51 +757,37 @@ export const CreateTransferCarDetails = async (
       next(error); // Pass the error to error-handling middleware
     }
   };
-  
-//  export const CreateTransferCarDetails = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//       const transferCarDetails = req.body as CreateTransferCars[]; // Expecting an array of transfer car details
-  
-//       // Map the input data to create the structure for insertion
-//       const valuesToInsert = transferCarDetails.map((detail) => ({
-//         Transfer_from: detail.Transfer_from,
-//         Transfer_to: detail.Transfer_to,
-//         Vice_versa: detail.Vice_versa,
-//         Price: detail.Price,
-//         SupplierCarDetailsforeign: detail.SupplierCarDetailsforeign
-//       }));
-  
-//       // Insert all mapped values into the database
-//       const TransferCar = await db.insert(CreateTransferCar).values(valuesToInsert).returning();
-  
-//       return res.status(200).json(TransferCar); // Return the inserted rows
-//     } catch (error) {
-//       next(error); // Pass the error to the error-handling middleware
-//     }
-//   };
-export const CreateExtraSpaces = async(req:Request,res:Response,next:NextFunction)=>{ 
-    try{ 
-         const {
-            uniqueId,
-            Roof_rock,
-            Trailer_hitech,
-            Extended_cargo_space,
-            SupplierCarDetailsforeign }=<CreateExtra_Space>req.body;
-         const Extra_spaces=await db.insert(CreateExtraSpace) 
-         .values({
-            uniqueId,
-    Roof_rock,
-    Trailer_hitech,
-    Extended_cargo_space,
-    SupplierCarDetailsforeign
-         })
-         .returning();
-         return res.status(200).json(Extra_spaces); 
-    }catch(error){
-        next(error)
-    }
-}      
 
+export const CreateExtraSpaces = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      // Ensure req.body is an array 
+      if (!Array.isArray(req.body)) {
+        return res.status(400).json({ success: false, message: "Request body must be an array." });
+      }
+  
+      // Validate each item in the array (optional, depends on your validation setup)
+      const Extra_spaces = req.body.map((item: CreateExtra_Space) => ({
+        uniqueId: item.uniqueId,
+        Roof_rock: item.Roof_rock,
+        Trailer_hitech: item.Trailer_hitech,
+        Extended_cargo_space: item.Extended_cargo_space,
+        SupplierCarDetailsforeign: item.SupplierCarDetailsforeign,
+      }));
+  
+      // Perform batch insert
+      const Extra = await db.insert(CreateExtraSpace).values(Extra_spaces).returning();
+  
+      // Send the inserted records as a response
+      return res.status(200).json({ success: true, data: Extra });
+    } catch (error) {
+      console.error(error); // Log the error for debugging
+      next(error); // Pass the error to error-handling middleware
+    }
+  };
 // export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{ 
 //     try{ 
 //           const result = await db.select({ 
