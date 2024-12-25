@@ -163,8 +163,8 @@ export type supplier_otps = {
     id: integer('id')
       .primaryKey()
       .generatedAlwaysAsIdentity(), // Auto-incrementing primary key
-    from: date('from'), // "from" column with a DATE type
-    to: date('to'),      // "to" column with a DATE type
+    from: varchar({length:255}), // "from" column with a DATE type
+    to: varchar({length:255}),      // "to" column with a DATE type
     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
     .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
   });
@@ -181,7 +181,7 @@ export type supplier_otps = {
   })
 
 
-  
+
   export const CreateTransferCar = pgTable('TransferCar', { 
     uniqueId:varchar({length:255}),
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 

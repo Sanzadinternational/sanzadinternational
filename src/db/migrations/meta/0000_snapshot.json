@@ -1,5 +1,5 @@
 {
-  "id": "d674eb81-982e-4822-b911-695a5a605235",
+  "id": "c8e0bc99-78de-4814-9e41-b52042859177",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -697,13 +697,13 @@
         },
         "from": {
           "name": "from",
-          "type": "date",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
         "to": {
           "name": "to",
-          "type": "date",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
