@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,VehicleType,DateRanges,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,CreateExtraSpace,
-    CreateCartDetails,CreateSupplierDetailServicesInput,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
+import { CreateSupplierInput,VehicleType,DateRanges,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,
+    CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtra_Space,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto'); 
 // import { v4 as uuidv4 } from 'uuid'; 
 import { desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 // Make sure db is correctly configured and imported 
 import { db } from "../db/db"; 
-const { registerTable, One_WayTable,CreateDateRanges,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
-    supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable,CreateExtraSpaces} = require('../db/schema/SupplierSchema'); 
+const { registerTable, One_WayTable,CreateDateRanges,CreateExtraSpace,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
+    supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
 import { generateOTP, sendOTPEmail } from "../utils";
@@ -685,41 +685,76 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
     } 
 }; 
 
+// export const CreateTransferCarDetails = async (
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+//   ) => {
+//     try {
+//       const { 
+//         uniqueId,
+//         Transfer_from, 
+//         Transfer_to, 
+//         Vice_versa, 
+//         Price, 
+//         NightTime, 
+//         NightTime_Price, 
+//         SupplierCarDetailsforeign 
+//       } = req.body as CreateTransferCars;
+  
+//       // Insert a new transfer car record into the database 
+//       const TransferCar = await db
+//         .insert(CreateTransferCar)
+//         .values({
+//             uniqueId,
+//           Transfer_from,
+//           Transfer_to,
+//           Vice_versa,
+//           Price, 
+//           NightTime,
+//           NightTime_Price,
+//           SupplierCarDetailsforeign, 
+//         })
+//         .returning();
+  
+//       // Send the inserted record as a response
+//       return res.status(200).json({ success: true, data: TransferCar });
+//     } catch (error) {
+//       // Pass the error to the error-handling middleware
+//       next(error);
+//     }
+//   };
 export const CreateTransferCarDetails = async (
     req: Request,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      const { 
-        Transfer_from, 
-        Transfer_to, 
-        Vice_versa, 
-        Price, 
-        NightTime, 
-        NightTime_Price, 
-        SupplierCarDetailsforeign 
-      } = req.body as CreateTransferCars;
+      // Ensure req.body is an array
+      if (!Array.isArray(req.body)) {
+        return res.status(400).json({ success: false, message: "Request body must be an array." });
+      }
   
-      // Insert a new transfer car record into the database 
-      const TransferCar = await db
-        .insert(CreateTransferCar)
-        .values({
-          Transfer_from,
-          Transfer_to,
-          Vice_versa,
-          Price, 
-          NightTime,
-          NightTime_Price,
-          SupplierCarDetailsforeign, 
-        })
-        .returning();
+      // Validate each item in the array (optional, depends on your validation setup)
+      const transferCarDetails = req.body.map((item: CreateTransferCars) => ({
+        uniqueId: item.uniqueId,
+        Transfer_from: item.Transfer_from,
+        Transfer_to: item.Transfer_to,
+        Vice_versa: item.Vice_versa,
+        Price: item.Price,
+        NightTime: item.NightTime,
+        NightTime_Price: item.NightTime_Price,
+        SupplierCarDetailsforeign: item.SupplierCarDetailsforeign,
+      }));
   
-      // Send the inserted record as a response
-      return res.status(200).json({ success: true, data: TransferCar });
+      // Perform batch insert
+      const TransferCars = await db.insert(CreateTransferCar).values(transferCarDetails).returning();
+  
+      // Send the inserted records as a response
+      return res.status(200).json({ success: true, data: TransferCars });
     } catch (error) {
-      // Pass the error to the error-handling middleware
-      next(error);
+      console.error(error); // Log the error for debugging
+      next(error); // Pass the error to error-handling middleware
     }
   };
   
@@ -744,43 +779,50 @@ export const CreateTransferCarDetails = async (
 //       next(error); // Pass the error to the error-handling middleware
 //     }
 //   };
-export const Extra_space = async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-         const { Roof_rock,
-                 Trailer_hitech, 
-                 Extended_cargo_space }=<CreateExtraSpace>req.body;
-         const Extra_spaces=await db.insert(CreateExtraSpaces)
-         .values({
+export const CreateExtraSpaces = async(req:Request,res:Response,next:NextFunction)=>{ 
+    try{ 
+         const {
+            uniqueId,
             Roof_rock,
-                 Trailer_hitech,
-                 Extended_cargo_space
+            Trailer_hitech,
+            Extended_cargo_space,
+            SupplierCarDetailsforeign }=<CreateExtra_Space>req.body;
+         const Extra_spaces=await db.insert(CreateExtraSpace) 
+         .values({
+            uniqueId,
+    Roof_rock,
+    Trailer_hitech,
+    Extended_cargo_space,
+    SupplierCarDetailsforeign
          })
          .returning();
-         return res.status(200).json(Extra_spaces);
+         return res.status(200).json(Extra_spaces); 
     }catch(error){
         next(error)
     }
 }      
 
-export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{ 
-    try{ 
-          const result = await db.select({ 
-            id:CreateExtraSpaces.id,
-            Roof_rock:CreateExtraSpaces.Roof_rock,
-            Trailer_hitech:CreateExtraSpaces.Trailer_hitech, 
-            Extended_cargo_space:CreateExtraSpaces.Extended_cargo_space
-          }) 
-          .from(CreateExtraSpaces)
-          res.status(200).json(result)
+// export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{ 
+//     try{ 
+//           const result = await db.select({ 
+//             id:CreateExtra_Space.id,
+//             Roof_rock:CreateExtra_Space.Roof_rock,
+//             Trailer_hitech:CreateExtra_Space.Trailer_hitech, 
+//             Extended_cargo_space:CreateExtra_Space.Extended_cargo_space
+//           }) 
+//           .from(CreateExtra_Space)
+//           res.status(200).json(result)
          
-    }catch(error){ 
-        res.status(404).json({message:"Data is not found"}) 
-    }
-} 
+//     }catch(error){ 
+//         res.status(404).json({message:"Data is not found"}) 
+//     }
+// } 
         
 export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
-         const {  VehicleType, 
+         const {  
+            uniqueId,
+            VehicleType, 
             VehicleBrand,
             ServiceType,
             VehicleModel,
@@ -793,9 +835,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             MediumBag,
             SmallBag, 
             TransferInfo, 
-            ExtraSpace, 
-            DateRange,
-            Rows,
+
             HalfDayRide,
             FullDayRide,
             HalfFullNightTime,
@@ -814,6 +854,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
 
             const CartDetails = await db.insert(SupplierCarDetailsTable)
             .values({
+                uniqueId,
             VehicleType,
             VehicleBrand,
             ServiceType,
@@ -827,9 +868,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             MediumBag,
             SmallBag, 
             TransferInfo, 
-            ExtraSpace, 
-            DateRange,
-            Rows,
+        
             HalfDayRide:HalfDayRide || 'no',
             FullDayRide:FullDayRide || 'no',
             HalfFullNightTime:HalfFullNightTime || 'no',
@@ -868,11 +907,13 @@ export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>
 export const CreateDateRange = async(req:Request,res:Response,next:NextFunction)=>{
    try{
     const {
+        uniqueId,
         from,
-        to
+        to,
+        SupplierCarDetailsforeign
     } = <DateRanges>req.body;
     const DateRan=await db.insert(CreateDateRanges) 
-    .values({from,to})
+    .values({uniqueId,from,to,SupplierCarDetailsforeign})
     .returning()
      return res.status(200).json(DateRan) 
    }catch(error){ 

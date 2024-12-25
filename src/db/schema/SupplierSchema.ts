@@ -127,6 +127,7 @@ export type supplier_otps = {
             
   export const SupplierCarDetailsTable = pgTable('Car_Details',{ 
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+    uniqueId:varchar({length:255}),
     VehicleType: varchar({length:255}), 
     VehicleBrand:varchar({length:255}), 
     ServiceType:varchar({length:255}), 
@@ -140,13 +141,7 @@ export type supplier_otps = {
     MediumBag:varchar({length:255}),
     SmallBag:varchar({length:255}),
     TransferInfo:varchar({length:255}),
-    // Extra_space:varchar({length:255}),
-    // Rows: jsonb().array(), 
-    DateRange:integer("DateRange") 
-    .references(()=>CreateDateRanges.id, { onDelete: "cascade" }),
-    Rows: varchar({length:255}),
-    ExtraSpace:integer("ExtraSpace") 
-    .references(()=>CreateExtraSpace.id, { onDelete: "cascade" }),  
+
     HalfDayRide:varchar({length:255}),
     FullDayRide:varchar({length:255}),
     HalfFullNightTime:varchar({length:255}),
@@ -164,24 +159,41 @@ export type supplier_otps = {
   }) 
   
   export const CreateDateRanges = pgTable('DateRange', {
+    uniqueId:varchar({length:255}),
     id: integer('id')
       .primaryKey()
       .generatedAlwaysAsIdentity(), // Auto-incrementing primary key
     from: date('from'), // "from" column with a DATE type
-    to: date('to')      // "to" column with a DATE type
+    to: date('to'),      // "to" column with a DATE type
+    SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
+    .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
   });
-
-  export const CreateExtraSpace = pgTable('ExtraSpace',{
-    id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-    Roof_rock:boolean(),
-    Trailer_hitech:boolean(),
-    Extended_cargo_space:boolean() 
-
+  export const CreateExtraSpace=pgTable('ExtraSpace',{
+    uniqueId:varchar({length:255}),
+    id: integer('id')
+      .primaryKey()
+      .generatedAlwaysAsIdentity(), 
+      Roof_rock: boolean(),
+    Trailer_hitech: boolean(),
+    Extended_cargo_space: boolean(), 
+    SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
+    .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" })
   })
 
+// export const CreateExtraSpace = pgTable('ExtraSpace', {
+//   uniqueId:varchar({length:255}),
+//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+//     Roof_rock: boolean(),
+//     Trailer_hitech: boolean(),
+//     Extended_cargo_space: boolean(), 
+//     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
+//     .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
+// });
+
   export const CreateTransferCar = pgTable('TransferCar', { 
+    uniqueId:varchar({length:255}),
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-    Transfer_from: varchar({ length: 255 }),
+    Transfer_from: varchar({ length: 255 }), 
     Transfer_to: varchar({ length: 255 }), 
     Vice_versa: boolean(),
     NightTime: varchar({ length: 255 }), 
@@ -189,7 +201,7 @@ export type supplier_otps = {
     Price: varchar({ length: 255 }),
     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
         .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
-});
+}); 
 
 
   export const VehicleTypeTable=pgTable('VehicleType',{

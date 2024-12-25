@@ -17,7 +17,7 @@ export interface CreateSupplierInput {
   Currency: string,
   Gst_Tax_Certificate: string,
   Password: string,
-  Api_key:string,
+  Api_key:string, 
   Is_up:string,
   }
 export interface SupplierPriceInput{
@@ -104,6 +104,7 @@ export interface SupplierPriceInput{
   // }
   
 export interface CreateTransferCars{
+  uniqueId:string,
     Transfer_from:string, 
     Transfer_to:string,
     Vice_versa:boolean, 
@@ -117,14 +118,23 @@ export interface CreateTransferCars{
     SupplierCarDetailsforeign:number
 }
 
-export interface CreateExtraSpace{
+export interface CreateExtra_Space{
+  uniqueId:string
     Roof_rock:boolean,
     Trailer_hitech:boolean,
     Extended_cargo_space:boolean,
     SupplierCarDetailsforeign:number
 }
+// export interface CreateExtraSpace{
+//     uniqueId:string
+//     Roof_rock:boolean,
+//     Trailer_hitech:boolean,
+//     Extended_cargo_space:boolean,
+//     SupplierCarDetailsforeign:number
+// }
 
 export interface CreateCartDetails{ 
+  uniqueId:string,
   VehicleType:string,
   VehicleBrand:string,
   ServiceType:string,
@@ -138,9 +148,7 @@ export interface CreateCartDetails{
   MediumBag:string,
   SmallBag:string, 
   TransferInfo:string,
-  ExtraSpace:number,
-  DateRange:number,
-  Rows:string,
+
   HalfDayRide:{
     type:string,
     default:"no",
@@ -190,8 +198,10 @@ export interface CreateCartDetails{
 } 
 
 export interface DateRanges{
+  uniqueId:string,
   from:Date,
-  to:Date
+  to:Date,
+  SupplierCarDetailsforeign:number
 }
 export interface VehicleType{
   VehicleType:string

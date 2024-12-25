@@ -1,8 +1,8 @@
 import { Supplier_price, TransportNode } from './../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,GetSupplier,ExtraSpace,CreateVehicleType,GetDateRange,GetVehicleBrand,CreateVehicleBrand,CreateDateRange,Extra_space,CreateServiceType,CreateVehicleModel,GetVehicleType,
-    GetCarDetails,GetServiceType,GetVehicleModel,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+import { CreateSupplier,GetSupplier,CreateVehicleType,GetDateRange,GetVehicleBrand,CreateVehicleBrand,CreateDateRange,CreateServiceType,CreateVehicleModel,GetVehicleType,
+    GetCarDetails,GetServiceType,CreateExtraSpaces,GetVehicleModel,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
 const router = express.Router(); 
 
@@ -10,7 +10,7 @@ router.post('/registration', CreateSupplier);
 router.post('/send-otp', suppliersendOtp); 
 router.post('/verify-otp', supplierverifyOtp); 
 router.post('/login',loginSupplier);
-router.get('/GetSupplier',GetSupplier);
+router.get('/GetSupplier',GetSupplier); 
 router.post('/Supplier_details', Supplier_details); 
 router.get('/GetSupplier_details',GetSupplier_details); 
 router.delete('/deleteUserById/:id', deleteUserById);
@@ -22,9 +22,9 @@ router.post('/CreateCartDetail',CreateCartDetail);
 router.post('/CreateDateRange',CreateDateRange)
 router.get('/GetDateRange',GetDateRange)
 router.get('/getCarDetails/:id',GetCarDetails); 
-router.post('/CreateTransferCarDetails',CreateTransferCarDetails);
-router.post('/Extra_space',Extra_space); 
-router.get('/ExtraSpace',ExtraSpace);
+router.post('/CreateRows',CreateTransferCarDetails);
+router.post('/CreateExtraSpaces',CreateExtraSpaces); 
+// router.get('/ExtraSpace',ExtraSpace);
 router.post('/CreateVehicleType',CreateVehicleType); 
 router.get('/GetVehicleType',GetVehicleType); 
 router.post('/CreateVehicleBrand',CreateVehicleBrand); 
@@ -32,7 +32,7 @@ router.get('/GetVehicleBrand',GetVehicleBrand),
 router.post('/CreateServiceType',CreateServiceType);
 router.get('/GetServiceType',GetServiceType)
 router.post('/CreateVehicleModel',CreateVehicleModel); 
-router.get('/GetVehicleModel',GetVehicleModel)
+router.get('/GetVehicleModel',GetVehicleModel) 
 router.get('/GetVehicleType',GetVehicleType)
 // router.get('/products', GetProducts); 
 // router.get('/product/:id', GetProductById);

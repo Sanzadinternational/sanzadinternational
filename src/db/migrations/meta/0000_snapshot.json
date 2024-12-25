@@ -1,5 +1,5 @@
 {
-  "id": "93d2b21d-c689-49a2-ad33-1b2f456d3bd8",
+  "id": "7fc09308-7fa5-4b80-b47a-8e3aba0bf6f7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -672,6 +672,12 @@
       "name": "DateRange",
       "schema": "",
       "columns": {
+        "uniqueId": {
+          "name": "uniqueId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "id": {
           "name": "id",
           "type": "integer",
@@ -700,10 +706,30 @@
           "type": "date",
           "primaryKey": false,
           "notNull": false
+        },
+        "SupplierCarDetailsforeign": {
+          "name": "SupplierCarDetailsforeign",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "DateRange_SupplierCarDetailsforeign_Car_Details_id_fk": {
+          "name": "DateRange_SupplierCarDetailsforeign_Car_Details_id_fk",
+          "tableFrom": "DateRange",
+          "tableTo": "Car_Details",
+          "columnsFrom": [
+            "SupplierCarDetailsforeign"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -711,6 +737,12 @@
       "name": "ExtraSpace",
       "schema": "",
       "columns": {
+        "uniqueId": {
+          "name": "uniqueId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "id": {
           "name": "id",
           "type": "integer",
@@ -745,10 +777,30 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false
+        },
+        "SupplierCarDetailsforeign": {
+          "name": "SupplierCarDetailsforeign",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "ExtraSpace_SupplierCarDetailsforeign_Car_Details_id_fk": {
+          "name": "ExtraSpace_SupplierCarDetailsforeign_Car_Details_id_fk",
+          "tableFrom": "ExtraSpace",
+          "tableTo": "Car_Details",
+          "columnsFrom": [
+            "SupplierCarDetailsforeign"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -756,6 +808,12 @@
       "name": "TransferCar",
       "schema": "",
       "columns": {
+        "uniqueId": {
+          "name": "uniqueId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "id": {
           "name": "id",
           "type": "integer",
@@ -1359,6 +1417,12 @@
             "cycle": false
           }
         },
+        "uniqueId": {
+          "name": "uniqueId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "VehicleType": {
           "name": "VehicleType",
           "type": "varchar(255)",
@@ -1434,24 +1498,6 @@
         "TransferInfo": {
           "name": "TransferInfo",
           "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "DateRange": {
-          "name": "DateRange",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Rows": {
-          "name": "Rows",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "ExtraSpace": {
-          "name": "ExtraSpace",
-          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
@@ -1541,34 +1587,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "Car_Details_DateRange_DateRange_id_fk": {
-          "name": "Car_Details_DateRange_DateRange_id_fk",
-          "tableFrom": "Car_Details",
-          "tableTo": "DateRange",
-          "columnsFrom": [
-            "DateRange"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "Car_Details_ExtraSpace_ExtraSpace_id_fk": {
-          "name": "Car_Details_ExtraSpace_ExtraSpace_id_fk",
-          "tableFrom": "Car_Details",
-          "tableTo": "ExtraSpace",
-          "columnsFrom": [
-            "ExtraSpace"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
