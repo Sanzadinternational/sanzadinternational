@@ -1,5 +1,5 @@
 {
-  "id": "7fc09308-7fa5-4b80-b47a-8e3aba0bf6f7",
+  "id": "d674eb81-982e-4822-b911-695a5a605235",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -762,19 +762,19 @@
         },
         "Roof_rock": {
           "name": "Roof_rock",
-          "type": "boolean",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
         "Trailer_hitech": {
           "name": "Trailer_hitech",
-          "type": "boolean",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
         "Extended_cargo_space": {
           "name": "Extended_cargo_space",
-          "type": "boolean",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },

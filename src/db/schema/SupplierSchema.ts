@@ -173,23 +173,15 @@ export type supplier_otps = {
     id: integer('id')
       .primaryKey()
       .generatedAlwaysAsIdentity(), 
-      Roof_rock: boolean(),
-    Trailer_hitech: boolean(),
-    Extended_cargo_space: boolean(), 
+      Roof_rock: varchar({length:255}),
+    Trailer_hitech: varchar({length:255}),
+    Extended_cargo_space: varchar({length:255}), 
     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
     .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" })
   })
 
-// export const CreateExtraSpace = pgTable('ExtraSpace', {
-//   uniqueId:varchar({length:255}),
-//     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-//     Roof_rock: boolean(),
-//     Trailer_hitech: boolean(),
-//     Extended_cargo_space: boolean(), 
-//     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
-//     .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
-// });
 
+  
   export const CreateTransferCar = pgTable('TransferCar', { 
     uniqueId:varchar({length:255}),
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 

@@ -18,7 +18,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); 
 
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
-    try { 
+    try {   
         const { 
             Company_name, 
             Owner,
