@@ -118,20 +118,14 @@ export interface CreateTransferCars{
     SupplierCarDetailsforeign:number
 }
 
-export interface CreateExtra_Space{
-  uniqueId:string
+export interface CreateExtraSpace{
+    uniqueId:string
     Roof_rock:string,
     Trailer_hitech:string,
     Extended_cargo_space:string,
     SupplierCarDetailsforeign:number
 }
-// export interface CreateExtraSpace{
-//     uniqueId:string
-//     Roof_rock:boolean,
-//     Trailer_hitech:boolean,
-//     Extended_cargo_space:boolean,
-//     SupplierCarDetailsforeign:number
-// }
+
 
 export interface CreateCartDetails{ 
   uniqueId:string,

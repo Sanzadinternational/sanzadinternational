@@ -1,13 +1,13 @@
 import { Request, Response, NextFunction } from "express"; 
 import { CreateSupplierInput,VehicleType,DateRanges,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,
-    CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtra_Space,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
+    CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto'); 
 // import { v4 as uuidv4 } from 'uuid'; 
 import { desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 // Make sure db is correctly configured and imported 
 import { db } from "../db/db"; 
-const { registerTable, One_WayTable,CreateDateRanges,CreateExtraSpace,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
+const { registerTable, One_WayTable,CreateDateRanges,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
     supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
 // const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
@@ -758,51 +758,84 @@ export const CreateTransferCarDetails = async (
     }
   };
 
-export const CreateExtraSpaces = async (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => {
-    try {
-      // Ensure req.body is an array 
-      if (!Array.isArray(req.body)) {
-        return res.status(400).json({ success: false, message: "Request body must be an array." });
-      }
+// export const CreateExtraSp = async (
+//     req: Request,
+//     res: Response,
+//     next: NextFunction
+//   ) => {
+//     try {
+//       // Ensure req.body is an array 
+//       if (!Array.isArray(req.body)) {
+//         return res.status(400).json({ success: false, message: "Request body must be an array." });
+//       }
   
-      // Validate each item in the array (optional, depends on your validation setup)
-      const Extra_spaces = req.body.map((item: CreateExtra_Space) => ({
-        uniqueId: item.uniqueId,
-        Roof_rock: item.Roof_rock,
-        Trailer_hitech: item.Trailer_hitech,
-        Extended_cargo_space: item.Extended_cargo_space,
-        SupplierCarDetailsforeign: item.SupplierCarDetailsforeign,
-      }));
+//       // Validate each item in the array (optional, depends on your validation setup)
+//       const Extra_spaces = req.body.map((item: CreateExtraSpace) => ({
+//         uniqueId: item.uniqueId,
+//         Roof_rock: item.Roof_rock || 'false',
+//         Trailer_hitech: item.Trailer_hitech || 'false',
+//         Extended_cargo_space: item.Extended_cargo_space || 'false',
+//         SupplierCarDetailsforeign: item.SupplierCarDetailsforeign,
+//       }));
   
-      // Perform batch insert
-      const Extra = await db.insert(CreateExtraSpace).values(Extra_spaces).returning();
+//       // Perform batch insert
+//       const Extra = await db.insert(CreateExtraSpaces).values(Extra_spaces).returning();
   
-      // Send the inserted records as a response
-      return res.status(200).json({ success: true, data: Extra });
-    } catch (error) {
-      console.error(error); // Log the error for debugging
-      next(error); // Pass the error to error-handling middleware
-    }
-  };
-// export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{ 
-//     try{ 
-//           const result = await db.select({ 
-//             id:CreateExtra_Space.id,
-//             Roof_rock:CreateExtra_Space.Roof_rock,
-//             Trailer_hitech:CreateExtra_Space.Trailer_hitech, 
-//             Extended_cargo_space:CreateExtra_Space.Extended_cargo_space
-//           }) 
-//           .from(CreateExtra_Space)
-//           res.status(200).json(result)
-         
-//     }catch(error){ 
-//         res.status(404).json({message:"Data is not found"}) 
+//       // Send the inserted records as a response
+//       return res.status(200).json({ success: true, data: Extra });
+//     } catch (error) {
+//       console.error(error); // Log the error for debugging
+//       next(error); // Pass the error to error-handling middleware
 //     }
-// } 
+//   };
+  export const CreateExtraSp = async (req: Request, res: Response, next: NextFunction) => { 
+    try {
+        // Destructure request body 
+        const {uniqueId,
+            Roof_rock,
+            Trailer_hitech,
+            Extended_cargo_space,
+            SupplierCarDetailsforeign, } = req.body; 
+
+        // Validate input
+        if (!Roof_rock || !Trailer_hitech || !Extended_cargo_space || !SupplierCarDetailsforeign) {
+            return res.status(400).json({ error: "All fields are required." });
+        }
+
+        // Insert new supplier record
+        const newExtra = await db
+            .insert(CreateExtraSpaces)
+            .values({
+                uniqueId,
+                Roof_rock,
+                Trailer_hitech,
+                Extended_cargo_space,
+                SupplierCarDetailsforeign, 
+            })
+            .returning();
+
+        // Return success response with new supplier details
+        return res.status(200).json(newExtra); 
+    } catch (error) {
+        // Handle any errors
+        next(error);
+    } 
+}; 
+export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{ 
+    try{ 
+          const result = await db.select({ 
+            id:CreateExtraSpaces.id,
+            Roof_rock:CreateExtraSpaces.Roof_rock,
+            Trailer_hitech:CreateExtraSpaces.Trailer_hitech, 
+            Extended_cargo_space:CreateExtraSpaces.Extended_cargo_space
+          }) 
+          .from(CreateExtraSpaces)
+          res.status(200).json(result)
+         
+    }catch(error){ 
+        res.status(404).json({message:"Data is not found"}) 
+    }
+} 
         
 export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 

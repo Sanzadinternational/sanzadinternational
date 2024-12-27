@@ -168,9 +168,9 @@ export type supplier_otps = {
     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
     .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
   });
-  export const CreateExtraSpace=pgTable('ExtraSpace',{
-    uniqueId:varchar({length:255}),
-    id: integer('id')
+  export const CreateExtraSpaces=pgTable('ExtraSpace',{
+    uniqueId:varchar({length:255}), 
+    id: integer('id') 
       .primaryKey()
       .generatedAlwaysAsIdentity(), 
       Roof_rock: varchar({length:255}),
