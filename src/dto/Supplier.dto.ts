@@ -119,7 +119,7 @@ export interface CreateTransferCars{
 }
 
 export interface CreateExtraSpace{
-    uniqueId:string
+    uniqueId:string,
     Roof_Rack:string,
     Trailer_Hitch:string,
     Extended_Cargo_Space:string,
@@ -192,10 +192,10 @@ export interface CreateCartDetails{
 } 
 
 export interface DateRanges {
-  uniqueId: string;
-  from: Date; // Changed to Date type
-  to: Date;   // Changed to Date type
-  SupplierCarDetailsforeign: number;
+  uniqueId: string,
+  from: Date,
+  to: Date,
+  SupplierCarDetailsforeign: number
 }
 
 export interface VehicleType{

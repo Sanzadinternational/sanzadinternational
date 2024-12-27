@@ -923,22 +923,43 @@ export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>
     }
 }
 
-export const CreateDateRange = async(req:Request,res:Response,next:NextFunction)=>{
-   try{
-    const {
-        uniqueId,
-        from,
-        to,
-        SupplierCarDetailsforeign
-    } = <DateRanges>req.body;
-    const DateRan=await db.insert(CreateDateRanges) 
-    .values({uniqueId,from,to,SupplierCarDetailsforeign})
-    .returning()
-     return res.status(200).json(DateRan) 
-   }catch(error){ 
-    next(error) 
-   }
-   } 
+export const CreateDateRange = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { uniqueId, from, to, SupplierCarDetailsforeign } = <DateRanges>req.body;
+
+    // Validate input data
+    if (!uniqueId || !from || !to || !SupplierCarDetailsforeign) {
+      return res.status(400).json({
+        success: false,
+        message: "Missing required fields: uniqueId, from, to, SupplierCarDetailsforeign",
+      });
+    }
+
+    // Ensure `from` date is before `to` date
+    if (new Date(from) > new Date(to)) {
+      return res.status(400).json({
+        success: false,
+        message: "'from' date must be earlier than 'to' date.",
+      });
+    }
+
+    // Insert data into the database
+    const DateRan = await db
+      .insert(CreateDateRanges)
+      .values({ uniqueId, from, to, SupplierCarDetailsforeign })
+      .returning(); // Returns the newly inserted row(s)
+
+    return res.status(201).json({
+      success: true,
+      message: "Date range created successfully.",
+      data: DateRan,
+    });
+  } catch (error) {
+    console.error("Error in CreateDateRange:", error);
+    next(error); // Pass the error to your Express error handler
+  }
+};
+
 
 export const GetDateRange= async(req:Request,res:Response,next:NextFunction)=>{
     try{

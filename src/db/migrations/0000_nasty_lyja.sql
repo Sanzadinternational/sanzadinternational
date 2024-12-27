@@ -108,10 +108,10 @@ CREATE TABLE IF NOT EXISTS "supplier_details" (
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "DateRange" (
-	"uniqueId" varchar(255) NOT NULL,
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "DateRange_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"from" date NOT NULL,
-	"to" date NOT NULL,
+	"uniqueId" varchar(255),
+	"from" date,
+	"to" date,
 	"SupplierCarDetailsforeign" integer
 );
 --> statement-breakpoint

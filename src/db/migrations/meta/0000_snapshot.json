@@ -1,5 +1,5 @@
 {
-  "id": "ca7ecffd-0719-4f3c-93d2-e0ae4c57127b",
+  "id": "22b552de-861e-4e74-a158-9e51d4014482",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -672,12 +672,6 @@
       "name": "DateRange",
       "schema": "",
       "columns": {
-        "uniqueId": {
-          "name": "uniqueId",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "id": {
           "name": "id",
           "type": "integer",
@@ -695,17 +689,23 @@
             "cycle": false
           }
         },
+        "uniqueId": {
+          "name": "uniqueId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "from": {
           "name": "from",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "to": {
           "name": "to",
           "type": "date",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "SupplierCarDetailsforeign": {
           "name": "SupplierCarDetailsforeign",
