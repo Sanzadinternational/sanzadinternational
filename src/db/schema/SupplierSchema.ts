@@ -173,9 +173,9 @@ export type supplier_otps = {
     id: integer('id') 
       .primaryKey()
       .generatedAlwaysAsIdentity(), 
-      Roof_rock: varchar({length:255}),
-    Trailer_hitech: varchar({length:255}),
-    Extended_cargo_space: varchar({length:255}), 
+      Roof_Rack:varchar({length:255}),
+      Trailer_Hitch:varchar({length:255}),
+      Extended_Cargo_Space:varchar({length:255}),
     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
     .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" })
   })

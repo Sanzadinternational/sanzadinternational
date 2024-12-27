@@ -118,9 +118,9 @@ CREATE TABLE IF NOT EXISTS "DateRange" (
 CREATE TABLE IF NOT EXISTS "ExtraSpace" (
 	"uniqueId" varchar(255),
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "ExtraSpace_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Roof_rock" varchar(255),
-	"Trailer_hitech" varchar(255),
-	"Extended_cargo_space" varchar(255),
+	"Roof_Rack" varchar(255),
+	"Trailer_Hitch" varchar(255),
+	"Extended_Cargo_Space" varchar(255),
 	"SupplierCarDetailsforeign" integer
 );
 --> statement-breakpoint

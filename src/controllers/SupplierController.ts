@@ -772,9 +772,9 @@ export const CreateExtraSp = async (
       // Validate each item in the array (optional, depends on your validation setup)
       const Extra_spaces = req.body.map((item: CreateExtraSpace) => ({
         uniqueId: item.uniqueId,
-        Roof_rock: item.Roof_rock,
-        Trailer_hitech: item.Trailer_hitech,
-        Extended_cargo_space: item.Extended_cargo_space,
+        Roof_Rack: item.Roof_Rack,
+        Trailer_Hitch: item.Trailer_Hitch,
+        Extended_Cargo_Space: item.Extended_Cargo_Space,
         SupplierCarDetailsforeign: item.SupplierCarDetailsforeign,
       }));
   
@@ -825,9 +825,9 @@ export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{
     try{ 
           const result = await db.select({ 
             id:CreateExtraSpaces.id,
-            Roof_rock:CreateExtraSpaces.Roof_rock,
-            Trailer_hitech:CreateExtraSpaces.Trailer_hitech, 
-            Extended_cargo_space:CreateExtraSpaces.Extended_cargo_space
+            Roof_Rack:CreateExtraSpaces.Roof_Rack,
+            Trailer_Hitch:CreateExtraSpaces.Trailer_Hitch, 
+            Extended_Cargo_Space:CreateExtraSpaces.Extended_Cargo_Space
           }) 
           .from(CreateExtraSpaces)
           res.status(200).json(result)

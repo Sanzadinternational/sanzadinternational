@@ -120,9 +120,9 @@ export interface CreateTransferCars{
 
 export interface CreateExtraSpace{
     uniqueId:string
-    Roof_rock:string,
-    Trailer_hitech:string,
-    Extended_cargo_space:string,
+    Roof_Rack:string,
+    Trailer_Hitch:string,
+    Extended_Cargo_Space:string,
     SupplierCarDetailsforeign:number
 }
 
