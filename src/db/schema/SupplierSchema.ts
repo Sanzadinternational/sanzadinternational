@@ -158,15 +158,15 @@ export type supplier_otps = {
     Others:varchar({length:255}) 
   }) 
   
-  export const CreateDateRanges = pgTable('DateRange', {
-    uniqueId:varchar({length:255}),
-    id: integer('id')
+  export const CreateDateRanges = pgTable('DateRange', { 
+    uniqueId: varchar({ length: 255 }).notNull(), 
+    id: integer('id') 
       .primaryKey()
       .generatedAlwaysAsIdentity(), // Auto-incrementing primary key
-    from: varchar({length:255}), // "from" column with a DATE type
-    to: varchar({length:255}),      // "to" column with a DATE type
+    from: date('from').notNull(), // Use timestamp for date-time values
+    to: date('to').notNull(),     // Use timestamp for date-time values
     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
-    .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
+      .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
   });
   export const CreateExtraSpaces=pgTable('ExtraSpace',{
     uniqueId:varchar({length:255}), 

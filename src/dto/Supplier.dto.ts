@@ -191,12 +191,13 @@ export interface CreateCartDetails{
   Others:string
 } 
 
-export interface DateRanges{
-  uniqueId:string,
-  from:string,
-  to:string,
-  SupplierCarDetailsforeign:number
+export interface DateRanges {
+  uniqueId: string;
+  from: Date; // Changed to Date type
+  to: Date;   // Changed to Date type
+  SupplierCarDetailsforeign: number;
 }
+
 export interface VehicleType{
   VehicleType:string
 }

@@ -768,7 +768,7 @@ export const CreateExtraSp = async (
       if (!Array.isArray(req.body)) {
         return res.status(400).json({ success: false, message: "Request body must be an array." });
       }
-  
+    
       // Validate each item in the array (optional, depends on your validation setup)
       const Extra_spaces = req.body.map((item: CreateExtraSpace) => ({
         uniqueId: item.uniqueId,

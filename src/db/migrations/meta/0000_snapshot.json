@@ -1,5 +1,5 @@
 {
-  "id": "d84bd38f-1850-4a8d-aaa9-139796a47437",
+  "id": "1dd41926-e836-46b3-b4c5-d86167531c55",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -676,7 +676,7 @@
           "name": "uniqueId",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "id": {
           "name": "id",
@@ -697,15 +697,15 @@
         },
         "from": {
           "name": "from",
-          "type": "varchar(255)",
+          "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "to": {
           "name": "to",
-          "type": "varchar(255)",
+          "type": "date",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "SupplierCarDetailsforeign": {
           "name": "SupplierCarDetailsforeign",
