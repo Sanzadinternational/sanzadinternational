@@ -758,69 +758,69 @@ export const CreateTransferCarDetails = async (
     }
   };
 
-// export const CreateExtraSp = async (
-//     req: Request,
-//     res: Response,
-//     next: NextFunction
-//   ) => {
-//     try {
-//       // Ensure req.body is an array 
-//       if (!Array.isArray(req.body)) {
-//         return res.status(400).json({ success: false, message: "Request body must be an array." });
-//       }
-  
-//       // Validate each item in the array (optional, depends on your validation setup)
-//       const Extra_spaces = req.body.map((item: CreateExtraSpace) => ({
-//         uniqueId: item.uniqueId,
-//         Roof_rock: item.Roof_rock || 'false',
-//         Trailer_hitech: item.Trailer_hitech || 'false',
-//         Extended_cargo_space: item.Extended_cargo_space || 'false',
-//         SupplierCarDetailsforeign: item.SupplierCarDetailsforeign,
-//       }));
-  
-//       // Perform batch insert
-//       const Extra = await db.insert(CreateExtraSpaces).values(Extra_spaces).returning();
-  
-//       // Send the inserted records as a response
-//       return res.status(200).json({ success: true, data: Extra });
-//     } catch (error) {
-//       console.error(error); // Log the error for debugging
-//       next(error); // Pass the error to error-handling middleware
-//     }
-//   };
-  export const CreateExtraSp = async (req: Request, res: Response, next: NextFunction) => { 
+export const CreateExtraSp = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-        // Destructure request body 
-        const {uniqueId,
-            Roof_rock,
-            Trailer_hitech,
-            Extended_cargo_space,
-            SupplierCarDetailsforeign, } = req.body; 
-
-        // Validate input
-        if (!Roof_rock || !Trailer_hitech || !Extended_cargo_space || !SupplierCarDetailsforeign) {
-            return res.status(400).json({ error: "All fields are required." });
-        }
-
-        // Insert new supplier record
-        const newExtra = await db
-            .insert(CreateExtraSpaces)
-            .values({
-                uniqueId,
-                Roof_rock,
-                Trailer_hitech,
-                Extended_cargo_space,
-                SupplierCarDetailsforeign, 
-            })
-            .returning();
-
-        // Return success response with new supplier details
-        return res.status(200).json(newExtra); 
+      // Ensure req.body is an array 
+      if (!Array.isArray(req.body)) {
+        return res.status(400).json({ success: false, message: "Request body must be an array." });
+      }
+  
+      // Validate each item in the array (optional, depends on your validation setup)
+      const Extra_spaces = req.body.map((item: CreateExtraSpace) => ({
+        uniqueId: item.uniqueId,
+        Roof_rock: item.Roof_rock,
+        Trailer_hitech: item.Trailer_hitech,
+        Extended_cargo_space: item.Extended_cargo_space,
+        SupplierCarDetailsforeign: item.SupplierCarDetailsforeign,
+      }));
+  
+      // Perform batch insert
+      const Extra = await db.insert(CreateExtraSpaces).values(Extra_spaces).returning();
+  
+      // Send the inserted records as a response
+      return res.status(200).json({ success: true, data: Extra });
     } catch (error) {
-        // Handle any errors
-        next(error);
-    } 
-}; 
+      console.error(error); // Log the error for debugging
+      next(error); // Pass the error to error-handling middleware
+    }
+  };
+//   export const CreateExtraSp = async (req: Request, res: Response, next: NextFunction) => { 
+//     try {
+//         // Destructure request body 
+//         const {uniqueId,
+//             Roof_rock,
+//             Trailer_hitech,
+//             Extended_cargo_space,
+//             SupplierCarDetailsforeign, } = req.body; 
+
+//         // Validate input
+//         if (!Roof_rock || !Trailer_hitech || !Extended_cargo_space || !SupplierCarDetailsforeign) {
+//             return res.status(400).json({ error: "All fields are required." });
+//         }
+
+//         // Insert new supplier record
+//         const newExtra = await db
+//             .insert(CreateExtraSpaces)
+//             .values({
+//                 uniqueId,
+//                 Roof_rock,
+//                 Trailer_hitech,
+//                 Extended_cargo_space,
+//                 SupplierCarDetailsforeign, 
+//             })
+//             .returning();
+
+//         // Return success response with new supplier details
+//         return res.status(200).json(newExtra); 
+//     } catch (error) {
+//         // Handle any errors
+//         next(error);
+//     } 
+// }; 
 export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
           const result = await db.select({ 
