@@ -575,8 +575,24 @@ export const One_Way_Details = async (req: Request, res: Response, next: NextFun
 
 
 export const suppliersendOtp= async(req:Request,res:Response,next:NextFunction)=>{
-    const { email } = req.body;
+    const { email } = req.body; 
+    const existingSupplier = await db
+    .select()
+    .from(registerTable)
+    .where(eq(registerTable.Email, email))
+    // .union(
+    //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
+    // );
 
+    const existingAgent= await db.select().from(AgentTable).where(eq(AgentTable.Email, email))
+
+if (existingSupplier.length > 0 || existingAgent.length>0) {
+    // If email exists in either table, return a conflict response
+    return res.status(400).json({
+        success: false,
+        message: "Email is already registered in the system." 
+    });
+}else{
     const otp = generateOTP();
     const expiryTime = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
   
@@ -585,6 +601,7 @@ export const suppliersendOtp= async(req:Request,res:Response,next:NextFunction)=
     await sendOTPEmail(email, otp);
   
     res.status(200).json({ message: 'OTP sent successfully' });
+}
 }
 
 export const supplierverifyOtp = async (req: Request, res: Response, next: NextFunction) => {

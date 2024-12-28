@@ -573,7 +573,23 @@ export const GetRoundTrip= async(req:Request,res:Response,next:NextFunction)=>{
 
 export const sendOtp= async(req:Request,res:Response,next:NextFunction)=>{
     const { email } = req.body;
+    const existingAgent = await db
+    .select()
+    .from(AgentTable)
+    .where(eq(AgentTable.Email, email))
+    // .union(
+    //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
+    // );
 
+    const existingSupplier= await db.select().from(registerTable).where(eq(registerTable.Email, email))
+
+if (existingAgent.length > 0 || existingSupplier.length>0) {
+    // If email exists in either table, return a conflict response
+    return res.status(400).json({
+        success: false,
+        message: "Email is already registered in the system." 
+    });
+}else{
     const otp = generateOTP();
     const expiryTime = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
   
@@ -583,7 +599,7 @@ export const sendOtp= async(req:Request,res:Response,next:NextFunction)=>{
   
     res.status(200).json({ message: 'OTP sent successfully' });
 }
-
+}
 // export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
 //     const { email, otp } = req.body;
 
