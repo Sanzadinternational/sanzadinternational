@@ -193,7 +193,7 @@ export interface CreateCartDetails{
 
 export interface DateRanges {
   uniqueId: string,
-  from: Date,
+  from:Date,
   to: Date,
   SupplierCarDetailsforeign: number
 }

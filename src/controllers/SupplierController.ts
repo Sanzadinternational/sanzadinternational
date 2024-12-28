@@ -925,26 +925,25 @@ export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>
 
 export const CreateDateRange = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { uniqueId, from, to, SupplierCarDetailsforeign } = <DateRanges>req.body;
+    const { uniqueId, from, to, SupplierCarDetailsforeign } = req.body as DateRanges;
 
-    // Validate input data
-    if (!uniqueId || !from || !to || !SupplierCarDetailsforeign) {
-      return res.status(400).json({
-        success: false,
-        message: "Missing required fields: uniqueId, from, to, SupplierCarDetailsforeign",
-      });
-    }
-
-    // Ensure `from` date is before `to` date
+    // Validate input
+    // if (!uniqueId || !from || !to || !SupplierCarDetailsforeign) {
+    //   return res.status(400).json({
+    //     success: false,
+    //     message: "All fields are required: uniqueId, from, to, SupplierCarDetailsforeign.",
+    //   });
+    // }
+//kjj
     if (new Date(from) > new Date(to)) {
       return res.status(400).json({
         success: false,
-        message: "'from' date must be earlier than 'to' date.",
+        message: "'from' date cannot be later than 'to' date.",
       });
     }
 
     // Insert data into the database
-    const DateRan = await db
+    const insertedDateRange = await db
       .insert(CreateDateRanges)
       .values({ uniqueId, from, to, SupplierCarDetailsforeign })
       .returning(); // Returns the newly inserted row(s)
@@ -952,13 +951,14 @@ export const CreateDateRange = async (req: Request, res: Response, next: NextFun
     return res.status(201).json({
       success: true,
       message: "Date range created successfully.",
-      data: DateRan,
+      data: insertedDateRange,
     });
   } catch (error) {
     console.error("Error in CreateDateRange:", error);
-    next(error); // Pass the error to your Express error handler
+    next(error); // Pass the error to the Express error handler
   }
 };
+
 
 
 export const GetDateRange= async(req:Request,res:Response,next:NextFunction)=>{
