@@ -6,6 +6,7 @@ import { CreateSupplierInput,VehicleType,DateRanges,VehicleBrand,ServiceType,Veh
 import { desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 // Make sure db is correctly configured and imported 
+import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db"; 
 const { registerTable, One_WayTable,CreateDateRanges,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
     supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
@@ -16,6 +17,7 @@ import { generateOTP, sendOTPEmail } from "../utils";
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken'); 
+import { union } from 'drizzle-orm/pg-core';
 
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {   
@@ -40,6 +42,23 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             Is_up,
             // password,
         } = <CreateSupplierInput>req.body; 
+        const existingSupplier = await db
+        .select()
+        .from(registerTable)
+        .where(eq(registerTable.Email, Email))
+        // .union(
+        //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
+        // );
+
+        const existingAgent= await db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
+    
+    if (existingSupplier.length > 0 || existingAgent.length>0) {
+        // If email exists in either table, return a conflict response
+        return res.status(400).json({
+            success: false,
+            message: "Email is already registered in the system." 
+        });
+    }
 
         const id = uuidv4(); // Generate UUID for the new supplier
         // const saltRounds = 10;
@@ -840,6 +859,7 @@ export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{
 export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
          const {  
+            uid,
             uniqueId,
             VehicleType, 
             VehicleBrand,
@@ -870,9 +890,10 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Tip,
             Others
         } =<CreateCartDetails>req.body; 
-
+        const uniId = uuidv4(); 
             const CartDetails = await db.insert(SupplierCarDetailsTable)
             .values({
+                uid:uniId,
                 uniqueId,
             VehicleType,
             VehicleBrand,

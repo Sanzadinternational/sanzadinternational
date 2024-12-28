@@ -128,6 +128,7 @@ export interface CreateExtraSpace{
 
 
 export interface CreateCartDetails{ 
+  uid:string,
   uniqueId:string,
   VehicleType:string,
   VehicleBrand:string,

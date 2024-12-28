@@ -217,6 +217,7 @@ CREATE TABLE IF NOT EXISTS "Supplier_Apidata" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Car_Details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"uid" varchar(255),
 	"uniqueId" varchar(255),
 	"VehicleType" varchar(255),
 	"VehicleBrand" varchar(255),

@@ -127,6 +127,7 @@ export type supplier_otps = {
             
   export const SupplierCarDetailsTable = pgTable('Car_Details',{ 
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+    uid:varchar({length:255}),
     uniqueId:varchar({length:255}),
     VehicleType: varchar({length:255}), 
     VehicleBrand:varchar({length:255}), 

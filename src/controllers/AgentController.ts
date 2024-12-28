@@ -13,7 +13,7 @@ const nodemailer = require("nodemailer");
 // import jwt from 'jsonwebtoken'; 
 const Crypto = require("crypto");
 const jwt = require('jsonwebtoken'); 
-
+import { registerTable } from "../db/schema/SupplierSchema";
 var Mailgen = require('mailgen'); 
 
 export const CreateAgent = async(req: Request, res: Response, next: NextFunction) => { 
@@ -35,7 +35,23 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Currency,
             Gst_Tax_Certificate,
         } = req.body as CreateAgentInput; 
+        const existingAgent = await db
+        .select()
+        .from(AgentTable)
+        .where(eq(AgentTable.Email, Email))
+        // .union(
+        //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
+        // );
 
+        const existingSupplier= await db.select().from(registerTable).where(eq(registerTable.Email, Email))
+    
+    if (existingAgent.length > 0 || existingSupplier.length>0) {
+        // If email exists in either table, return a conflict response
+        return res.status(400).json({
+            success: false,
+            message: "Email is already registered in the system." 
+        });
+    }
         // const id = uuidv4();
 
         // Hash the password before storing 

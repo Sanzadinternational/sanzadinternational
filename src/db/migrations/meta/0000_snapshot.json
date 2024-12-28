@@ -1,5 +1,5 @@
 {
-  "id": "fddf9bb2-8552-4f1d-983d-9c615a3f844a",
+  "id": "93411571-5c12-4a17-acc6-057e89aaf695",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1416,6 +1416,12 @@
             "cache": "1",
             "cycle": false
           }
+        },
+        "uid": {
+          "name": "uid",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         },
         "uniqueId": {
           "name": "uniqueId",
