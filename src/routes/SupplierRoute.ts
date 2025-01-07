@@ -18,7 +18,7 @@ router.post('One_Way_Service_Details', One_Way_Details);
 router.post('/CreateSupplierApi',CreateSupplierApi);
 router.post('/Supplier_price',Supplier_price);
 router.post('/TransportNode',TransportNode); 
-router.post('/CreateCartDetail',CreateCartDetail); 
+router.post('/Createcardetail',CreateCartDetail); 
 router.get('/getCarDetails/:id',GetCarDetails); 
 router.post('/CreateRows',CreateTransferCarDetails);
 router.post('/CreateExtraSpaces',CreateExtraSp); 
