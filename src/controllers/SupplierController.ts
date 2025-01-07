@@ -948,6 +948,27 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
     }
 }
 
+export const GetAllCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const result = await db.select()
+        .from(SupplierCarDetailsTable) 
+        .fullJoin( 
+            CreateDateRanges,
+        eq(CreateDateRanges.uniqueId, SupplierCarDetailsTable.uniqueId)
+      )
+      .fullJoin( 
+        CreateExtraSpaces,
+        eq(CreateExtraSpaces.uniqueId, SupplierCarDetailsTable.uniqueId)
+      )
+      .fullJoin( 
+        CreateTransferCar,
+        eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId)
+      );
+         return res.status(200).json(result);
+    }catch(error){
+        res.status(404).json({message:"Data is not found"})
+    }
+}
 export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
     try{
          const CarDetailsId = req.params.id;
