@@ -456,7 +456,7 @@ if (existingSupplier.length > 0 || existingAgent.length>0) {
     await sendOTPEmail(email, otp);
   
     res.status(200).json({ message: 'OTP sent successfully' });
-}
+} 
 }
 
 export const supplierverifyOtp = async (req: Request, res: Response, next: NextFunction) => {
@@ -742,10 +742,6 @@ export const GetAllCarDetails = async(req:Request,res:Response,next:NextFunction
     try{
         const result = await db.select()
         .from(SupplierCarDetailsTable) 
-        .fullJoin( 
-            CreateDateRanges,
-        eq(CreateDateRanges.uniqueId, SupplierCarDetailsTable.uniqueId)
-      )
       .fullJoin( 
         CreateExtraSpaces,
         eq(CreateExtraSpaces.uniqueId, SupplierCarDetailsTable.uniqueId)
