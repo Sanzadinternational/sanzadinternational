@@ -8,7 +8,7 @@ export const registerTable = pgTable('supplier', {
   Country: varchar({ length: 255 }).notNull(), 
   City: varchar({ length: 255 }).notNull(),
   Zip_code: varchar({length:255}).notNull(),
-  Office_number: varchar({length:255}).notNull(),
+  Office_number: varchar({length:255}).notNull(), 
   Email: varchar({ length: 255 }).notNull().unique(), 
   Contact_Person: varchar({length:255}).notNull(),
   Otp:varchar({length:255}).notNull(),
@@ -129,6 +129,7 @@ export type supplier_otps = {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
     uid:varchar({length:255}),
     uniqueId:varchar({length:255}),
+    SupplierId:varchar({length:255}), 
     VehicleType: varchar({length:255}), 
     VehicleBrand:varchar({length:255}), 
     ServiceType:varchar({length:255}), 
@@ -140,7 +141,7 @@ export type supplier_otps = {
     Country:varchar({length:255}),
     Passengers:varchar({length:255}), 
     MediumBag:varchar({length:255}),
-    SmallBag:varchar({length:255}),
+    SmallBag:varchar({length:255}), 
     TransferInfo:varchar({length:255}),
 
     HalfDayRide:varchar({length:255}),
@@ -156,20 +157,12 @@ export type supplier_otps = {
     TollFee:varchar({length:255}),
     Parking:varchar({length:255}),
     Currency:varchar({length:255}),
+    From: date(),  
+    To: date(),  
     Others:varchar({length:255}) 
   }) 
   
-  export const CreateDateRanges = pgTable('DateRange', { 
-
-    id: integer('id') 
-      .primaryKey()
-      .generatedAlwaysAsIdentity(), 
-      uniqueId: varchar({ length: 255 }), 
-    from: date(),  
-    to: date(),    
-    SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
-      .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
-});
+//ExtraSpace Table
 
   export const CreateExtraSpaces=pgTable('ExtraSpace',{
     uniqueId:varchar({length:255}), 

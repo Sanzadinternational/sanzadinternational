@@ -130,6 +130,7 @@ export interface CreateExtraSpace{
 export interface CreateCartDetails{ 
   uid:string,
   uniqueId:string,
+  SupplierId:string,
   VehicleType:string,
   VehicleBrand:string,
   ServiceType:string,
@@ -189,15 +190,11 @@ export interface CreateCartDetails{
   TollFee:string,
   Parking:string,
   Currency:string,
+  From:string, 
+  To:string,
   Others:string
 } 
-
-export interface DateRanges {
-  uniqueId: string,
-  from:Date,
-  to: Date,
-  SupplierCarDetailsforeign: number
-}
+//Vehicle Type
 
 export interface VehicleType{
   VehicleType:string

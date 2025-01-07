@@ -107,14 +107,6 @@ CREATE TABLE IF NOT EXISTS "supplier_details" (
 	"Other" varchar(255)
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "DateRange" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "DateRange_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"uniqueId" varchar(255),
-	"from" date,
-	"to" date,
-	"SupplierCarDetailsforeign" integer
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "ExtraSpace" (
 	"uniqueId" varchar(255),
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "ExtraSpace_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
@@ -219,6 +211,7 @@ CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Car_Details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"uid" varchar(255),
 	"uniqueId" varchar(255),
+	"SupplierId" varchar(255),
 	"VehicleType" varchar(255),
 	"VehicleBrand" varchar(255),
 	"ServiceType" varchar(255),
@@ -245,6 +238,8 @@ CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"TollFee" varchar(255),
 	"Parking" varchar(255),
 	"Currency" varchar(255),
+	"From" date,
+	"To" date,
 	"Others" varchar(255)
 );
 --> statement-breakpoint
@@ -303,12 +298,6 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 	"otp" text NOT NULL,
 	"otpExpiry" timestamp NOT NULL
 );
---> statement-breakpoint
-DO $$ BEGIN
- ALTER TABLE "DateRange" ADD CONSTRAINT "DateRange_SupplierCarDetailsforeign_Car_Details_id_fk" FOREIGN KEY ("SupplierCarDetailsforeign") REFERENCES "public"."Car_Details"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "ExtraSpace" ADD CONSTRAINT "ExtraSpace_SupplierCarDetailsforeign_Car_Details_id_fk" FOREIGN KEY ("SupplierCarDetailsforeign") REFERENCES "public"."Car_Details"("id") ON DELETE cascade ON UPDATE no action;

@@ -1,23 +1,21 @@
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,VehicleType,DateRanges,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,
+import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
-// const {One_Way_Service_Details = require('../dto/Supplier.dto'); 
-// import { v4 as uuidv4 } from 'uuid'; 
+
 import { desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
-// Make sure db is correctly configured and imported 
+
 import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db"; 
 const { registerTable, One_WayTable,CreateDateRanges,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
     supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
-// const {One_Way_Service_Details } = require('../db/schema/SupplierSchema'); 
-// import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
-import { generateOTP, sendOTPEmail } from "../utils";
-// const { One_Way_Service_Price_Details } = require('../db/schema/SupplierSchema'); 
+
+import { generateOTP, sendOTPEmail } from "../utils"; 
+
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken'); 
-import { union } from 'drizzle-orm/pg-core';
+
 
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {   
@@ -40,30 +38,26 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             Password,
             Api_key,
             Is_up,
-            // password,
+           
         } = <CreateSupplierInput>req.body; 
         const existingSupplier = await db
         .select()
         .from(registerTable)
         .where(eq(registerTable.Email, Email))
-        // .union(
-        //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
-        // );
+
 
         const existingAgent= await db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
     
     if (existingSupplier.length > 0 || existingAgent.length>0) {
-        // If email exists in either table, return a conflict response
+      
         return res.status(400).json({
             success: false,
             message: "Email is already registered in the system." 
         });
     }
 
-        const id = uuidv4(); // Generate UUID for the new supplier
-        // const saltRounds = 10;
-        // const hashedPassword = await bcrypt.hash(password, saltRounds);
-        // Insert the new supplier
+        const id = uuidv4(); 
+      
         const hashedPassword = await bcrypt.hash(Password, 10); 
         const newSupplier = await db
             .insert(registerTable)
@@ -86,21 +80,21 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 Password:hashedPassword,
                 Api_key,
                 Is_up,
-                // password: hashedPassword,
+             
             })
-            .returning(); // Return the newly inserted supplier
+            .returning(); 
 
         return res.status(201).json(newSupplier);
 
     } catch (error) {
-        // Pass any error to the error handler middleware
+      
         next(error);
     }
 };
 
 export const GetSupplier = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Fetch all suppliers from the database
+       
         const result = await db 
             .select({
                 id: registerTable.id,
@@ -128,94 +122,11 @@ export const GetSupplier = async (req: Request, res: Response, next: NextFunctio
         return res.status(200).json(result); 
 
     } catch (error) {
-        // Pass the error to the error handler middleware
+       
         next(error);
     }
 };
-
-// export const supplier_details_services = async(req:Request,res:Response,next:NextFunction)=>{ 
-//     try {
-//         const {
-//             vehicle_type,
-//             vehicle_brand, 
-//             type_service,
-//             vehicle_model, 
-//             doors,
-//             seats,
-//             category_space,
-//             max_number_pax_accommodate,
-//             luggage_information,
-//             max_number_medium_suitcase,
-//             max_number_carbin_bag, 
-//             space_available_other_luggage, 
-//             location_details,
-//             transfer_information,
-//             service_providing_location,  
-//             airport,
-//             port_cruise, 
-//             station,
-//             city_center,
-//             vehicle_for,
-//             half_day_city_limit_4hrs, 
-//             full_day_city_limit_8hrs,   
-//             inclusions,
-//             vehicle_rent,
-//             fuel,
-//             driver,
-//             parking_fees,
-//             toll_or_taxes, 
-//             driver_tips,
-//             other, 
-//         } = <supplier_details_services>req.body;
-
-//         const id = uuidv4(); // Generate UUID for the new supplier
-//         // const saltRounds = 10;
-//         // const hashedPassword = await bcrypt.hash(password, saltRounds);
-//         // Insert the new supplier
-//         const newSupplier = await db
-//             .insert(registerTable2)
-//             .values({
-//                 vehicle_type:registerTable2.vehicle_type,
-//                 vehicle_brand:registerTable2.vehicle_brand,
-//                 type_service:registerTable2.type_service,
-//                 vehicle_model:registerTable2.vehicle_model, 
-//                 doors:registerTable2.doors, 
-//                 seats:registerTable2.seats,
-//                 category_space:registerTable2.category_space,
-//                 max_number_pax_accommodate:registerTable2.max_number_pax_accommodate,
-//                 luggage_information:registerTable2.luggage_information,
-//                 max_number_medium_suitcase:registerTable2.max_number_medium_suitcase,
-//                 max_number_carbin_bag:registerTable2.max_number_carbin_bag, 
-//                 space_available_other_luggage:registerTable2.space_available_other_luggage, 
-//                 location_details:registerTable2.location_details,
-//                 transfer_information:registerTable2.transfer_information,
-//                 service_providing_location:registerTable2.service_providing_location,  
-//                 airport:registerTable2.airport,
-//                 port_cruise:registerTable2.port_cruise,
-//                 station:registerTable2.station,
-//                 city_center:registerTable2.city_center,
-//                 vehicle_for:registerTable2.vehicle_for,
-//                 half_day_city_limit_4hrs:registerTable2.half_day_city_limit_4hrs, 
-//                 full_day_city_limit_8hrs:registerTable2.full_day_city_limit_8hrs, 
-//                 inclusions:registerTable2.inclusions,
-//                 vehicle_rent:registerTable2.vehicle_rent,
-//                 fuel:registerTable2.fuel,
-//                 driver:registerTable2.driver,
-//                 parking_fees:registerTable2.parking_fees,
-//                 toll_or_taxes:registerTable2.toll_or_taxes, 
-//                 driver_tips:registerTable2.driver_tips,
-//                 other:registerTable2.other, 
-//             })
-//             .returning(); // Return the newly inserted supplier
-
-//         return res.status(201).json(newSupplier);
-
-//     } catch (error) {
-//         // Pass any error to the error handler middleware
-//         next(error);
-//     }
-
-// }
+//Transport
 export const TransportNode = async(req:Request,res:Response,next:NextFunction)=>{ 
    try{
         const {
@@ -456,61 +367,7 @@ export const GetSupplier_details = async (req: Request, res: Response, next: Nex
     }
 }; 
 
-// export const One_Way_Service_Details = async(req:Request,res:Response,next:NextFunction) =>{
-//     try{
-//         const {
-//             country,
-//             city,
-//             location_from_airport,
-//             location_from_port_cruise,
-//             location_from_station,
-//             location_from_city_center,
-//             location_to_airport,
-//             location_to_port_cruise,
-//             location_to_station,
-//             location_to_city_center,
-//             night_time_supplement,
-//             vice_versa,
-//             half_day_city_limit_4hrs,
-//             full_day_city_limit_8hrs,
-//             from_date, 
-//             to_date,   
-//             price, 
-//             new_location,
-//         } = <One_Way_Service_Price_Details>req.body;
-//         const id = uuidv4();
-        
-//         const newSupplier = await db
-//         .insert(One_Way_Service_Details)
-//         .values({
-//             id,
-//             country,
-//             city,
-//             location_from_airport,
-//             location_from_port_cruise,
-//             location_from_station,
-//             location_from_city_center,
-//             location_to_airport,
-//             location_to_port_cruise,
-//             location_to_station,
-//             location_to_city_center,
-//             night_time_supplement,
-//             vice_versa,
-//             half_day_city_limit_4hrs,
-//             full_day_city_limit_8hrs,
-//             from_date, 
-//             to_date,   
-//             price, 
-//             new_location,
-//         })
-//         .returning(); // Return the newly inserted supplier details 
-
-//         // Respond with the newly created supplier
-//         return res.status(201).json(newSupplier);
-//     }catch{
-//         next(error);
-//     }
-// }
+//comment
 
 export const One_Way_Details = async (req: Request, res: Response, next: NextFunction) => {   
     try {
@@ -534,11 +391,9 @@ export const One_Way_Details = async (req: Request, res: Response, next: NextFun
             to_date,   
             price, 
             new_location,
-        } = <CreateSupplierOneWayInput>req.body; // Directly take values from the request body 
+        } = <CreateSupplierOneWayInput>req.body; 
 
-        const id = uuidv4(); // Generate UUID for the new supplier 
-
-        // Insert the new supplier details into the database 
+        const id = uuidv4();
         const newSupplier = await db
             .insert(One_WayTable) // Assuming `registerTable2` is your Drizzle ORM table
             .values({
@@ -720,46 +575,7 @@ export const CreateSupplierApi = async (req: Request, res: Response, next: NextF
         next(error);
     } 
 }; 
-
-// export const CreateTransferCarDetails = async (
-//     req: Request,
-//     res: Response,
-//     next: NextFunction
-//   ) => {
-//     try {
-//       const { 
-//         uniqueId,
-//         Transfer_from, 
-//         Transfer_to, 
-//         Vice_versa, 
-//         Price, 
-//         NightTime, 
-//         NightTime_Price, 
-//         SupplierCarDetailsforeign 
-//       } = req.body as CreateTransferCars;
-  
-//       // Insert a new transfer car record into the database 
-//       const TransferCar = await db
-//         .insert(CreateTransferCar)
-//         .values({
-//             uniqueId,
-//           Transfer_from,
-//           Transfer_to,
-//           Vice_versa,
-//           Price, 
-//           NightTime,
-//           NightTime_Price,
-//           SupplierCarDetailsforeign, 
-//         })
-//         .returning();
-  
-//       // Send the inserted record as a response
-//       return res.status(200).json({ success: true, data: TransferCar });
-//     } catch (error) {
-//       // Pass the error to the error-handling middleware
-//       next(error);
-//     }
-//   };
+// Car Details
 export const CreateTransferCarDetails = async (
     req: Request,
     res: Response,
@@ -824,39 +640,7 @@ export const CreateExtraSp = async (
       next(error); // Pass the error to error-handling middleware
     }
   };
-//   export const CreateExtraSp = async (req: Request, res: Response, next: NextFunction) => { 
-//     try {
-//         // Destructure request body 
-//         const {uniqueId,
-//             Roof_rock,
-//             Trailer_hitech,
-//             Extended_cargo_space,
-//             SupplierCarDetailsforeign, } = req.body; 
-
-//         // Validate input
-//         if (!Roof_rock || !Trailer_hitech || !Extended_cargo_space || !SupplierCarDetailsforeign) {
-//             return res.status(400).json({ error: "All fields are required." });
-//         }
-
-//         // Insert new supplier record
-//         const newExtra = await db
-//             .insert(CreateExtraSpaces)
-//             .values({
-//                 uniqueId,
-//                 Roof_rock,
-//                 Trailer_hitech,
-//                 Extended_cargo_space,
-//                 SupplierCarDetailsforeign, 
-//             })
-//             .returning();
-
-//         // Return success response with new supplier details
-//         return res.status(200).json(newExtra); 
-//     } catch (error) {
-//         // Handle any errors
-//         next(error);
-//     } 
-// }; 
+// Extra Space 
 export const ExtraSpace = async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
           const result = await db.select({ 
@@ -878,6 +662,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
          const {  
             uid,
             uniqueId,
+            SupplierId,
             VehicleType, 
             VehicleBrand,
             ServiceType,
@@ -905,6 +690,8 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Parking,
             Currency,
             Tip,
+            From,  
+            To,  
             Others
         } =<CreateCartDetails>req.body; 
         const uniId = uuidv4(); 
@@ -912,6 +699,7 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             .values({
                 uid:uniId,
                 uniqueId,
+                SupplierId,
             VehicleType,
             VehicleBrand,
             ServiceType,
@@ -939,6 +727,8 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             Parking,
             Currency,
             Tip:Tip || 'no',
+            From,  
+            To,  
             Others
             })
             .returning(); 
@@ -982,57 +772,7 @@ export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>
     }
 }
 
-export const CreateDateRange = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const { uniqueId, from, to, SupplierCarDetailsforeign } = req.body as DateRanges;
-
-    // Validate input
-    // if (!uniqueId || !from || !to || !SupplierCarDetailsforeign) {
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: "All fields are required: uniqueId, from, to, SupplierCarDetailsforeign.",
-    //   });
-    // }
-//kjj
-    if (new Date(from) > new Date(to)) {
-      return res.status(400).json({
-        success: false,
-        message: "'from' date cannot be later than 'to' date.",
-      });
-    }
-
-    // Insert data into the database
-    const insertedDateRange = await db
-      .insert(CreateDateRanges)
-      .values({ uniqueId, from, to, SupplierCarDetailsforeign })
-      .returning(); // Returns the newly inserted row(s)
-
-    return res.status(201).json({
-      success: true,
-      message: "Date range created successfully.",
-      data: insertedDateRange,
-    });
-  } catch (error) {
-    console.error("Error in CreateDateRange:", error);
-    next(error); // Pass the error to the Express error handler
-  }
-};
-
-
-
-export const GetDateRange= async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-          const result= await db.select({
-            id:CreateDateRanges.id,
-            from:CreateDateRanges.from,
-            to:CreateDateRanges.to
-          })
-          .from(CreateDateRanges) 
-          res.status(200).json(result) 
-    }catch(error){
-        res.status(404).json({message:'Data is not found'})
-    }
-}
+//Date
 
 export const CreateVehicleType=async(req:Request,res:Response,next:NextFunction)=>{
    try{

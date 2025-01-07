@@ -1,7 +1,7 @@
 import { Supplier_price, TransportNode } from './../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,GetSupplier,GetAllCarDetails,CreateVehicleType,GetDateRange,GetVehicleBrand,CreateVehicleBrand,CreateDateRange,CreateServiceType,CreateVehicleModel,GetVehicleType,
+import { CreateSupplier,GetSupplier,GetAllCarDetails,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
     GetCarDetails,GetServiceType,CreateExtraSp,GetVehicleModel,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
 const router = express.Router(); 
@@ -19,8 +19,6 @@ router.post('/CreateSupplierApi',CreateSupplierApi);
 router.post('/Supplier_price',Supplier_price);
 router.post('/TransportNode',TransportNode); 
 router.post('/CreateCartDetail',CreateCartDetail); 
-router.post('/CreateDateRange',CreateDateRange)
-router.get('/GetDateRange',GetDateRange)
 router.get('/getCarDetails/:id',GetCarDetails); 
 router.post('/CreateRows',CreateTransferCarDetails);
 router.post('/CreateExtraSpaces',CreateExtraSp); 

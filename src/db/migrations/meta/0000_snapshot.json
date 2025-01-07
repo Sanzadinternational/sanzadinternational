@@ -1,5 +1,5 @@
 {
-  "id": "93411571-5c12-4a17-acc6-057e89aaf695",
+  "id": "e3442822-806b-4870-999b-6ec40c66f8c6",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -665,71 +665,6 @@
       },
       "indexes": {},
       "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.DateRange": {
-      "name": "DateRange",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "DateRange_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
-        },
-        "uniqueId": {
-          "name": "uniqueId",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "from": {
-          "name": "from",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "to": {
-          "name": "to",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "SupplierCarDetailsforeign": {
-          "name": "SupplierCarDetailsforeign",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {
-        "DateRange_SupplierCarDetailsforeign_Car_Details_id_fk": {
-          "name": "DateRange_SupplierCarDetailsforeign_Car_Details_id_fk",
-          "tableFrom": "DateRange",
-          "tableTo": "Car_Details",
-          "columnsFrom": [
-            "SupplierCarDetailsforeign"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -1429,6 +1364,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "SupplierId": {
+          "name": "SupplierId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "VehicleType": {
           "name": "VehicleType",
           "type": "varchar(255)",
@@ -1582,6 +1523,18 @@
         "Currency": {
           "name": "Currency",
           "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "From": {
+          "name": "From",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "To": {
+          "name": "To",
+          "type": "date",
           "primaryKey": false,
           "notNull": false
         },
