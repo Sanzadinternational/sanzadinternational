@@ -86,14 +86,14 @@ export interface SupplierPriceInput{
     full_day_city_limit_8hrs:string,
     from_date:string,
     to_date:string, 
-    price:number,
-    new_location:string
-  }
-
+    price:number, 
+    new_location:string 
+  } 
+ 
   export interface CreateSupplierApidata{ 
-    Api:string,
-    Api_User:string,
-    Api_Password:string,
+    Api:string, 
+    Api_User:string, 
+    Api_Password:string, 
     Api_Id_Foreign:number 
   } 
   // export interface RowDetails {
@@ -105,28 +105,47 @@ export interface SupplierPriceInput{
   
 export interface CreateTransferCars{
   uniqueId:string,
-    Transfer_from:string, 
-    Transfer_to:string,
-    Vice_versa:boolean, 
-    NightTime:{ 
+  SupplierId:string,
+  Transfer_from:string, 
+  Transfer_to:string,
+  Vice_versa:boolean, 
+  NightTime:{ 
       type:string, 
       default:"no",
       enum:['yes','no']
     },
-    NightTime_Price:string,
-    Price:string,
-    SupplierCarDetailsforeign:number
-}
-
-export interface CreateExtraSpace{
+  NightTime_Price:string,
+  Price:string,
+  SupplierCarDetailsforeign:number
+} 
+export interface UpdateTransferCars{ 
+  uniqueId:string,
+  Transfer_from:string, 
+  Transfer_to:string,
+  Vice_versa:boolean, 
+  NightTime:{ 
+      type:string, 
+      default:"no",
+      enum:['yes','no']
+    },
+  NightTime_Price:string,
+  Price:string
+} 
+export interface CreateExtraSpace{ 
     uniqueId:string,
+    SupplierId:string,
     Roof_Rack:string,
     Trailer_Hitch:string,
     Extended_Cargo_Space:string,
     SupplierCarDetailsforeign:number
-}
+} 
 
-
+export interface UpdateExtraSpace{ 
+  uniqueId:string, 
+  Roof_Rack:string, 
+  Trailer_Hitch:string, 
+  Extended_Cargo_Space:string 
+} 
 export interface CreateCartDetails{ 
   uid:string,
   uniqueId:string,
@@ -195,6 +214,75 @@ export interface CreateCartDetails{
   Others:string
 } 
 //Vehicle Type
+
+export interface UpdateCreateCartDetails{ 
+  uid:string,
+  uniqueId:string,
+  SupplierId:string,
+  VehicleType:string,
+  VehicleBrand:string,
+  ServiceType:string,
+  VehicleModel:string, 
+  Doors:string,
+  Seats:string, 
+  Cargo:string, 
+  City:string,
+  Country:string,
+  Passengers:string,
+  MediumBag:string,
+  SmallBag:string, 
+  TransferInfo:string,
+
+  HalfDayRide:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  FullDayRide:{ 
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  HalfFullNightTime:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  HalfFullNightTimePrice:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  VehicleRent:string,
+  Fuel:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  Driver:string,
+  ParkingFee:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  TollTax:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  Tip:{
+    type:string,
+    default:"no",
+    enum:['yes','no']
+  },
+  TollFee:string,
+  Parking:string,
+  Currency:string,
+  From:string, 
+  To:string,
+  Others:string
+} 
+
 
 export interface VehicleType{
   VehicleType:string

@@ -1,17 +1,17 @@
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,VehicleModel,CreateTransferCars,
-    CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
+import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
+    CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
 
 import { desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 
 import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db"; 
-const { registerTable, One_WayTable,CreateDateRanges,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
+const { registerTable, One_WayTable,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
     supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
-
+ 
 import { generateOTP, sendOTPEmail } from "../utils"; 
-
+ 
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken'); 
@@ -21,9 +21,9 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
     try {   
         const { 
             Company_name, 
-            Owner,
-            Address,
-            Country, 
+            Owner, 
+            Address, 
+            Country,  
             City,
             Zip_code,
             Office_number,
@@ -485,12 +485,12 @@ export const supplierverifyOtp = async (req: Request, res: Response, next: NextF
 
 
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
-
+const JWT_REFRESH_SECRET = "abhi123";
 export const loginSupplier = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { Email, Password } = req.body; 
 
-        // Fetch the agent by email
+        // Fetch the agent by email 
         const [user] = await db
             .select({
                 id:registerTable.id,
@@ -513,7 +513,7 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
                 Api_key:registerTable.Api_key,
                 Is_up:registerTable.Is_up
             })
-            .from(registerTable)
+            .from(registerTable) 
             .where(eq(registerTable.Email, Email)); 
 
         // Check if the agent was found
@@ -529,16 +529,17 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
         }
 
         // Generate a JWT token 
-        const token = jwt.sign( 
-            {  email: user.Email }, // Use 'agent.email' (lowercase)
-            JWT_SECRET,
-            { expiresIn: '1h' }  // Token valid for 1 hour
-        );
-
+        // const token = jwt.sign( 
+        //     {  email: user.Email }, // Use 'agent.email' (lowercase)
+        //     JWT_SECRET,
+        //     { expiresIn: '1h' }  // Token valid for 1 hour
+        // );
+        const accessToken = jwt.sign({ id: user.id, email: user.Email }, JWT_SECRET, { expiresIn: '15m' });
         // Return a successful response with the token
         return res.status(200).json({
             message: 'Login Successfully', 
-            token,
+            // token,
+            accessToken,
             user,
         });
 
@@ -546,7 +547,38 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
         next(error); // Pass error to global error handler
     }
 };
-
+export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
+    const userID = req.body.id;
+    const [user] = await db
+            .select({
+                id:registerTable.id,
+                Company_name:registerTable.Company_name,
+                Owner:registerTable.Owner,
+                Address:registerTable.Address,
+                Country:registerTable.Country, 
+                City:registerTable.City,
+                Zip_code:registerTable.Zip_code,
+                Office_number:registerTable.Office_number,
+                Email:registerTable.Email,
+                Contact_Person:registerTable.Contact_Person,
+                Otp:registerTable.Otp,
+                Mobile_number:registerTable.Mobile_number,
+                Gst_Vat_Tax_number:registerTable.Gst_Vat_Tax_number, 
+                PAN_number:registerTable.PAN_number, 
+                Currency:registerTable.Currency,
+                Gst_Tax_Certificate:registerTable.Gst_Tax_Certificate,
+                Api_key:registerTable.Api_key,
+                Is_up:registerTable.Is_up
+            })
+            .from(registerTable)
+            .where(eq(registerTable.id, userID)); 
+    res.status(200).send({
+        success: true,
+        message: "Access granted to protected resource",
+        userId: req.body.id,
+        user_information: user.Company_name
+      });
+};
 export const CreateSupplierApi = async (req: Request, res: Response, next: NextFunction) => { 
     try {
         // Destructure request body 
@@ -758,15 +790,187 @@ export const GetAllCarDetails = async(req:Request,res:Response,next:NextFunction
 export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
     try{
          const CarDetailsId = req.params.id;
-
+         //jl
          const result= await db.select()
          .from(SupplierCarDetailsTable) 
-         .where(eq(SupplierCarDetailsTable.id, CarDetailsId))
+         .where(eq(SupplierCarDetailsTable.SupplierId, CarDetailsId))
+         .fullJoin( 
+            CreateExtraSpaces,
+            eq(CreateExtraSpaces.uniqueId, SupplierCarDetailsTable.uniqueId)
+          )
+          .fullJoin( 
+            CreateTransferCar,
+            eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId)
+          );
          res.status(200).json(result)
     }catch(error){
         res.status(404).json({message:'Data is not found'})
     }
 }
+
+export const DeleteSingleCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+          const CarDetailsId = req.params.id;
+          await db
+          .delete(CreateExtraSpaces)
+          .where(eq(CreateExtraSpaces.uniqueId, CarDetailsId));
+    
+        await db
+          .delete(CreateTransferCar) 
+          .where(eq(CreateTransferCar.uniqueId, CarDetailsId));
+
+          const result = await db.delete(SupplierCarDetailsTable)
+          .where(eq(SupplierCarDetailsTable.uniqueId, CarDetailsId))
+
+          res.status(200).json({message:"Car Details data is deleted Successfully"})
+    }catch(error){
+        res.status(404).json({message:'Car Details data is not deleted'})
+    } 
+} 
+ 
+export const UpdatedSingleCarDetails = async (req: Request, res: Response, next: NextFunction) => {
+    try { 
+      const id = req.params.id; 
+  
+      // Destructure request body into respective interfaces 
+      const { 
+        uid, 
+        uniqueId, 
+        SupplierId, 
+        VehicleType, 
+        VehicleBrand, 
+        ServiceType,
+        VehicleModel,
+        Doors,
+        Seats,
+        Cargo,
+        City,
+        Country,
+        Passengers,
+        MediumBag,
+        SmallBag,
+        TransferInfo,
+        HalfDayRide,
+        FullDayRide,
+        HalfFullNightTime,
+        HalfFullNightTimePrice,
+        VehicleRent,
+        Fuel,
+        Driver,
+        ParkingFee,
+        TollTax,
+        TollFee,
+        Parking,
+        Currency,
+        Tip,
+        From,
+        To,
+        Others,
+      } = <UpdateCreateCartDetails>req.body;
+  
+      const {  
+        Roof_Rack, 
+        Trailer_Hitch, 
+        Extended_Cargo_Space 
+      } = <UpdateExtraSpace>req.body;
+  
+      const { 
+        Transfer_from, 
+        Transfer_to,
+        Vice_versa, 
+        NightTime,
+        NightTime_Price, 
+        Price 
+      } = <UpdateTransferCars>req.body;
+  
+      const uniId = uuidv4(); // Generate a new UUID for `uid`.
+  
+      // Wrap updates in a transaction for atomicity
+      const result = await db.transaction(async (trx) => {
+        // Update `SupplierCarDetailsTable`
+        const updatedSupplierCarDetails = await trx
+          .update(SupplierCarDetailsTable)
+          .set({
+            uid: uniId, // Ensure this overwriting is intended
+            uniqueId,
+            SupplierId,
+            VehicleType,
+            VehicleBrand,
+            ServiceType,
+            VehicleModel,
+            Doors,
+            Seats,
+            Cargo,
+            City,
+            Country,
+            Passengers,
+            MediumBag,
+            SmallBag,
+            TransferInfo,
+            HalfDayRide: HalfDayRide || "no",
+            FullDayRide: FullDayRide || "no",
+            HalfFullNightTime: HalfFullNightTime || "no",
+            HalfFullNightTimePrice: HalfFullNightTimePrice || "no",
+            VehicleRent,
+            Fuel,
+            Driver,
+            ParkingFee: ParkingFee || "no",
+            TollTax: TollTax || "no",
+            TollFee,
+            Parking,
+            Currency,
+            Tip: Tip || "no",
+            From,
+            To, 
+            Others, 
+          }) 
+          .where(eq(SupplierCarDetailsTable.uniqueId, id))
+          .returning(); 
+  
+        // Update `CreateExtraSpaces`
+        const updatedExtraSpaces = await trx
+          .update(CreateExtraSpaces)
+          .set({
+            uniqueId,
+            Roof_Rack: Roof_Rack || false,
+            Trailer_Hitch: Trailer_Hitch || false,
+            Extended_Cargo_Space: Extended_Cargo_Space || false,
+          })
+          .where(eq(CreateExtraSpaces.uniqueId, uniqueId))
+          .returning();
+  
+        // Update `CreateTransferCar`
+        const updatedTransferCar = await trx
+          .update(CreateTransferCar)
+          .set({
+            uniqueId,
+            Transfer_from,
+            Transfer_to,
+            Vice_versa,
+            NightTime,
+            NightTime_Price,
+            Price,
+          })
+          .where(eq(CreateTransferCar.uniqueId, uniqueId))
+          .returning();
+  
+        // Return the results of all updates
+        return {
+          updatedSupplierCarDetails,
+          updatedExtraSpaces,
+          updatedTransferCar,
+        };
+      });
+    
+      // Send success response
+      res.status(200).json({data:result});
+    } catch (error) {
+      // Log error details for debugging
+      console.error("Error updating car details:", error);
+      next(error);
+    }
+  };
+  
 
 //Date
 

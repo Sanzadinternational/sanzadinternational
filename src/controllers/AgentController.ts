@@ -192,7 +192,7 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         }
 
         // Generate a JWT token
-        const token = jwt.sign(
+        const accessToken = jwt.sign(
             {  email: user.Email }, // Use 'agent.email' (lowercase)
             JWT_SECRET,
             { expiresIn: '1h' }  // Token valid for 1 hour
@@ -201,8 +201,8 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         // Return a successful response with the token
         return res.status(200).json({
             message: 'Login Successfully',
-            token,
-            user,
+            accessToken,
+            user, 
         });
 
     } catch (error) {

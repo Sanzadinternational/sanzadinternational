@@ -1,8 +1,8 @@
-import { Supplier_price, TransportNode } from './../controllers/SupplierController';
+import { dashboard, Supplier_price, TransportNode } from '../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
 import { CreateSupplier,GetSupplier,GetAllCarDetails,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
-    GetCarDetails,GetServiceType,CreateExtraSp,GetVehicleModel,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+    GetCarDetails,GetServiceType,CreateExtraSp,GetVehicleModel,UpdatedSingleCarDetails,DeleteSingleCarDetails,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
 const router = express.Router(); 
 
@@ -20,6 +20,8 @@ router.post('/Supplier_price',Supplier_price);
 router.post('/TransportNode',TransportNode); 
 router.post('/Createcardetail',CreateCartDetail); 
 router.get('/getCarDetails/:id',GetCarDetails); 
+router.put('/UpdatedSingleCarDetails/:id',UpdatedSingleCarDetails)
+router.delete('/DeleteSingleCarDetails/:id',DeleteSingleCarDetails);
 router.post('/CreateRows',CreateTransferCarDetails);
 router.post('/CreateExtraSpaces',CreateExtraSp); 
 router.get('/GetAllCarDetails',GetAllCarDetails);
@@ -33,6 +35,7 @@ router.get('/GetServiceType',GetServiceType)
 router.post('/CreateVehicleModel',CreateVehicleModel); 
 router.get('/GetVehicleModel',GetVehicleModel) 
 router.get('/GetVehicleType',GetVehicleType)
+router.get('/dashboard', authMiddleware, dashboard);
 // router.get('/products', GetProducts); 
 // router.get('/product/:id', GetProductById);
 // router.get('/product/:Keyword', SearchProduct); 
