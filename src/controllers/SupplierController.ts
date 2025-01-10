@@ -583,7 +583,8 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
         // role: "supplier",
 
         userId: req.body.id,
-        user_information: user.Company_name,
+        Company_name: user.Company_name,
+        Email:user.Email,
         role: user.Role,
       });
 };
