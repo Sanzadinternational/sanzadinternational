@@ -576,7 +576,8 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
         success: true,
         message: "Access granted to protected resource",
         userId: req.body.id,
-        user_information: user.Company_name
+        user_information: user.Company_name,
+        role: 'supplier',
       });
 };
 export const CreateSupplierApi = async (req: Request, res: Response, next: NextFunction) => { 
