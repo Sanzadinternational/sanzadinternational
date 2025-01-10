@@ -36,8 +36,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             Currency,
             Gst_Tax_Certificate,
             Password,
-            Api_key,
-            Is_up,
+           Role,
            
         } = <CreateSupplierInput>req.body; 
         const existingSupplier = await db
@@ -78,8 +77,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 Currency,
                 Gst_Tax_Certificate,
                 Password:hashedPassword,
-                Api_key,
-                Is_up,
+                Role:Role || 'supplier'
              
             })
             .returning(); 
@@ -113,9 +111,9 @@ export const GetSupplier = async (req: Request, res: Response, next: NextFunctio
                 PAN_number: registerTable.PAN_number,
                 Currency: registerTable.Currency,
                 Gst_Tax_Certificate: registerTable.Gst_Tax_Certificate,
-                Password: registerTable.Password,
-                Api_key:registerTable.Api_key,
-                Is_up:registerTable.Is_up,
+                Password: registerTable.Password
+                // Api_key:registerTable.Api_key,
+                // Is_up:registerTable.Is_up,
             })
             .from(registerTable);
 
@@ -509,9 +507,9 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
                 PAN_number:registerTable.PAN_number, 
                 Currency:registerTable.Currency,
                 Gst_Tax_Certificate:registerTable.Gst_Tax_Certificate,
-                Password:registerTable.Password,
-                Api_key:registerTable.Api_key,
-                Is_up:registerTable.Is_up
+                Password:registerTable.Password
+                // Api_key:registerTable.Api_key,
+                // Is_up:registerTable.Is_up
             })
             .from(registerTable) 
             .where(eq(registerTable.Email, Email)); 
@@ -568,8 +566,9 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
                 PAN_number:registerTable.PAN_number, 
                 Currency:registerTable.Currency,
                 Gst_Tax_Certificate:registerTable.Gst_Tax_Certificate,
-                Api_key:registerTable.Api_key,
-                Is_up:registerTable.Is_up
+                Role:registerTable.Role
+                // Api_key:registerTable.Api_key,
+                // Is_up:registerTable.Is_up
             })
             .from(registerTable)
             .where(eq(registerTable.id, userID)); 
@@ -585,7 +584,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
 
         userId: req.body.id,
         user_information: user.Company_name,
-        role: 'supplier',
+        role: user.Role,
       });
 };
 export const CreateSupplierApi = async (req: Request, res: Response, next: NextFunction) => { 

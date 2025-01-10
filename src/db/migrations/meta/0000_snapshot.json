@@ -1,5 +1,5 @@
 {
-  "id": "e3442822-806b-4870-999b-6ec40c66f8c6",
+  "id": "73be1fc2-eb5d-42e6-bbce-23d09e3f04c5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -114,6 +114,12 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "Role": {
+          "name": "Role",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -1835,14 +1841,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "Api_key": {
-          "name": "Api_key",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Is_up": {
-          "name": "Is_up",
+        "Role": {
+          "name": "Role",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

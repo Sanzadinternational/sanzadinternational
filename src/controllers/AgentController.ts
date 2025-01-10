@@ -33,6 +33,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Mobile_number,
             Currency,
             Gst_Tax_Certificate,
+            Role
         } = req.body as CreateAgentInput; 
         const existingAgent = await db
         .select()
@@ -74,6 +75,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
                 Mobile_number,
                 Currency,
                 Gst_Tax_Certificate,
+                Role: Role || "Role"
             })
             .returning(); // Return the newly inserted agent
 
@@ -207,167 +209,7 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         next(error); // Pass error to global error handler
     }
 };
-
-// export const Emailotps = async(req: Request, res: Response, next: NextFunction) => { 
-//     try {
-//         const verficationCode = Math.floor(100000 + Math.random() * 900000).toString;
-//         const {
-//             email,
-//             otp,
-//             verficationCode,
-//         } = req.body as CreateOtpInput; 
-
-//         // const id = uuidv4();
-
-//         // Hash the password before storing
-    
-
-//         const newAgent = await db
-//             .insert(otpTable)
-//             .values({
-//                 email,
-//                 otp,
-//                 verficationCode
-//             })
-//             .returning(); // Return the newly inserted agent
-
-//         return res.status(201).json(otpTable);
-//     } catch (error) {
-//         next(error);
-//     }
-// }
-// export const EmailSend= async(req:Request,res:Response,next:NextFunction)=>{
-//     try{
-//         let testAccount = await nodemailer.createTestAccount();
-//         const { email, verificationCode } = req.body as CreateOtpInput;  
-//         let transporter = nodemailer.createTransport({
-//             host:"smtp.ethereal.email",
-//             post:587,
-//             secure:false,
-//             auth:{
-//                 user:testAccount.user,
-//                 pass:testAccount.pass,
-//             },
-//         });
-
-//         let message={
-//             from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-//             to: email, // list of receivers
-//             subject: "Hello ✔", // Subject line
-//             text: `<b>Your OTP is ${verificationCode}</b>`, // plain text body
-//             html: `<b>Your OTP is ${verificationCode}</b>`, // html body 
-//         }
-
-//         // transporter.sendMail(message).then((info)=>{
-//         //     return res.status(201).json({
-//         //         msg:"you should reciever email", 
-//         //         info:info.messageId,
-//         //         preview:nodemailer.getTestMassageUrL(info) 
-//         //     });
-//         // }).catch(console.error);
-//         let info = await transporter.sendMail(message); 
-  
-//         // Log the message ID and preview URL for debugging
-//         console.log('Message sent: %s', info.messageId);
-//         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-    
-//         // Send response to the client
-//         return res.status(201).json({ msg: "You should receive an email", previewURL: nodemailer.getTestMessageUrl(info) });
-//         res.status(201).json("Send Email Successfully"); 
-//     }catch(error){
-//         next(error);
-//     }
-// }
-
-// export const GetBill= async(req:Request,res:Response,next:NextFunction)=>{
-//     try{
-
-//        const {userEmail} = req.body; 
-//        const { email, verificationCode } = req.body as CreateOtpInput;  
-//         let config={
-//             service:'gmail',
-//             auth:{
-//                 user:'jugalkishor556455@gmail.com',
-//                 pass:'vhar uhhv gjfy dpes'
-//             }
-//         }
-//         let transporter = nodemailer.createTransport(config);
-//         let MailGenerator = new Mailgen({
-//             theme:"default",
-//             product:{
-//                 name:"Mailgen",
-//                 link:"https://mailgen.js"
-//             }
-//         })
-
-//         let response={
-//             body:{
-//                 name:"Sanzad Email",
-//                 intro:"Your bill has arrived",
-//                 table:{
-//                     data:[
-//                         {
-//                             item:"Nodemailer Stack Book",
-//                             description:"A Backend Application",
-//                             price:`${verificationCode}`
-//                         }
-//                     ]
-//                 },
-//                 outro:"Looking forward to do more business"
-//             }
-//         }
-//     let mail =  MailGenerator.generate(response)
-//     let message = {
-//         from : "jugalkishor556455@gmail.com",
-//         to:email,
-//         subject:"Place Order",
-//         html:mail
-//     } 
-//     transporter.sendMail(message).then(()=>{
-//         return res.status(201).json({
-//             msg:"You should receive an email"
-//         })
-//     }).catch(console.error);
-//         // res.status(201).json("GetBill Successfully");
-//     }catch(error){
-//         next(error);
-//     }
-// }
-
-// export const EmailSend = async (req: Request, res: Response, next: NextFunction) => {
-//     try {
-//         let testAccount = await nodemailer.createTestAccount();
-
-//         let transporter = nodemailer.createTransport({
-//             host: "smtp.ethereal.email",
-//             port: 587, // Corrected from 'post' to 'port'
-//             secure: false,
-//             auth: {
-//                 user: testAccount.user,
-//                 pass: testAccount.pass,
-//             },
-//         });
-
-//         let message = {
-//             from: '"Maddison Foo Koch 👻" <maddison53@ethereal.email>', // sender address
-//             to: "bar@example.com, baz@example.com", // list of receivers
-//             subject: "Hello ✔", // Subject line
-//             text: "Hello world?", // plain text body
-//             html: "<b>Hello world?</b>", // html body
-//         };
-
-//         let info = await transporter.sendMail(message);
-        
-//         return res.status(201).json({
-//             msg: "You should receive an email",
-//             info: info.messageId,
-//             preview: nodemailer.getTestMessageUrl(info) // Corrected typo
-//         });
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({ msg: "Error sending email" });
-//     }
-// };
+//
 
 export const GetBill=async(req:Request,res:Response,next:NextFunction)=>{
 
@@ -451,36 +293,7 @@ export const OneWayTrip= async(req:Request,res:Response,next:NextFunction)=>{
     }
 } 
 
-// export const UpdateOneWayTrip = async(req:Request,res:Response,next:NextFunction)=>{
-//     try{
-//           const {
-//             pick_up_location,
-//             drop_off_location,
-//             date,
-//             passengers,
-//           } req.body as UpdateOneWayTripTable;
-
-//           const UpdateOneWayTrip = await db
-//           .update(UpdateOneWayTripTable)
-//           .set({
-//             pick_up_location,
-//             drop_off_location,
-//             date,
-//             passengers,
-//           }).where(eq(UpdateOneWayTripTable.id, id))  // Use the `id` to target the specific row
-//           .returning();  // Return the updated row 
-
-//       if (UpdateOneWayTripTable.length === 0) {
-//           return res.status(404).json({ message: "Trip not found" });
-//       }
-
-//       return res.status(200).json(UpdateOneWayTrip);  // Return the updated trip details
-//     }catch(error)
-//     {
-//         return res.status(404).json(error)
-//     }
-// }
-
+//
 export const UpdateOneWayTrip = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params; 
@@ -598,24 +411,7 @@ if (existingAgent.length > 0 || existingSupplier.length>0) {
     res.status(200).json({ message: 'OTP sent successfully' });
 }
 }
-// export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
-//     const { email, otp } = req.body;
-
-//     // Retrieve all OTP records (not recommended for large datasets)
-//     const otpRecords = await db
-//         .select()
-//         .from(otpss)// Order by expiry time
-
-//     // Find the record that matches the provided email
-//     const otpRecord = otpRecords.find(record => record.email === email);
-
-//     // Check if the OTP record exists and is valid
-//     if (!otpRecord || otpRecord.otp !== otp || new Date() > new Date(otpRecord.otpExpiry)) {
-//         return res.status(400).json({ message: 'Invalid or expired OTP' });
-//     }
-
-//     res.status(200).json({ message: 'OTP verified successfully' });
-// };
+//
 export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
     const { email, otp } = req.body;
 
