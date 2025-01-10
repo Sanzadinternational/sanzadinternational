@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTripInput, UpdateOneWayTripInput } from "../dto"; 
-// import { v4 as uuidv4 } from 'uuid';
-// const { v4: uuidv4 } = require('uuid'); 
+
 import { db } from "../db/db";
 import { generateOTP, sendOTPEmail } from "../utils";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
@@ -114,41 +113,40 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
     }
 }
 
-// const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
-
-// export const loginAgent = async(req:Request,res:Response,next:NextFunction)=>{ 
-//     try{
-//           const {Email,Password}=req.body; 
-//         //   const agent = await db.select({AgentTable.Email,AgentTable.Password}).from(AgentTable);
-//         const agent = await db
-//     .select({
-//         email: AgentTable.Email,
-//         password: AgentTable.Password
-//     })
-//     .from(AgentTable)
-//     .where(eq(AgentTable.Email, Email)); 
-//           if(!agent)
-//           {
-//             return res.status(404).json({message:"Agent is not found"}); 
-//           }
-
-//           const isPasswordValid = await bcrypt.compare(Password,agent.Password); 
-
-//           if(!isPasswordValid){
-//             return res.status(401).json({message:'Invalid credentials'});
-//           }
-
-//           const token = jwt.sign({id:agent.id,Email:agent.Email},JWT_SECRET,{ 
-//             expiresIn:'1h',
-//           });
-
-//           return res.status(200).json({message:'Login Successfully',
-//             token,
-//           });
-//     }catch(error){
-//         next(error);
-//     }
-// }
+//
+// export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
+//     const userID = req.body.id;
+//     const [user] = await db
+//             .select({
+//                 id:AgentTable.id,
+//                 Company_name:AgentTable.Company_name,
+//                 Address:AgentTable.Address,
+//                 Country:AgentTable.Country,
+//                 City:AgentTable.City,
+//                 Zip_code:AgentTable.Zip_code,
+//                 IATA_Code:AgentTable.IATA_Code,
+//                 Gst_Vat_Tax_number:AgentTable.Gst_Vat_Tax_number,
+//                 Contact_Person:AgentTable.Contact_Person,
+//                 Email:AgentTable.Email,
+//                 Password:AgentTable.Password,
+//                 Office_number:AgentTable.Office_number,
+//                 Mobile_number:AgentTable.Mobile_number,
+//                 Currency:AgentTable.Currency,
+//                 Gst_Tax_Certificate:AgentTable.Gst_Tax_Certificate
+//             })
+//             .from(AgentTable)
+//             .where(eq(AgentTable.id, userID)); 
+//             res.status(200).send({
+//                 success: true,
+//                 message: "Access granted to protected resource",
+        
+//                 userId: userID,
+//                 user_information: {
+//                     companyName: user.Company_name,
+//                 },
+//                 role: "agent",
+//       });
+// };
 
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
 

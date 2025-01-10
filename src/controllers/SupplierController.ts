@@ -549,6 +549,11 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
 };
 export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
     const userID = req.body.id;
+    if (!userID) {
+        return res.status(400).send({
+            success: false,
+            message: "User ID is required",
+        })}
     const [user] = await db
             .select({
                 id:registerTable.id,
@@ -575,9 +580,16 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     res.status(200).send({
         success: true,
         message: "Access granted to protected resource",
-        userId: req.body.id,
-        user_information: user.Company_name,
-        role: 'supplier',
+
+        userId: userID,
+        user_information: {
+            companyName: user.Company_name,
+        },
+        role: "supplier",
+
+        // userId: req.body.id,
+        // user_information: user.Company_name,
+        // role: 'supplier',
       });
 };
 export const CreateSupplierApi = async (req: Request, res: Response, next: NextFunction) => { 
