@@ -140,7 +140,7 @@ export interface CreateExtraSpace{
 } 
 
 export interface UpdateExtraSpace{ 
-  uniqueId:string, 
+  
   Roof_Rack:string, 
   Trailer_Hitch:string, 
   Extended_Cargo_Space:string 

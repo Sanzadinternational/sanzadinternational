@@ -1,8 +1,8 @@
 import { dashboard, Supplier_price, TransportNode } from '../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,GetSupplier,GetAllCarDetails,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
-    GetCarDetails,GetServiceType,CreateExtraSp,GetVehicleModel,UpdatedSingleCarDetails,DeleteSingleCarDetails,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+import { CreateSupplier,GetSupplier,GetAllCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
+    GetCarDetails,GetServiceType,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
 const router = express.Router(); 
 
@@ -15,12 +15,15 @@ router.post('/Supplier_details', Supplier_details);
 router.get('/GetSupplier_details',GetSupplier_details); 
 router.delete('/deleteUserById/:id', deleteUserById);
 router.post('One_Way_Service_Details', One_Way_Details); 
-router.post('/CreateSupplierApi',CreateSupplierApi);
-router.post('/Supplier_price',Supplier_price);
+router.post('/CreateSupplierApi',CreateSupplierApi); 
+router.post('/Supplier_price',Supplier_price); 
 router.post('/TransportNode',TransportNode); 
 router.post('/Createcardetail',CreateCartDetail); 
 router.get('/getCarDetails/:id',GetCarDetails); 
-router.put('/UpdatedSingleCarDetails/:id',UpdatedSingleCarDetails)
+// router.put('/UpdatedSingleCarDetails/:id',UpdatedSingleCarDetails)
+router.put('/UpdatedSignleCarDetails/:id',UpdatedSignleCarDetails)
+router.put('/UpdateExtraSpaces/:id',UpdateExtra)
+router.put('/UpdateTransferCar/:id',UpdateTransferCar)
 router.delete('/DeleteSingleCarDetails/:id',DeleteSingleCarDetails);
 router.post('/CreateRows',CreateTransferCarDetails);
 router.post('/CreateExtraSpaces',CreateExtraSp); 

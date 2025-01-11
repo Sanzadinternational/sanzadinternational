@@ -857,151 +857,133 @@ export const DeleteSingleCarDetails = async(req:Request,res:Response,next:NextFu
     } 
 } 
  
-export const UpdatedSingleCarDetails = async (req: Request, res: Response, next: NextFunction) => {
-    try { 
-      const id = req.params.id; 
-  
-      // Destructure request body into respective interfaces 
-      const { 
-        uid, 
-        uniqueId, 
-        SupplierId, 
-        VehicleType, 
-        VehicleBrand, 
-        ServiceType,
-        VehicleModel,
-        Doors,
-        Seats,
-        Cargo,
-        City,
-        Country,
-        Passengers,
-        MediumBag,
-        SmallBag,
-        TransferInfo,
-        HalfDayRide,
-        FullDayRide,
-        HalfFullNightTime,
-        HalfFullNightTimePrice,
-        VehicleRent,
-        Fuel,
-        Driver,
-        ParkingFee,
-        TollTax,
-        TollFee,
-        Parking,
-        Currency,
-        Tip,
-        From,
-        To,
-        Others,
-      } = <UpdateCreateCartDetails>req.body;
-  
-      const {  
-        Roof_Rack, 
-        Trailer_Hitch, 
-        Extended_Cargo_Space 
-      } = <UpdateExtraSpace>req.body;
-  
-      const { 
-        Transfer_from, 
-        Transfer_to,
-        Vice_versa, 
-        NightTime,
-        NightTime_Price, 
-        Price 
-      } = <UpdateTransferCars>req.body;
-  
-      const uniId = uuidv4(); // Generate a new UUID for `uid`.
-  
-      // Wrap updates in a transaction for atomicity
-      const result = await db.transaction(async (trx) => {
-        // Update `SupplierCarDetailsTable`
-        const updatedSupplierCarDetails = await trx
-          .update(SupplierCarDetailsTable)
-          .set({
-            uid: uniId, // Ensure this overwriting is intended
-            uniqueId,
-            SupplierId,
-            VehicleType,
-            VehicleBrand,
-            ServiceType,
-            VehicleModel,
-            Doors,
-            Seats,
-            Cargo,
-            City,
-            Country,
-            Passengers,
-            MediumBag,
-            SmallBag,
-            TransferInfo,
-            HalfDayRide: HalfDayRide || "no",
-            FullDayRide: FullDayRide || "no",
-            HalfFullNightTime: HalfFullNightTime || "no",
-            HalfFullNightTimePrice: HalfFullNightTimePrice || "no",
-            VehicleRent,
-            Fuel,
-            Driver,
-            ParkingFee: ParkingFee || "no",
-            TollTax: TollTax || "no",
-            TollFee,
-            Parking,
-            Currency,
-            Tip: Tip || "no",
-            From,
-            To, 
-            Others, 
-          }) 
-          .where(eq(SupplierCarDetailsTable.uniqueId, id))
-          .returning(); 
-  
-        // Update `CreateExtraSpaces`
-        const updatedExtraSpaces = await trx
-          .update(CreateExtraSpaces)
-          .set({
-            uniqueId,
-            Roof_Rack: Roof_Rack || false,
-            Trailer_Hitch: Trailer_Hitch || false,
-            Extended_Cargo_Space: Extended_Cargo_Space || false,
-          })
-          .where(eq(CreateExtraSpaces.uniqueId, uniqueId))
-          .returning();
-  
-        // Update `CreateTransferCar`
-        const updatedTransferCar = await trx
-          .update(CreateTransferCar)
-          .set({
-            uniqueId,
-            Transfer_from,
-            Transfer_to,
-            Vice_versa,
-            NightTime,
-            NightTime_Price,
-            Price,
-          })
-          .where(eq(CreateTransferCar.uniqueId, uniqueId))
-          .returning();
-  
-        // Return the results of all updates
-        return {
-          updatedSupplierCarDetails,
-          updatedExtraSpaces,
-          updatedTransferCar,
-        };
-      });
-    
-      // Send success response
-      res.status(200).json({data:result});
-    } catch (error) {
-      // Log error details for debugging
-      console.error("Error updating car details:", error);
-      next(error);
-    }
-  };
-  
+export const UpdatedSignleCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const id = req.params.id; // Unique identifier for the car
 
-//Date
+        // Destructure request body into respective interfaces
+        const {
+          uid,
+          uniqueId,
+          SupplierId,
+          VehicleType,
+          VehicleBrand,
+          ServiceType,
+          VehicleModel,
+          Doors,
+          Seats,
+          Cargo,
+          City,
+          Country,
+          Passengers,
+          MediumBag,
+          SmallBag,
+          TransferInfo,
+          HalfDayRide,
+          FullDayRide,
+          HalfFullNightTime,
+          HalfFullNightTimePrice,
+          VehicleRent,
+          Fuel,
+          Driver,
+          ParkingFee,
+          TollTax,
+          TollFee,
+          Parking,
+          Currency,
+          Tip,
+          From,
+          To,
+          Others,
+        } = <UpdateCreateCartDetails>req.body;
+        const newUid = uuidv4(); 
+        const updatedSupplierCarDetails = await db
+        .update(SupplierCarDetailsTable)
+        .set({
+          uid: newUid, // Ensure this overwriting is intended
+          uniqueId,
+          SupplierId,
+          VehicleType,
+          VehicleBrand,
+          ServiceType,
+          VehicleModel,
+          Doors,
+          Seats,
+          Cargo,
+          City,
+          Country,
+          Passengers,
+          MediumBag,
+          SmallBag,
+          TransferInfo,
+          HalfDayRide: HalfDayRide || "no",
+          FullDayRide: FullDayRide || "no",
+          HalfFullNightTime: HalfFullNightTime || "no",
+          HalfFullNightTimePrice: HalfFullNightTimePrice || "no",
+          VehicleRent,
+          Fuel,
+          Driver,
+          ParkingFee: ParkingFee || "no",
+          TollTax: TollTax || "no",
+          TollFee,
+          Parking,
+          Currency,
+          Tip: Tip || "no",
+          From,
+          To,
+          Others,
+        })
+        .where(eq(SupplierCarDetailsTable.id, id))
+        .returning();
+        res.status(200).json({message:"Car Details Updated Successfully",updatedSupplierCarDetails})
+    }catch(error){
+        next(error)
+    }
+} 
+
+export const UpdateExtra=async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const id =req.params.id;
+        const { Roof_Rack, Trailer_Hitch, Extended_Cargo_Space } = <UpdateExtraSpace>req.body;
+        const updatedExtraSpaces = await db
+                .update(CreateExtraSpaces)
+                .set({
+                  Roof_Rack: Roof_Rack || false,
+                  Trailer_Hitch: Trailer_Hitch || false,
+                  Extended_Cargo_Space: Extended_Cargo_Space || false,
+                })
+                .where(eq(CreateExtraSpaces.uniqueId, id))
+                .returning();
+                res.status(200).json({message:"Update Extra Space Successfully",updatedExtraSpaces})
+    }catch(error){
+        next(error)
+    }
+}
+
+export const UpdateTransferCar = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+    const id = req.params.id;
+        
+    const { Transfer_from, Transfer_to, Vice_versa, NightTime, NightTime_Price, Price } =
+      <UpdateTransferCars>req.body;
+        const updatedTransferCar = await db
+        .update(CreateTransferCar)
+        .set({
+          Transfer_from,
+          Transfer_to,
+          Vice_versa,
+          NightTime,
+          NightTime_Price,
+          Price,
+        })
+        .where(eq(CreateTransferCar.uniqueId, id))
+        .returning();
+        res.status(200).json({message:"Car Transfer Details is updated Successfully",updatedTransferCar})
+    }catch(error){ 
+        next(error) 
+    }
+}
+//
 
 export const CreateVehicleType=async(req:Request,res:Response,next:NextFunction)=>{
    try{
