@@ -787,11 +787,16 @@ export const GetAllCarDetails = async(req:Request,res:Response,next:NextFunction
         CreateExtraSpaces,
         eq(CreateExtraSpaces.uniqueId, SupplierCarDetailsTable.uniqueId)
       )
-      .fullJoin( 
-        CreateTransferCar,
-        eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId)
-      );
-         return res.status(200).json(result);
+      const TransferCar = await db.select()
+      .from(CreateTransferCar)
+    //   .fullJoin( 
+    //     CreateTransferCar,
+    //     eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId)
+    //   );
+         return res.status(200).json({
+            result,
+            TransferCar
+        });
     }catch(error){
         res.status(404).json({message:"Data is not found"})
     }
