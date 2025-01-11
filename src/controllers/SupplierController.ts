@@ -787,9 +787,9 @@ export const GetAllCarDetails = async (req: Request, res: Response, next: NextFu
         .fullJoin(
           CreateExtraSpaces,
           eq(CreateExtraSpaces.uniqueId, SupplierCarDetailsTable.uniqueId)
-        )
-        .fullJoin(
-          CreateTransferCar,
+        )                    
+        .fullJoin(           
+          CreateTransferCar, 
           eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId)
         ); 
     
@@ -855,16 +855,15 @@ export const DeleteSingleCarDetails = async(req:Request,res:Response,next:NextFu
     }catch(error){
         res.status(404).json({message:'Car Details data is not deleted'})
     } 
-} 
- 
+}   
+    
 export const UpdatedSignleCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const id = req.params.id; // Unique identifier for the car
-
+    
         // Destructure request body into respective interfaces
         const {
-          uid,
-          uniqueId,
+        
           SupplierId,
           VehicleType,
           VehicleBrand,
@@ -901,7 +900,7 @@ export const UpdatedSignleCarDetails = async(req:Request,res:Response,next:NextF
         .update(SupplierCarDetailsTable)
         .set({
           uid: newUid, // Ensure this overwriting is intended
-          uniqueId,
+       
           SupplierId,
           VehicleType,
           VehicleBrand,
@@ -933,14 +932,14 @@ export const UpdatedSignleCarDetails = async(req:Request,res:Response,next:NextF
           To,
           Others,
         })
-        .where(eq(SupplierCarDetailsTable.id, id))
+        .where(eq(SupplierCarDetailsTable.uniqueId, id))
         .returning();
         res.status(200).json({message:"Car Details Updated Successfully",updatedSupplierCarDetails})
     }catch(error){
         next(error)
     }
-} 
-
+}   
+    
 export const UpdateExtra=async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const id =req.params.id;
@@ -959,10 +958,10 @@ export const UpdateExtra=async(req:Request,res:Response,next:NextFunction)=>{
         next(error)
     }
 }
-
+    
 export const UpdateTransferCar = async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-    const id = req.params.id;
+    try{ 
+    const id = req.params.id; 
         
     const { Transfer_from, Transfer_to, Vice_versa, NightTime, NightTime_Price, Price } =
       <UpdateTransferCars>req.body;
@@ -1055,7 +1054,7 @@ export const CreateServiceType = async(req:Request,res:Response,next:NextFunctio
     }catch(error){
         next(error) 
     }
-}
+}   
 
 export const GetServiceType=async(req:Request,res:Response,next:NextFunction)=>{
     try{
