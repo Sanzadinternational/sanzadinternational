@@ -779,28 +779,43 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
     }
 }
 
-export const GetAllCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-        const result = await db.select()
-        .from(SupplierCarDetailsTable) 
-      .fullJoin( 
-        CreateExtraSpaces,
-        eq(CreateExtraSpaces.uniqueId, SupplierCarDetailsTable.uniqueId)
-      )
-      const TransferCar = await db.select()
-      .from(CreateTransferCar)
-    //   .fullJoin( 
-    //     CreateTransferCar,
-    //     eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId)
-    //   );
-         return res.status(200).json({
-            result,
-            TransferCar
-        });
-    }catch(error){
-        res.status(404).json({message:"Data is not found"})
+export const GetAllCarDetails = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      // Fetch data by joining all relevant tables and explicitly selecting fields
+      const result = await db.select()
+        .from(SupplierCarDetailsTable)
+        .fullJoin(
+          CreateExtraSpaces,
+          eq(CreateExtraSpaces.uniqueId, SupplierCarDetailsTable.uniqueId)
+        )
+        .fullJoin(
+          CreateTransferCar,
+          eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId)
+        ); 
+    
+      // Ensure the data structure includes TransferCar in the same result 
+    //   const formattedResult = result.map((row) => {
+    //     const combined = {
+    //       uniqueId: row.supplier?.uniqueId || row.transferCar?.uniqueId, // Keep the common uniqueId
+    //       ...row.supplier, // Include all supplier fields
+    //       ...row.transferCar, // Overwrite or merge with transferCar fields
+    //       extraSpaces: row.extraSpaces || null, // Add extraSpaces as nested object
+    //     };
+    //     return combined;
+    //   });
+  
+  
+      // Return the formatted response
+      return res.status(200).json({
+        data: result,
+      });
+    } catch (error) {
+      console.error("Error fetching car details:", error);
+      return res.status(404).json({ message: "Data not found" });
     }
-}
+  };
+  
+  
 export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
     try{
          const CarDetailsId = req.params.id;
@@ -814,9 +829,9 @@ export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>
           )
           .fullJoin( 
             CreateTransferCar,
-            eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId)
+            eq(CreateTransferCar.uniqueId, SupplierCarDetailsTable.uniqueId) 
           );
-         res.status(200).json(result)
+         res.status(200).json(result) 
     }catch(error){
         res.status(404).json({message:'Data is not found'})
     }
