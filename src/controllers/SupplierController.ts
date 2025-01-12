@@ -541,8 +541,8 @@ export const loginSupplier = async (req: Request, res: Response, next: NextFunct
             user,
         });
 
-    } catch (error) {
-        next(error); // Pass error to global error handler
+    } catch (error) { 
+        next(error); // Pass error to global error handler 
     }
 };
 export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
@@ -837,6 +837,35 @@ export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>
     }
 }
 
+export const GetTransferCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const CarDetailsId = req.params.id;
+        const result= await db.select()
+        .from(CreateTransferCar)
+        .where(eq(CreateTransferCar.uniqueId,CarDetailsId))
+        res.status(200).json({message:"Get all Transfer Car Data",result})
+
+    }catch(error){
+        next(error)
+    }
+}
+
+export const GetVehicleCarDetails= async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const CarDetailsId = req.params.id;
+         const result = await db.select()
+         .from(SupplierCarDetailsTable) 
+         .where(eq(SupplierCarDetailsTable.uniqueId, CarDetailsId))
+         .fullJoin( 
+            CreateExtraSpaces,
+            eq(CreateExtraSpaces.uniqueId, SupplierCarDetailsTable.uniqueId)
+          )
+          res.status(200).json({message:"Get All data of Vechicle Car Details",result})
+    }catch(error){
+        next(error)
+    }
+}
+
 export const DeleteSingleCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
     try{
           const CarDetailsId = req.params.id;
@@ -957,7 +986,7 @@ export const UpdateExtra=async(req:Request,res:Response,next:NextFunction)=>{
     }catch(error){
         next(error)
     }
-}
+} 
     
 export const UpdateTransferCar = async(req:Request,res:Response,next:NextFunction)=>{
     try{ 

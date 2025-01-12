@@ -1,7 +1,7 @@
 import { dashboard, Supplier_price, TransportNode } from '../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,GetSupplier,GetAllCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
+import { CreateSupplier,GetSupplier,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
     GetCarDetails,GetServiceType,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
 const router = express.Router(); 
@@ -25,6 +25,8 @@ router.put('/UpdatedSignleCarDetails/:id',UpdatedSignleCarDetails)
 router.put('/UpdateExtraSpaces/:id',UpdateExtra)
 router.put('/UpdateTransferCar/:id',UpdateTransferCar)
 router.delete('/DeleteSingleCarDetails/:id',DeleteSingleCarDetails);
+router.get('/GetTransferCarDetails/:id',GetTransferCarDetails); 
+router.get('/GetVehicleCarDetails/:id',GetVehicleCarDetails)
 router.post('/CreateRows',CreateTransferCarDetails);
 router.post('/CreateExtraSpaces',CreateExtraSp); 
 router.get('/GetAllCarDetails',GetAllCarDetails);
