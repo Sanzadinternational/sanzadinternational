@@ -15,6 +15,13 @@
       "when": 1736589450209,
       "tag": "0001_steady_flatman",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1736925987445,
+      "tag": "0002_funny_quasar",
+      "breakpoints": true
     }
   ]
 }

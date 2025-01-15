@@ -1,11 +1,11 @@
-import { Request, Response, NextFunction } from "express";
-import { desc, eq } from "drizzle-orm";
+import { Request, Response, NextFunction } from "express"; 
+import { desc, eq } from "drizzle-orm"; 
 import { registerTable } from '../db/schema/SupplierSchema'; 
 const bcrypt = require('bcrypt'); 
 import jwt from 'jsonwebtoken';
 import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db";
-
+import { SupperAdminTable} from "../db/schema/SupperAdminSchema"; 
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad';
 
 // Function to handle authentication for both suppliers and agents
@@ -16,11 +16,11 @@ const authenticateUser = async (email: string, password: string, userTable: any)
       Email: userTable.Email,
       Password: userTable.Password,
       Company_name: userTable.Company_name,
-      role: userTable.Role
-      // Include other relevant fields
-    })
-    .from(userTable)
-    .where(eq(userTable.Email, email));
+      role: userTable.Role 
+      // Include other relevant fields 
+    }) 
+    .from(userTable) 
+    .where(eq(userTable.Email, email)); 
 
   if (!user) return null;
   // Password validation
@@ -44,26 +44,34 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
         role: 'supplier',
       });
     }
-
+          
     // Then try for agent if supplier didn't match
-    result = await authenticateUser(Email, Password, AgentTable);
-    if (result) {
-      return res.status(200).json({
-        message: 'Login Successfully',
+    result = await authenticateUser(Email, Password, AgentTable); 
+    if (result) { 
+      return res.status(200).json({ 
+        message: 'Login Successfully', 
+        accessToken: result.accessToken, 
+        role: 'agent', 
+      }); 
+    } 
+   
+    result = await authenticateUser(Email,Password,SupperAdminTable);
+    if(result){
+       return res.status(200).json({
+        message:'Login Successfully',
         accessToken: result.accessToken,
-        role: 'agent',
-      });
+        role:'supperadmin'
+       })
     }
+    // If no match was found 
+    return res.status(401).json({ message: 'Invalid credentials' }); 
 
-    // If no match was found
-    return res.status(401).json({ message: 'Invalid credentials' });
-
-  } catch (error) {
-    next(error); // Pass error to global error handler
+  } catch (error) { 
+    next(error); // Pass error to global error handler 
   }
 };
 
-export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
+export const dashboard = async (req: Request, res: Response, next: NextFunction) => { 
   const userID = req.body.id;
   const userRole = req.body.role;
   
@@ -134,7 +142,23 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               message: "Access granted to protected resource",
               userId: req.body.id,
               Email:user.Email,
-              role: user.Role,
+              role: user.Role, 
             });
-  }
-};
+  }else if(userRole == 'supperadmin'){ 
+    const [user] = await db.select({ 
+      Id:SupperAdminTable.id, 
+      Email:SupperAdminTable.Email,
+      Role:SupperAdminTable.Role,
+    })
+    .from(SupperAdminTable)
+    .where(eq(SupperAdminTable.id,userID))
+
+   res.status(200).send({
+    success: true,
+    message: "Access granted to protected resource",
+    userId: req.body.id,
+    Email: user.Email,
+    role: user.Role,
+  }); 
+  } 
+}; 
