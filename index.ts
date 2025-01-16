@@ -3,6 +3,7 @@ import bodyParser from "body-parser";
 import { SupplierRoute } from "./src/routes";
 import {AgentRoute, LocationRoute} from "./src/routes";
 import { LoginRoute } from "./src/routes/LoginRoute";
+import {AdminRoute} from "./src/routes/AdminRoute"; 
 // import {SearchRouter} from "./src/routes/SearchRoute";
 var cors = require('cors')
 // import {SupplierRoute} from './routes/SupplierRoute';
@@ -28,6 +29,7 @@ app.use("/api/V1/supplier", SupplierRoute);
 app.use("/api/V1", LoginRoute);
 app.use('/api/V1/agent',AgentRoute);
 app.use('/api/V1/location',LocationRoute);
+app.use("/api/V1/admin",AdminRoute)
 // app.use("/api/V1/search",SearchRouter)
 // mongoose.connect(MONGOURI).then((result) => {console.log("success")}).catch((error) => {console.error(error)});
 

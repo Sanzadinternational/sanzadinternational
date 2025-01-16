@@ -61,7 +61,7 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
        return res.status(200).json({
         message:'Login Successfully',
         accessToken: results.accessToken, 
-        role:'supperadmin'
+        role:'superadmin'
        })
     }
     // If no match was found 
@@ -145,7 +145,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               Email:user.Email,
               role: user.Role, 
             });
-  }else if(userRole == 'supperadmin'){ 
+  }else if(userRole == 'superadmin'){ 
     const [user] = await db.select({ 
       Id:SupperAdminTable.id, 
       Email:SupperAdminTable.Email, 
