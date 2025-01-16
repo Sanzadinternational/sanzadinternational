@@ -2,10 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import { desc, eq } from "drizzle-orm"; 
 import { registerTable } from '../db/schema/SupplierSchema'; 
 const bcrypt = require('bcrypt'); 
-import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'; 
 import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db";
 import { SupperAdminTable} from "../db/schema/SupperAdminSchema"; 
+
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad';
 
 // Function to handle authentication for both suppliers and agents
@@ -15,7 +16,7 @@ const authenticateUser = async (email: string, password: string, userTable: any)
       Id: userTable.id,
       Email: userTable.Email,
       Password: userTable.Password,
-      Company_name: userTable.Company_name,
+      // Company_name: userTable.Company_name,
       role: userTable.Role 
       // Include other relevant fields 
     }) 
@@ -41,11 +42,11 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
       return res.status(200).json({
         message: 'Login Successfully',
         accessToken: result.accessToken,
-        role: 'supplier',
-      });
-    }
+        role: 'supplier', 
+      }); 
+    } 
           
-    // Then try for agent if supplier didn't match
+    // Then try for agent if supplier didn't match 
     result = await authenticateUser(Email, Password, AgentTable); 
     if (result) { 
       return res.status(200).json({ 
@@ -55,11 +56,11 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
       }); 
     } 
    
-    result = await authenticateUser(Email,Password,SupperAdminTable);
-    if(result){
+   let results = await authenticateUser(Email,Password,SupperAdminTable); 
+    if(results){
        return res.status(200).json({
         message:'Login Successfully',
-        accessToken: result.accessToken,
+        accessToken: results.accessToken, 
         role:'supperadmin'
        })
     }
@@ -147,17 +148,19 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
   }else if(userRole == 'supperadmin'){ 
     const [user] = await db.select({ 
       Id:SupperAdminTable.id, 
-      Email:SupperAdminTable.Email,
+      Email:SupperAdminTable.Email, 
+      // Password:SupperAdminTable.Password,
       Role:SupperAdminTable.Role,
     })
     .from(SupperAdminTable)
-    .where(eq(SupperAdminTable.id,userID))
+    .where(eq(SupperAdminTable.id,userID)) 
 
-   res.status(200).send({
-    success: true,
-    message: "Access granted to protected resource",
-    userId: req.body.id,
-    Email: user.Email,
+   res.status(200).send({ 
+    success: true, 
+    message: "Access granted to protected resource", 
+    userId: req.body.id, 
+    Email: user.Email, 
+    // Password: user.Password,
     role: user.Role,
   }); 
   } 

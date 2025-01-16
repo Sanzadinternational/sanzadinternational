@@ -74,6 +74,21 @@ CREATE TABLE IF NOT EXISTS "users" (
 	CONSTRAINT "users_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "SearchCar" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "SearchCar_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"From" varchar(255),
+	"To" varchar(255),
+	"distance" integer,
+	"Currency" varchar(255)
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "SupperAdmin" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "SupperAdmin_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Email" varchar(255),
+	"Password" varchar(255),
+	"Role" varchar(255)
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supplier_details" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "supplier_details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Vehicle_type" varchar(255) NOT NULL,
