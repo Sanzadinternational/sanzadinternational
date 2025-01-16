@@ -5,7 +5,8 @@ const bcrypt = require('bcrypt');
 import jwt from 'jsonwebtoken'; 
 import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db";
-import { SupperAdminTable} from "../db/schema/SupperAdminSchema"; 
+import { SuperAdminTable} from "../db/schema/SuperAdminSchema"; 
+import { AdminTable } from "../db/schema/AdminSchema";
 
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad';
 
@@ -56,7 +57,7 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
       }); 
     } 
    
-   let results = await authenticateUser(Email,Password,SupperAdminTable); 
+   let results = await authenticateUser(Email,Password,SuperAdminTable); 
     if(results){
        return res.status(200).json({
         message:'Login Successfully',
@@ -65,9 +66,19 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
        })
     }
     // If no match was found 
-    return res.status(401).json({ message: 'Invalid credentials' }); 
 
-  } catch (error) { 
+    let AdminResult = await authenticateUser(Email,Password,AdminTable );
+    if(AdminResult){
+      return res.status(200).json({
+        message:'Login Successfully',
+        accessToken: AdminResult.accessToken, 
+        role:'admin'
+    }) 
+  } 
+    return res.status(401).json({ message: 'Invalid credentials' }); 
+  }
+
+  catch (error) { 
     next(error); // Pass error to global error handler 
   }
 };
@@ -137,23 +148,23 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
             })
             .from(AgentTable)
             .where(eq(AgentTable.id, userID)); 
-
+  
             res.status(200).send({
               success: true,
               message: "Access granted to protected resource",
               userId: req.body.id,
               Email:user.Email,
               role: user.Role, 
-            });
-  }else if(userRole == 'superadmin'){ 
+            }); 
+  }else if(userRole == 'superadmin'){  
     const [user] = await db.select({ 
-      Id:SupperAdminTable.id, 
-      Email:SupperAdminTable.Email, 
+      Id:SuperAdminTable.id, 
+      Email:SuperAdminTable.Email, 
       // Password:SupperAdminTable.Password,
-      Role:SupperAdminTable.Role,
+      Role:SuperAdminTable.Role,
     })
-    .from(SupperAdminTable)
-    .where(eq(SupperAdminTable.id,userID)) 
+    .from(SuperAdminTable)
+    .where(eq(SuperAdminTable.id,userID)) 
 
    res.status(200).send({ 
     success: true, 
@@ -163,5 +174,22 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     // Password: user.Password,
     role: user.Role,
   }); 
-  } 
+  } else if(userRole == 'admin'){
+    const [user] = await db.select({
+      Id:AdminTable.id,
+      Email:AdminTable.Email,
+      Password:AdminTable.Password,
+      Role:AdminTable.Role
+    })
+    .from(AdminTable)
+    .where(eq(AdminTable.id,userID))
+    res.status(200).send({
+      success: true, 
+      message: "Access granted to protected resource", 
+      userId: req.body.id, 
+      Email: user.Email, 
+      // Password: user.Password,
+      role: user.Role,
+    })
+  }
 }; 

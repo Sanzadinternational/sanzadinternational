@@ -1,3 +1,10 @@
+CREATE TABLE IF NOT EXISTS "admin" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "admin_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"Email" varchar(255) NOT NULL,
+	"Password" varchar(255) NOT NULL,
+	"Role" varchar(255)
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Agent_registration_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Company_name" varchar(255) NOT NULL,
@@ -82,8 +89,8 @@ CREATE TABLE IF NOT EXISTS "SearchCar" (
 	"Currency" varchar(255)
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "SupperAdmin" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "SupperAdmin_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+CREATE TABLE IF NOT EXISTS "SuperAdmin" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "SuperAdmin_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Email" varchar(255),
 	"Password" varchar(255),
 	"Role" varchar(255)

@@ -1,9 +1,54 @@
 {
-  "id": "eaa3daf2-070d-4035-805e-c6840d6e44f8",
+  "id": "e27f1c36-3a7a-4a84-8d6c-ae018c6a19ac",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.admin": {
+      "name": "admin",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "admin_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "Email": {
+          "name": "Email",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Password": {
+          "name": "Password",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "Role": {
+          "name": "Role",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.Agent_registration": {
       "name": "Agent_registration",
       "schema": "",
@@ -518,8 +563,8 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "public.SupperAdmin": {
-      "name": "SupperAdmin",
+    "public.SuperAdmin": {
+      "name": "SuperAdmin",
       "schema": "",
       "columns": {
         "id": {
@@ -529,7 +574,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "SupperAdmin_id_seq",
+            "name": "SuperAdmin_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",

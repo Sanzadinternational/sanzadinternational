@@ -1,6 +1,6 @@
 import { integer, pgTable, varchar,timestamp, text, PgTable, date } from 'drizzle-orm/pg-core'; 
  
-export const SupperAdminTable = pgTable('SupperAdmin',{ 
+export const SuperAdminTable = pgTable('SuperAdmin',{ 
     id: integer().primaryKey().generatedAlwaysAsIdentity(), 
     Email:varchar({length:255}), 
     Password:varchar({length:255}),

@@ -4,7 +4,7 @@ export const AgentTable = pgTable('Agent_registration', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   Company_name: varchar({ length: 255 }).notNull(),
   Address: varchar({ length: 255 }).notNull(),
-  Country: varchar({ length: 255 }).notNull(),
+  Country: varchar({ length: 255 }).notNull(), 
   City: varchar({ length: 255 }).notNull(),
   Zip_code: varchar({ length: 255 }).notNull(),
   IATA_Code: varchar({ length: 255 }).notNull(),
