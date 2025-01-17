@@ -17,7 +17,7 @@ const authenticateUser = async (email: string, password: string, userTable: any)
       Id: userTable.id, 
       Email: userTable.Email, 
       Password: userTable.Password, 
-      // Company_name: userTable.Company_name, 
+      Company_name: userTable.Company_name, 
       role: userTable.Role 
       // Include other relevant fields 
     }) 
@@ -154,6 +154,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     const [user] = await db.select({ 
       Id:AdminTable.id, 
       Email:AdminTable.Email, 
+      Company_name:AdminTable.Company_name,
       // Password:SupperAdminTable.Password,
       Role:AdminTable.Role,
     })

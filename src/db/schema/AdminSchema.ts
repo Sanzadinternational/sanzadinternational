@@ -2,8 +2,9 @@ import { integer, pgTable, varchar,timestamp, text, PgTable, date, boolean, pgEn
 export const RoleEnum = pgEnum('role', ['admin', 'superadmin']); 
 export const AdminTable = pgTable('admin',{ 
     id: integer().primaryKey().generatedAlwaysAsIdentity(), 
-    Email:varchar({length:255}).notNull(), 
-    Password:varchar({length:255}).notNull(), 
+    Email:varchar({length:255}), 
+    Company_name:varchar({length:255}),
+    Password:varchar({length:255}), 
     Role: RoleEnum().notNull(), 
     Agent: boolean().default(false), 
     Supplier:boolean().default(false), 
