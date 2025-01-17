@@ -14,10 +14,10 @@ const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad';
 const authenticateUser = async (email: string, password: string, userTable: any) => {
   const [user] = await db
     .select({
-      Id: userTable.id,
-      Email: userTable.Email,
-      Password: userTable.Password,
-      // Company_name: userTable.Company_name,
+      Id: userTable.id, 
+      Email: userTable.Email, 
+      Password: userTable.Password, 
+      // Company_name: userTable.Company_name, 
       role: userTable.Role 
       // Include other relevant fields 
     }) 
@@ -60,11 +60,11 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
 
     let AdminResult = await authenticateUser(Email,Password,AdminTable ); 
     if(AdminResult){ 
-      const Role = 'superadmin';
+      const { role } = AdminResult.user;
       return res.status(200).json({ 
         message:'Login Successfully', 
         accessToken: AdminResult.accessToken, 
-        role: Role || 'admin', 
+        role: role, 
     }) 
   } 
 
@@ -159,7 +159,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     })
     .from(AdminTable)
     .where(eq(AdminTable.id,userID)) 
-
+   
    res.status(200).send({ 
     success: true, 
     message: "Access granted to protected resource", 
