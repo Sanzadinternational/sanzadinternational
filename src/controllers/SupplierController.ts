@@ -572,9 +572,9 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
             })
             .from(registerTable)
             .where(eq(registerTable.id, userID)); 
-    res.status(200).send({
-        success: true,
-        message: "Access granted to protected resource",
+    res.status(200).send({ 
+        success: true, 
+        message: "Access granted to protected resource", 
 
         // userId: userID,
         // user_information: {

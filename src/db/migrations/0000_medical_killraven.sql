@@ -1,8 +1,17 @@
+DO $$ BEGIN
+ CREATE TYPE "public"."role" AS ENUM('admin', 'superadmin');
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "admin" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "admin_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Email" varchar(255) NOT NULL,
 	"Password" varchar(255) NOT NULL,
-	"Role" varchar(255)
+	"Role" "role" NOT NULL,
+	"Agent" boolean DEFAULT false,
+	"Supplier" boolean DEFAULT false,
+	"Payment" boolean DEFAULT false
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Agent_registration" (
@@ -87,13 +96,6 @@ CREATE TABLE IF NOT EXISTS "SearchCar" (
 	"To" varchar(255),
 	"distance" integer,
 	"Currency" varchar(255)
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "SuperAdmin" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "SuperAdmin_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Email" varchar(255),
-	"Password" varchar(255),
-	"Role" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "supplier_details" (

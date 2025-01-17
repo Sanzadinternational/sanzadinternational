@@ -3,12 +3,12 @@ import { desc, eq } from "drizzle-orm";
 import { registerTable } from '../db/schema/SupplierSchema'; 
 const bcrypt = require('bcrypt'); 
 import jwt from 'jsonwebtoken'; 
-import { AgentTable } from "../db/schema/AgentSchema";
-import { db } from "../db/db";
-import { SuperAdminTable} from "../db/schema/SuperAdminSchema"; 
-import { AdminTable } from "../db/schema/AdminSchema";
+import { AgentTable } from "../db/schema/AgentSchema"; 
+import { db } from "../db/db"; 
 
-const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad';
+import { AdminTable } from "../db/schema/AdminSchema"; 
+
+const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
 
 // Function to handle authentication for both suppliers and agents
 const authenticateUser = async (email: string, password: string, userTable: any) => {
@@ -56,25 +56,18 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
         role: 'agent', 
       }); 
     } 
-   
-   let results = await authenticateUser(Email,Password,SuperAdminTable); 
-    if(results){
-       return res.status(200).json({
-        message:'Login Successfully',
-        accessToken: results.accessToken, 
-        role:'superadmin'
-       })
-    }
-    // If no match was found 
 
-    let AdminResult = await authenticateUser(Email,Password,AdminTable );
-    if(AdminResult){
-      return res.status(200).json({
-        message:'Login Successfully',
+
+    let AdminResult = await authenticateUser(Email,Password,AdminTable ); 
+    if(AdminResult){ 
+      const Role = 'superadmin';
+      return res.status(200).json({ 
+        message:'Login Successfully', 
         accessToken: AdminResult.accessToken, 
-        role:'admin'
+        role: Role || 'admin', 
     }) 
   } 
+
     return res.status(401).json({ message: 'Invalid credentials' }); 
   }
 
@@ -156,15 +149,16 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               Email:user.Email,
               role: user.Role, 
             }); 
-  }else if(userRole == 'superadmin'){  
+  }
+  else if(userRole == 'superadmin'){  
     const [user] = await db.select({ 
-      Id:SuperAdminTable.id, 
-      Email:SuperAdminTable.Email, 
+      Id:AdminTable.id, 
+      Email:AdminTable.Email, 
       // Password:SupperAdminTable.Password,
-      Role:SuperAdminTable.Role,
+      Role:AdminTable.Role,
     })
-    .from(SuperAdminTable)
-    .where(eq(SuperAdminTable.id,userID)) 
+    .from(AdminTable)
+    .where(eq(AdminTable.id,userID)) 
 
    res.status(200).send({ 
     success: true, 

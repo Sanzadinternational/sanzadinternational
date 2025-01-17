@@ -1,5 +1,5 @@
 {
-  "id": "e27f1c36-3a7a-4a84-8d6c-ae018c6a19ac",
+  "id": "b83aaa61-aa55-4d15-b3ef-7af217b16b30",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -39,9 +39,31 @@
         },
         "Role": {
           "name": "Role",
-          "type": "varchar(255)",
+          "type": "role",
+          "typeSchema": "public",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
+        },
+        "Agent": {
+          "name": "Agent",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "Supplier": {
+          "name": "Supplier",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "Payment": {
+          "name": "Payment",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         }
       },
       "indexes": {},
@@ -553,51 +575,6 @@
         },
         "Currency": {
           "name": "Currency",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.SuperAdmin": {
-      "name": "SuperAdmin",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "SuperAdmin_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
-        },
-        "Email": {
-          "name": "Email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Password": {
-          "name": "Password",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "Role": {
-          "name": "Role",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -2048,7 +2025,16 @@
       "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "public.role": {
+      "name": "role",
+      "schema": "public",
+      "values": [
+        "admin",
+        "superadmin"
+      ]
+    }
+  },
   "schemas": {},
   "sequences": {},
   "_meta": {
