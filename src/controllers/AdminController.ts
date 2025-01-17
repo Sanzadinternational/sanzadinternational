@@ -32,10 +32,7 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
             })
             .returning();
 
-        res.status(200).json({
-            message: "Admin created successfully.",
-            data: result,
-        });
+        res.status(200).json(result)
     } catch (error) {
       
         next(error); // Pass other errors to the error handler
