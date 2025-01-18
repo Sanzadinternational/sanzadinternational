@@ -17,9 +17,9 @@ const authenticateUser = async (email: string, password: string, userTable: any)
       Id: userTable.id, 
       Email: userTable.Email, 
       Password: userTable.Password, 
-      Company_name: userTable.Company_name, 
+
       role: userTable.Role 
-      // Include other relevant fields 
+
     }) 
     .from(userTable) 
     .where(eq(userTable.Email, email)); 
@@ -60,11 +60,11 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
 
     let AdminResult = await authenticateUser(Email,Password,AdminTable ); 
     if(AdminResult){ 
-      const { role } = AdminResult.user;
+
       return res.status(200).json({ 
         message:'Login Successfully', 
         accessToken: AdminResult.accessToken, 
-        role: role, 
+        role: 'admin', 
     }) 
   } 
 
@@ -150,12 +150,11 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               role: user.Role, 
             }); 
   }
-  else if(userRole == 'superadmin'){  
+  else if(userRole == 'admin' || userRole == 'superadmin'){
     const [user] = await db.select({ 
       Id:AdminTable.id, 
       Email:AdminTable.Email, 
-      Company_name:AdminTable.Company_name,
-      // Password:SupperAdminTable.Password,
+
       Role:AdminTable.Role,
     })
     .from(AdminTable)
@@ -169,22 +168,6 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     // Password: user.Password,
     role: user.Role,
   }); 
-  } else if(userRole == 'admin'){
-    const [user] = await db.select({
-      Id:AdminTable.id,
-      Email:AdminTable.Email,
-      Password:AdminTable.Password,
-      Role:AdminTable.Role
-    })
-    .from(AdminTable)
-    .where(eq(AdminTable.id,userID))
-    res.status(200).send({
-      success: true, 
-      message: "Access granted to protected resource", 
-      userId: req.body.id, 
-      Email: user.Email, 
-      // Password: user.Password,
-      role: user.Role,
-    })
+
   }
-}; 
+};
