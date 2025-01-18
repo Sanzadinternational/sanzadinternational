@@ -60,11 +60,11 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
 
     let AdminResult = await authenticateUser(Email,Password,AdminTable ); 
     if(AdminResult){ 
-
+      
       return res.status(200).json({ 
         message:'Login Successfully', 
         accessToken: AdminResult.accessToken, 
-        role: 'admin', 
+        role:'admin', 
     }) 
   } 
 
@@ -154,7 +154,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     const [user] = await db.select({ 
       Id:AdminTable.id, 
       Email:AdminTable.Email, 
-
+      Company_name:AdminTable.Company_name,
       Role:AdminTable.Role,
     })
     .from(AdminTable)
@@ -165,7 +165,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     message: "Access granted to protected resource", 
     userId: req.body.id, 
     Email: user.Email, 
-    // Password: user.Password,
+    Company_name:user.Company_name,
     role: user.Role,
   }); 
 
