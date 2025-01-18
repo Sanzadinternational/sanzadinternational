@@ -18,7 +18,8 @@ export const registerTable = pgTable('supplier', {
   Currency: varchar({ length: 255 }).notNull(),
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(), 
   Password: varchar({length:255}).notNull(),
-  Role:varchar({length:255})
+  Role:varchar({length:255}),
+  IsApproved:boolean()
 });
 
 export const One_WayTable = pgTable('One_Way_Service_Details',{

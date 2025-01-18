@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar,timestamp, text, PgTable, date } from 'drizzle-orm/pg-core'; 
+import { integer, pgTable, varchar,boolean,timestamp, text, PgTable, date } from 'drizzle-orm/pg-core'; 
 
 export const AgentTable = pgTable('Agent_registration', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -17,7 +17,8 @@ export const AgentTable = pgTable('Agent_registration', {
   Mobile_number: varchar({ length: 255 }).notNull(),
   Currency: varchar({ length: 255 }).notNull(),
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(),
-  Role:varchar({length:255})
+  Role:varchar({length:255}),
+  IsApproved:boolean()
 });
 export const forget_password = pgTable('forget_password', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(),

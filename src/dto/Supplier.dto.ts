@@ -17,7 +17,8 @@ export interface CreateSupplierInput {
   Currency: string,
   Gst_Tax_Certificate: string,
   Password: string,
-  Role:string
+  Role:string,
+  IsApproved:boolean
   }
 export interface SupplierPriceInput{
   country:string,

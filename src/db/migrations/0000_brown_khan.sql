@@ -6,12 +6,14 @@ END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "admin" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "admin_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"Email" varchar(255) NOT NULL,
-	"Password" varchar(255) NOT NULL,
+	"Email" varchar(255),
+	"Company_name" varchar(255),
+	"Password" varchar(255),
 	"Role" "role" NOT NULL,
-	"Agent" boolean DEFAULT false,
-	"Supplier" boolean DEFAULT false,
-	"Payment" boolean DEFAULT false
+	"Agent_account" boolean DEFAULT false,
+	"Agent_operation" boolean DEFAULT false,
+	"Supplier_account" boolean DEFAULT false,
+	"Supplier_operation" boolean DEFAULT false
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Agent_registration" (
@@ -31,7 +33,8 @@ CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"Mobile_number" varchar(255) NOT NULL,
 	"Currency" varchar(255) NOT NULL,
 	"Gst_Tax_Certificate" varchar(255) NOT NULL,
-	"Role" varchar(255)
+	"Role" varchar(255),
+	"IsApproved" boolean
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "OneWayTrip" (
@@ -313,6 +316,7 @@ CREATE TABLE IF NOT EXISTS "supplier" (
 	"Gst_Tax_Certificate" varchar(255) NOT NULL,
 	"Password" varchar(255) NOT NULL,
 	"Role" varchar(255),
+	"IsApproved" boolean,
 	CONSTRAINT "supplier_Email_unique" UNIQUE("Email")
 );
 --> statement-breakpoint

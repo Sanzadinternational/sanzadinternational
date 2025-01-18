@@ -37,8 +37,14 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             Gst_Tax_Certificate,
             Password,
            Role,
-           
+           IsApproved
         } = <CreateSupplierInput>req.body; 
+        const Approval_status = {
+            Pending: 0, // Default
+            Approved: 1,
+            Canceled: 2,
+        };
+        
         const existingSupplier = await db
         .select()
         .from(registerTable)
@@ -77,8 +83,8 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 Currency,
                 Gst_Tax_Certificate,
                 Password:hashedPassword,
-                Role:Role || 'supplier'
-             
+                Role:Role || 'supplier',
+                IsApproved: IsApproved || Approval_status.Pending
             })
             .returning(); 
 

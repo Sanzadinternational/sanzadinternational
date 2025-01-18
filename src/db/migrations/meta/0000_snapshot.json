@@ -1,5 +1,5 @@
 {
-  "id": "b83aaa61-aa55-4d15-b3ef-7af217b16b30",
+  "id": "f3c09d0e-0455-4036-a4d4-98e14994036e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -29,13 +29,19 @@
           "name": "Email",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
+        },
+        "Company_name": {
+          "name": "Company_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
         },
         "Password": {
           "name": "Password",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
         "Role": {
           "name": "Role",
@@ -44,22 +50,29 @@
           "primaryKey": false,
           "notNull": true
         },
-        "Agent": {
-          "name": "Agent",
+        "Agent_account": {
+          "name": "Agent_account",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
           "default": false
         },
-        "Supplier": {
-          "name": "Supplier",
+        "Agent_operation": {
+          "name": "Agent_operation",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
           "default": false
         },
-        "Payment": {
-          "name": "Payment",
+        "Supplier_account": {
+          "name": "Supplier_account",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "Supplier_operation": {
+          "name": "Supplier_operation",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
@@ -185,6 +198,12 @@
         "Role": {
           "name": "Role",
           "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "IsApproved": {
+          "name": "IsApproved",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": false
         }
@@ -1962,6 +1981,12 @@
         "Role": {
           "name": "Role",
           "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "IsApproved": {
+          "name": "IsApproved",
+          "type": "boolean",
           "primaryKey": false,
           "notNull": false
         }

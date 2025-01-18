@@ -33,7 +33,8 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Mobile_number,
             Currency,
             Gst_Tax_Certificate,
-            Role
+            Role,
+            IsApproved
         } = req.body as CreateAgentInput; 
         const existingAgent = await db
         .select()
@@ -56,7 +57,11 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
 
         // Hash the password before storing 
         const hashedPassword = await bcrypt.hash(Password, 10);  
-        
+        const Approval_status = {
+            Pending: 0, // Default
+            Approved: 1,
+            Canceled: 2,
+        };
         const newAgent = await db
             .insert(AgentTable) 
             .values({
@@ -75,7 +80,8 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
                 Mobile_number,
                 Currency,
                 Gst_Tax_Certificate,
-                Role: Role || "Role"
+                Role: Role || "Role",
+                IsApproved: IsApproved || Approval_status.Pending
             })
             .returning(); // Return the newly inserted agent
 
