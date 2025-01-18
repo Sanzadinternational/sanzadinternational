@@ -147,6 +147,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               message: "Access granted to protected resource",
               userId: req.body.id,
               Email:user.Email,
+              Company_name:user.Company_name,
               role: user.Role, 
             }); 
   }
