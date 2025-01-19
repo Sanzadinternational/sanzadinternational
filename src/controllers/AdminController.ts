@@ -8,7 +8,7 @@ const bcrypt = require('bcrypt');
 
 export const CreateAdmins = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { Email, Password, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
+        const { Email, Password,Company_name, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
 
         // Input validation
         if (!Email || !Password) {
@@ -23,7 +23,7 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
             .insert(AdminTable)
             .values({ 
                 Email,
-                Company_name:'Admin',
+                Company_name,
                 Password:hashedPassword,
                 Agent_account:Agent_account ||false,
                 Agent_operation:Agent_operation || false,

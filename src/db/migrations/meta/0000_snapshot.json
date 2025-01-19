@@ -1,5 +1,5 @@
 {
-  "id": "f3c09d0e-0455-4036-a4d4-98e14994036e",
+  "id": "f7bc5902-9718-4d5d-a11d-f2b5b9b69c8d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -203,7 +203,7 @@
         },
         "IsApproved": {
           "name": "IsApproved",
-          "type": "boolean",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         }
@@ -1986,7 +1986,7 @@
         },
         "IsApproved": {
           "name": "IsApproved",
-          "type": "boolean",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false
         }

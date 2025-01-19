@@ -80,7 +80,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
                 Mobile_number,
                 Currency,
                 Gst_Tax_Certificate,
-                Role: Role || "Role",
+                Role: Role || "agent",
                 IsApproved: IsApproved || Approval_status.Pending
             })
             .returning(); // Return the newly inserted agent

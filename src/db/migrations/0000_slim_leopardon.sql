@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"Currency" varchar(255) NOT NULL,
 	"Gst_Tax_Certificate" varchar(255) NOT NULL,
 	"Role" varchar(255),
-	"IsApproved" boolean
+	"IsApproved" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "OneWayTrip" (
@@ -316,7 +316,7 @@ CREATE TABLE IF NOT EXISTS "supplier" (
 	"Gst_Tax_Certificate" varchar(255) NOT NULL,
 	"Password" varchar(255) NOT NULL,
 	"Role" varchar(255),
-	"IsApproved" boolean,
+	"IsApproved" integer,
 	CONSTRAINT "supplier_Email_unique" UNIQUE("Email")
 );
 --> statement-breakpoint

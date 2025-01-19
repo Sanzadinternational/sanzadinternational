@@ -32,8 +32,8 @@ export interface CreateAgentInput {
   Currency: string;
   Gst_Tax_Certificate: string;
   Role:string,
-  IsApproved:boolean
-}
+  IsApproved:number,
+} 
 export interface CreateOtpInput {
   email:string,
   otp: string,
