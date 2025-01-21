@@ -42,9 +42,9 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
     }
 };
 
-export const AllAdminRecords = async (req: Request, res: Response, next: NextFunction) => {
+export const AllAdminRecords = async (req: Request, res: Response, next: NextFunction) => { 
     try {
-        const role = "admin"; // Hardcoded role value
+        const role = "admin"; // Hardcoded role value 
         const result = await db
             .select({
             id:AdminTable.id,
@@ -57,11 +57,11 @@ export const AllAdminRecords = async (req: Request, res: Response, next: NextFun
             Supplier_operation:AdminTable.Supplier_operation
             })
             .from(AdminTable)
-            .where(eq(AdminTable.Role, role)); // Assuming `AdminTable.role` is the correct column for roles
+            .where(eq(AdminTable.Role, role)); // Assuming `AdminTable.role` is the correct column for roles 
         res.status(200).json(result);
     } catch (error) {
         next(error);
-    }
+    } 
 };
 
 
@@ -90,7 +90,29 @@ export const AllAgentRecords = async(req:Request,res:Response,next:NextFunction)
         next(error)
     }
 }
- 
+
+export const ChangeAgentApprovalStatus = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id, isApproved } = req.body;
+    
+        // Validate inputs
+        if (typeof id !== 'number' || ![0, 1].includes(isApproved)) {
+            return res.status(400).json({ error: 'Invalid input. ID must be a number and IsApproved must be 0 or 1.' });
+        }
+
+        // Update the IsApproved status
+        const result = await db
+            .update(AgentTable)
+            .set({ IsApproved: isApproved })
+            .where(eq(AgentTable.id, id));
+
+        return res.status(200).json({ message: 'Agent approval status updated successfully.',result });
+    } catch (error) {
+        next(error); // Handle errors
+    }
+};
+
+
 export const AllGetSuppliers = async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const result = await db.select({
