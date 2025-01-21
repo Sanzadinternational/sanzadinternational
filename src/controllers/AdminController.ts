@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { CreateAdmin } from "../dto/Admin.dto"
 import { AdminTable } from "../db/schema/AdminSchema";
 import { db } from "../db/db";
+import { desc, eq } from "drizzle-orm";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
 import { registerTable } from "../db/schema/SupplierSchema";
 const bcrypt = require('bcrypt'); 
@@ -40,6 +41,29 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
         next(error); // Pass other errors to the error handler
     }
 };
+
+export const AllAdminRecords = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const role = "admin"; // Hardcoded role value
+        const result = await db
+            .select({
+            id:AdminTable.id,
+            Email:AdminTable.Email,
+            Role:AdminTable.Role,
+            Company_name:AdminTable.Company_name,
+            Agent_account:AdminTable.Agent_account,
+            Agent_operation:AdminTable.Agent_operation,
+            Supplier_account:AdminTable.Supplier_account,
+            Supplier_operation:AdminTable.Supplier_operation
+            })
+            .from(AdminTable)
+            .where(eq(AdminTable.Role, role)); // Assuming `AdminTable.role` is the correct column for roles
+        res.status(200).json(result);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export const AllAgentRecords = async(req:Request,res:Response,next:NextFunction)=>{
     try{
