@@ -64,6 +64,17 @@ export const AllAdminRecords = async (req: Request, res: Response, next: NextFun
     } 
 };
 
+export const DestroyAdmin = async(req:Request,res:Response,next:NextFunction)=>{ 
+    try{ 
+        const {id}=req.params;
+        const result = await db.delete(AdminTable) 
+        .where(eq(AdminTable.Email,id))
+        .returning()
+        res.status(200).json({message:"Admin Deleted Successfully",result})
+    }catch(error){ 
+        next(error) 
+    }
+}
 
 export const AllAgentRecords = async(req:Request,res:Response,next:NextFunction)=>{
     try{
