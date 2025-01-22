@@ -93,14 +93,14 @@ export const AllAgentRecords = async(req:Request,res:Response,next:NextFunction)
 
 export const ChangeAgentApprovalStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {id}= req.params;
-        const {  isApproved } = req.body;
+        const {id}= req.params; 
+        const { isApproved } = req.body;
 
         // Update the IsApproved status
         const result = await db
             .update(AgentTable)
             .set({ IsApproved: isApproved })
-            .where(eq(AgentTable.id, id));
+            .where(eq(AgentTable.Email, id));
 
         if (result.rowCount === 0) {
             return res.status(404).json({ 
@@ -152,7 +152,7 @@ export const ChangeSupplierApprovalStatus = async(req:Request,res:Response,next:
         const {IsApproved}=req.body;
         const result = await db.update(registerTable)
         .set({ IsApproved: IsApproved })
-        .where(eq(registerTable.id,Number(id)));
+        .where(eq(registerTable.Email,id));
         res.status(200).json({message:"Supplier Status is updated Successfully",result})
     }catch(error){
         next(error)
