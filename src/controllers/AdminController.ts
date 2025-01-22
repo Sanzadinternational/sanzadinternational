@@ -6,7 +6,7 @@ import { desc, eq } from "drizzle-orm";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
 import { registerTable } from "../db/schema/SupplierSchema";
 const bcrypt = require('bcrypt'); 
-
+ 
 export const CreateAdmins = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { Email, Password,Company_name, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
@@ -93,12 +93,8 @@ export const AllAgentRecords = async(req:Request,res:Response,next:NextFunction)
 
 export const ChangeAgentApprovalStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id, isApproved } = req.body;
-    
-        // Validate inputs
-        if (typeof id !== 'number' || ![0, 1].includes(isApproved)) {
-            return res.status(400).json({ error: 'Invalid input. ID must be a number and IsApproved must be 0 or 1.' });
-        }
+        const {id}= req.params;
+        const {  isApproved } = req.body;
 
         // Update the IsApproved status
         const result = await db
@@ -106,11 +102,22 @@ export const ChangeAgentApprovalStatus = async (req: Request, res: Response, nex
             .set({ IsApproved: isApproved })
             .where(eq(AgentTable.id, id));
 
-        return res.status(200).json({ message: 'Agent approval status updated successfully.',result });
+        if (result.rowCount === 0) {
+            return res.status(404).json({ 
+                error: 'Agent not found or no changes were made.' 
+            });
+        }
+
+        return res.status(200).json({ 
+            message: 'Agent approval status updated successfully.',
+            result 
+        });
     } catch (error) {
-        next(error); // Handle errors
+        console.error('Error updating agent approval status:', error);
+        next(error); // Pass error to global error handler
     }
 };
+
 
 
 export const AllGetSuppliers = async(req:Request,res:Response,next:NextFunction)=>{
@@ -134,6 +141,19 @@ export const AllGetSuppliers = async(req:Request,res:Response,next:NextFunction)
         })
         .from(registerTable) 
         return res.status(200).json(result)
+    }catch(error){
+        next(error)
+    }
+}
+
+export const ChangeSupplierApprovalStatus = async(req:Request,res:Response,next:NextFunction)=>{
+    try{ 
+        const {id}=req.params;
+        const {IsApproved}=req.body;
+        const result = await db.update(registerTable)
+        .set({ IsApproved: IsApproved })
+        .where(eq(registerTable.id,Number(id)));
+        res.status(200).json({message:"Supplier Status is updated Successfully",result})
     }catch(error){
         next(error)
     }
