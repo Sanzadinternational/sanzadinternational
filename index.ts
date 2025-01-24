@@ -5,6 +5,7 @@ import {AgentRoute, LocationRoute} from "./src/routes";
 import { AdminRoute } from './src/routes/AdminRoute'
 import { LoginRoute } from "./src/routes/LoginRoute";
 import {SearchRouter} from "./src/routes/SearchRoute";
+import {ProfileRoute} from "./src/routes/ProfileRoute";
 var cors = require('cors')
 // import {SupplierRoute} from './routes/SupplierRoute';
 // const SupplierRoute = require('./src/routes/SupplierRoute');
@@ -31,6 +32,7 @@ app.use('/api/V1/agent',AgentRoute);
 app.use('/api/V1/location',LocationRoute);
 app.use('/api/V1/admin',AdminRoute) 
 app.use("/api/V1/data",SearchRouter)
+app.use('/api/V1/view',ProfileRoute);
 // mongoose.connect(MONGOURI).then((result) => {console.log("success")}).catch((error) => {console.error(error)});
 
 

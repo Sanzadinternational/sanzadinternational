@@ -1,123 +1,92 @@
-// import { Request, Response, NextFunction } from "express"; 
-// import { AgentTable } from "../db/schema/AgentSchema";
-// import {registerTable} from "../db/schema/SupplierSchema"
-// import { db } from "../db/db";
+import { Request, Response } from "express";
+import { eq } from "drizzle-orm";
+import { registerTable } from "../db/schema/SupplierSchema";
+import { AgentTable } from "../db/schema/AgentSchema";
+import { AdminTable } from "../db/schema/AdminSchema";
+import { db } from "../db/db";
 
-// // export const Profile = async (req: Request, res: Response, next: NextFunction) => {
-// //   try {
-// //     // Extract user information from request (e.g., JWT middleware adds `req.user`)
-// //     const userId = req.params; // Ensure you have middleware adding `req.user`
-    
+export const getProfile = async (req: Request, res: Response) => {
+  const { Email, role: userRole } = req.body;
 
-// //     if (!userId) {
-// //       return res.status(401).json({ success: false, message: "Unauthorized" });
-// //     }
-
-// //     let profileData;
-
-// //     // Fetch profile based on user role
-// //     if (userId === "Admin" || userId === "Supplier") {
-// //       // Fetch from `registerTable` for Admins and Suppliers
-// //       profileData = await db
-// //         .select({
-// //           id: registerTable.id,
-// //           companyName: registerTable.Company_name,
-// //           email: registerTable.Email,
-// //           owner: registerTable.Owner,
-// //           country: registerTable.Country,
-// //         })
-// //         .from(registerTable)
-// //         .where(eq(registerTable.id, userId));
-// //     } else if (userId === "Agent") {
-// //       // Fetch from `AgentTable` for Agents
-// //       profileData = await db
-// //         .select({
-// //           id: AgentTable.id,
-// //           email: AgentTable.Email,
-// //           name: AgentTable.Name,
-// //           phone: AgentTable.Phone,
-// //         })
-// //         .from(AgentTable)
-// //         .where(eq(AgentTable.id, userId));
-// //     } else {
-// //       // Handle other roles or unauthorized roles
-// //       return res.status(403).json({ success: false, message: "Role not authorized" });
-// //     }
-
-// //     if (!profileData || profileData.length === 0) {
-// //       return res.status(404).json({ success: false, message: "Profile not found" });
-// //     }
-
-// //     // Return the profile data
-// //     return res.status(200).json({
-// //       success: true,
-// //       message: "Profile fetched successfully",
-// //       profile: profileData[0], // Return first result (assuming unique user IDs)
-// //     });
-// //   } catch (error) {
-// //     // Handle any errors and pass them to the error middleware
-// //     console.error("Error fetching profile:", error);
-// //     next(error);
-// //   }
-// // };
-// import { Request, Response, NextFunction } from "express";
-// import { db } from "../db"; // Your Drizzle ORM instance
-// import { registerTable, AgentTable } from "../schema"; // Your schema
-// import { eq } from "drizzle-orm/expressions"; // Drizzle ORM expressions
-
-// export const Profile = async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const userId = req.params.id;  // Get `id` from URL parameters
-//     // const userRole = req.user?.role;  // Assuming `req.user` is set by JWT middleware
-
-//     if (!userId || !userRole) {
-//       return res.status(401).json({ success: false, message: "Unauthorized" });
-//     }
-
-//     let profileData;
-
-//     // Fetch profile based on user role
-//     if (userRole === "Admin" || userRole === "Supplier") {
-//       // Fetch from `registerTable` for Admins and Suppliers
-//       profileData = await db
-//         .select({
-//           id: registerTable.id,
-//           companyName: registerTable.Company_name,
-//           email: registerTable.Email,
-//           owner: registerTable.Owner,
-//           country: registerTable.Country,
-//         })
-//         .from(registerTable)
-//         .where(eq(registerTable.id, userId));  // Match with the `id` parameter in URL
-//     } else if (userRole === "Agent") {
-//       // Fetch from `AgentTable` for Agents
-//       profileData = await db
-//         .select({
-//           id: AgentTable.id,
-//           email: AgentTable.Email,
-//         //   name: AgentTable.Name,
-//         //   phone: AgentTable.Phone,
-//         })
-//         .from(AgentTable)
-//         .where(eq(AgentTable.id, userId));  // Match with the `id` parameter in URL
-//     } else {
-//       // Handle other roles or unauthorized roles
-//       return res.status(403).json({ success: false, message: "Role not authorized" });
-//     }
-
-//     if (!profileData || profileData.length === 0) {
-//       return res.status(404).json({ success: false, message: "Profile not found" });
-//     }
-
-//     // Return the profile data
-//     return res.status(200).json({
-//       success: true,
-//       message: "Profile fetched successfully",
-//       profile: profileData[0],  // Return first result (assuming unique user IDs)
-//     });
-//   } catch (error) {
-//     // Handle any errors and pass them to the error middleware
-//     console.error("Error fetching profile:", error);
-//     next(error);
+  // Validation: Ensure Email and role are provided
+//   if (!Email || !userRole) {
+//     return res.status(400).json({ message: "Email and role are required" });
 //   }
-// };
+
+  try {
+    let user;
+
+    // Fetch user data based on the role
+    if (userRole === "supplier") {
+      [user] = await db
+        .select({
+          id: registerTable.id,
+          Company_name: registerTable.Company_name,
+          Owner: registerTable.Owner,
+          Address: registerTable.Address,
+          Country: registerTable.Country,
+          City: registerTable.City,
+          Zip_code: registerTable.Zip_code,
+          Office_number: registerTable.Office_number,
+          Email: registerTable.Email,
+          Contact_Person: registerTable.Contact_Person,
+          Mobile_number: registerTable.Mobile_number,
+          Gst_Vat_Tax_number: registerTable.Gst_Vat_Tax_number,
+          PAN_number: registerTable.PAN_number,
+          Currency: registerTable.Currency,
+          Gst_Tax_Certificate: registerTable.Gst_Tax_Certificate,
+          Role: registerTable.Role,
+        })
+        .from(registerTable)
+        .where(eq(registerTable.Email, Email));
+    } else if (userRole === "agent") {
+      [user] = await db
+        .select({
+          id: AgentTable.id,
+          Email: AgentTable.Email,
+          Company_name: AgentTable.Company_name,
+          Address: AgentTable.Address,
+          Country: AgentTable.Country,
+          City: AgentTable.City,
+          Zip_code: AgentTable.Zip_code,
+          IATA_Code: AgentTable.IATA_Code,
+          Gst_Vat_Tax_number: AgentTable.Gst_Vat_Tax_number,
+          Contact_Person: AgentTable.Contact_Person,
+          Office_number: AgentTable.Office_number,
+          Mobile_number: AgentTable.Mobile_number,
+          Currency: AgentTable.Currency,
+          Role: AgentTable.Role,
+          Gst_Tax_Certificate: AgentTable.Gst_Tax_Certificate,
+        })
+        .from(AgentTable)
+        .where(eq(AgentTable.Email, Email));
+    } else if (userRole === "admin" || userRole === "superadmin") {
+      [user] = await db
+        .select({
+          id: AdminTable.id,
+          Email: AdminTable.Email,
+          Company_name: AdminTable.Company_name,
+          Role: AdminTable.Role,
+        })
+        .from(AdminTable)
+        .where(eq(AdminTable.Email, Email));
+    } else {
+      return res.status(400).json({ message: "Invalid role" });
+    }
+
+    // If no user is found
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Success: Return the user profile
+    res.status(200).json({
+      success: true,
+      message: "Profile fetched successfully",
+      profile: user,
+    });
+  } catch (error) {
+    console.error("Error fetching profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
