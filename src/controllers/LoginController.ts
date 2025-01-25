@@ -116,7 +116,19 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
 
       userId: req.body.id,
       Company_name: user.Company_name,
+      Owner: user.Owner,
+      Address:user.Address,
+      Country:user.Country,
+      City:user.City,
+      Zip_code:user.Zip_code,
+      Office_number:user.Office_number,
       Email:user.Email,
+      Contact_Person:user.Contact_Person,
+      Mobile_number:user.Mobile_number,
+      Gst_Vat_Tax_number:user.Gst_Vat_Tax_number,
+      PAN_number:user.PAN_number,
+      Currency:user.Currency,
+      Gst_Tax_Certificate:user.Gst_Tax_Certificate,
       role: user.Role,
     });
   }
@@ -147,8 +159,19 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               message: "Access granted to protected resource",
               userId: req.body.id,
               Email:user.Email,
+              Address:user.Address,
+              Country:user.Country,
+              City:user.City,
+              Zip_code:user.Zip_code,
+              IATA_Code:user.IATA_Code,
               Company_name:user.Company_name,
+              Gst_Vat_Tax_number:user.Gst_Vat_Tax_number,
+              Office_number:user.Office_number,
+              Mobile_number:user.Mobile_number,
+              Currency:user.Currency,
+              Contact_Person:user.Contact_Person,
               role: user.Role, 
+              Gst_Tax_Certificate:user.Gst_Tax_Certificate
             }); 
   }
   else if(userRole == 'admin' || userRole == 'superadmin'){
