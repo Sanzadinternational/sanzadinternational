@@ -6,7 +6,7 @@ import { desc, eq } from "drizzle-orm";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
 import { registerTable } from "../db/schema/SupplierSchema";
 const bcrypt = require('bcrypt'); 
- 
+const nodemailer = require('nodemailer'); 
 export const CreateAdmins = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { Email, Password,Company_name, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
@@ -108,20 +108,54 @@ export const ChangeAgentApprovalStatus = async (req: Request, res: Response, nex
         const { isApproved } = req.body;
 
         // Update the IsApproved status
-        const result = await db
+        const results = await db
             .update(AgentTable)
             .set({ IsApproved: isApproved })
             .where(eq(AgentTable.Email, id));
 
-        if (result.rowCount === 0) {
+        if (results.rowCount === 0) {
             return res.status(404).json({ 
                 error: 'Agent not found or no changes were made.' 
             });
         }
+// Fetch the last inserted record
+const result = await db
+.select({
+    Email: AgentTable.Email,
+    Password: AgentTable.Password, // Assuming the password is encrypted
+    // IV: AgentTable.IV, // IV used for encryption
+})
+.from(AgentTable)
+.orderBy(desc(AgentTable.id))
+.limit(1);
+
+if (result.length === 0) {
+return res.status(404).json({ message: 'No records found' });
+}
+
+const transporter = nodemailer.createTransport({
+service: 'Gmail', // Replace with your email service provider
+auth: {
+    user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+    pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+},
+});
+
+// Send an email with the retrieved data (decrypted password)
+const info = await transporter.sendMail({
+from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+to: `${result[0].Email}`,
+subject: "Query from Sanzadinternational", // Subject line
+text: `Details of New Supplier Access:\nEmail: ${result[0].Email}\nPassword: ${result[0].Password}`, // Plain text body
+html: `<p>Details of New Supplier Access:</p><ul><li>Email: ${result[0].Email}</li><li>Password: ${result[0].Password}</li></ul>`, // HTML body
+});
+
+console.log("Message sent: %s", info.messageId);
 
         return res.status(200).json({ 
             message: 'Agent approval status updated successfully.',
-            result 
+            result,
+            results 
         });
     } catch (error) {
         console.error('Error updating agent approval status:', error);
@@ -161,10 +195,43 @@ export const ChangeSupplierApprovalStatus = async(req:Request,res:Response,next:
     try{ 
         const {id}=req.params;
         const {IsApproved}=req.body;
-        const result = await db.update(registerTable)
+        const results = await db.update(registerTable)
         .set({ IsApproved: IsApproved })
         .where(eq(registerTable.Email,id));
-        res.status(200).json({message:"Supplier Status is updated Successfully",result})
+        const result = await db
+        .select({
+            Email: registerTable.Email,
+            Password: registerTable.Password, // Assuming the password is encrypted
+            // IV: AgentTable.IV, // IV used for encryption
+        })
+        .from(registerTable)
+        .orderBy(desc(registerTable.id))
+        .limit(1);
+
+    if (result.length === 0) {
+        return res.status(404).json({ message: 'No records found' });
+    }
+
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail', // Replace with your email service provider
+        auth: {
+            user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+            pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+        },
+    });
+  
+    // Send an email with the retrieved data (decrypted password)
+    const info = await transporter.sendMail({
+        from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+        to: `${result[0].Email}`,
+        subject: "Query from Sanzadinternational", // Subject line
+        text: `Details of New Supplier Access:\nEmail: ${result[0].Email}\nPassword: ${result[0].Password}`, // Plain text body
+        html: `<p>Details of New Supplier Access:</p><ul><li>Email: ${result[0].Email}</li><li>Password: ${result[0].Password}</li></ul>`, // HTML body
+    });
+
+    console.log("Message sent: %s", info.messageId);
+
+        res.status(200).json({message:"Supplier Status is updated Successfully",result,results})
     }catch(error){
         next(error)
     }
