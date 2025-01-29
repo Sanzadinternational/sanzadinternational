@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS "admin" (
 	"Agent_account" boolean DEFAULT false,
 	"Agent_operation" boolean DEFAULT false,
 	"Supplier_account" boolean DEFAULT false,
-	"Supplier_operation" boolean DEFAULT false
+	"Supplier_operation" boolean DEFAULT false,
+	"IsApproved" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Agent_registration" (

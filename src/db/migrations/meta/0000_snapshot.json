@@ -1,5 +1,5 @@
 {
-  "id": "f7bc5902-9718-4d5d-a11d-f2b5b9b69c8d",
+  "id": "6d4615c7-e5e3-4a73-a041-e6eded5c271b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -77,6 +77,12 @@
           "primaryKey": false,
           "notNull": false,
           "default": false
+        },
+        "IsApproved": {
+          "name": "IsApproved",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},

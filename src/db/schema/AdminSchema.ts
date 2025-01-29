@@ -9,7 +9,8 @@ export const AdminTable = pgTable('admin',{
     Agent_account: boolean().default(false), 
     Agent_operation:boolean().default(false), 
     Supplier_account:boolean().default(false), 
-    Supplier_operation:boolean().default(false)
+    Supplier_operation:boolean().default(false), 
+    IsApproved:integer() 
 }) 
 
 

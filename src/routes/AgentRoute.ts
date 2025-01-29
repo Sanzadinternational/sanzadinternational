@@ -1,7 +1,7 @@
 import { dashboard } from './../controllers/SupplierController';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
 import authMiddleware from '../middlewares/authMiddleware';
-import { CreateAgent,GetAgent,loginAgent,GetBill,OneWayTrip,RoundTrip,GetOneWayTrip,GetRoundTrip,UpdateOneWayTrip, sendOtp, verifyOtp } from '../controllers'; 
+import { CreateAgent,GetAgent,ForgetPassword,loginAgent,GetBill,OneWayTrip,RoundTrip,GetOneWayTrip,GetRoundTrip,UpdateOneWayTrip, sendOtp, verifyOtp } from '../controllers'; 
 import { Emailotps } from '../controllers/EmailotpsController'; 
 
 const router = express.Router(); 
@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/registration',  CreateAgent); 
 // router.post('/forgotpassword',forgotPassword); 
 // router.post('/resetpassword',resetpassword);
+router.post('/ForgetPassword',ForgetPassword); 
 router.get('/GetAgent',GetAgent); 
 router.post('/login',loginAgent);  
 // router.post('/emailsend',EmailSend); 

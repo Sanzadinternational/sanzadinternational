@@ -6,6 +6,7 @@ export interface CreateAdmin{
     Agent_operation:boolean, 
     Supplier_account:boolean, 
     Supplier_operation:boolean, 
-    Company_name:string 
+    Company_name:string,
+     IsApproved:number
 } 
  

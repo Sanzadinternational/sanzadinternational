@@ -18,7 +18,8 @@ export const AgentTable = pgTable('Agent_registration', {
   Currency: varchar({ length: 255 }).notNull(),
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(),
   Role:varchar({length:255}), 
-  IsApproved:integer()
+  IsApproved:integer(),
+  Token:varchar({length:255})
 }); 
 export const forget_password = pgTable('forget_password', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(),

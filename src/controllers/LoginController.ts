@@ -5,9 +5,10 @@ const bcrypt = require('bcrypt');
 import jwt from 'jsonwebtoken'; 
 import { AgentTable } from "../db/schema/AgentSchema"; 
 import { db } from "../db/db"; 
-
+const crypto = require('crypto');
 import { AdminTable } from "../db/schema/AdminSchema"; 
-
+const nodemailer = require('nodemailer');
+   
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
 
 // Function to handle authentication for both suppliers and agents
@@ -193,5 +194,6 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     role: user.Role,
   }); 
 
-  }
-};
+  } 
+}; 
+ 

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTripInput, UpdateOneWayTripInput } from "../dto"; 
-
+import crypto from "crypto";
 import { db } from "../db/db";
 import { generateOTP, sendOTPEmail } from "../utils";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
@@ -14,6 +14,7 @@ const Crypto = require("crypto");
 const jwt = require('jsonwebtoken'); 
 import { registerTable } from "../db/schema/SupplierSchema";
 var Mailgen = require('mailgen'); 
+var randomstring = require("randomstring");
 
 export const CreateAgent = async(req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -90,6 +91,103 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
         next(error);
     }
 }
+
+// export const ForgetPassword = async(req:Request,res:Response,next:NextFunction)=>{
+//     try{
+//         const { id,Email }=req.body;
+//         const user = await db.select({ Email:AgentTable.Email})
+//         if(user){
+//         const Token = randomstring.generate();
+//         const resetTokenExpiry = new Date(Date.now() + 3600000); // 1-hour expiry
+  
+//         // Save the token and expiry to the database
+//         const updateToken = await db.update(AgentTable)
+//         .set({
+//             resetToken: Token, resetTokenExpiry 
+//         })
+//           .where(eq{AgentTable.Email,id }) 
+//           .returning(); 
+//         }else{
+//             res.status(200).send({sucess:false,message:"Invalid Email"})
+//         }
+//     }catch(error){
+//         next(error)
+//     }
+// }
+
+
+export const ForgetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { Email } = req.body;
+
+    // Validate email input
+    if (!Email || typeof Email !== 'string') {
+      return res.status(400).send({ success: false, message: "Valid email is required." });
+    }
+
+    // Check if the user exists based on the email
+    const user = await db
+      .select({ Email: AgentTable.Email })
+      .from(AgentTable)
+      .where(eq(AgentTable.Email, Email));
+
+    if (user.length > 0) {
+     // Generate a reset token
+     const Token = randomstring.generate();
+     const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
+
+     // Save the reset token and expiry in the database
+     const GenerateToken = await db
+            .update(AgentTable)  // Use the correct table reference
+            .set({
+                Token,
+                resetTokenExpiry,
+            })
+            .where(eq(AgentTable.Email, Email))  // Use the `id` to target the specific row
+            .returning();  //
+
+            const transporter = nodemailer.createTransport({
+                service: 'Gmail', // Replace with your email service provider
+                auth: {
+                    user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                    pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+                },
+            });
+            const resetLink = `http://localhost:8000/api/V1/agent/ResetPassword?token=${GenerateToken}`;
+            // Send an email with the retrieved data (decrypted password)
+            const info = await transporter.sendMail({
+                from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+                to: `gcaffe.jugal@gmail.com`,
+                subject: "Query from Sanzadinternational", // Subject line
+                text: `Details of New Agent Access:\nEmail: ${user[0].Email}`, // Plain text body
+                html: `<a href="${resetLink}">Forgate Password</a>`, // HTML body,
+            });
+    
+            console.log("Message sent: %s", info.messageId);
+     // Ideally, you'd send this token via email. For now, we return it in the response.
+     res.status(200).send({
+       success: true,
+       message: "Password reset token generated successfully.",
+       GenerateToken: GenerateToken, // In a production app, don't send the token in the response, use email
+    
+     });
+
+    } else {
+      // If the user does not exist
+      res.status(404).send({
+        success: false,
+        message: "User not found with the provided email.",
+      });
+    }
+
+  } catch (error) {
+    console.error('Error in ForgetPassword API:', error);
+    next(error); // Pass the error to the next middleware for handling
+  }
+};
+
+
+  
 
 export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
 {
@@ -441,3 +539,7 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
         return res.status(500).json({ message: 'Internal server error' });
     }
 };
+
+function equals(Email: any): any {
+    throw new Error("Function not implemented.");
+}

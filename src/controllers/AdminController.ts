@@ -9,7 +9,7 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer'); 
 export const CreateAdmins = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { Email, Password,Company_name, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
+        const { Email, Password,Company_name,IsApproved, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
 
         // Input validation
         if (!Email || !Password) {
@@ -18,7 +18,11 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
 
         // Hash the password before storing it
         const hashedPassword = await bcrypt.hash(Password, 10); 
-      
+        const Approval_status = {
+            Pending: 0, // Default
+            Approved: 1,
+            Canceled: 2,
+        };
         // Insert the new admin record
         const result = await db
             .insert(AdminTable)
@@ -31,7 +35,7 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
                 Supplier_account:Supplier_account || false,
                 Supplier_operation:Supplier_operation || false,
                 Role:'admin',
-                
+                IsApproved:  IsApproved || Approval_status.Pending
             })
             .returning();
 
