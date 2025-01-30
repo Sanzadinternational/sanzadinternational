@@ -11,7 +11,7 @@ router.post('/registration',  CreateAgent);
 // router.post('/forgotpassword',forgotPassword); 
 // router.post('/resetpassword',resetpassword);
 router.post('/ForgetPassword',ForgetPassword); 
-router.post('/resetPassword',resetPassword);
+router.post('/ResetPassword',resetPassword);
 router.get('/GetAgent',GetAgent); 
 router.post('/login',loginAgent);  
 // router.post('/emailsend',EmailSend); 

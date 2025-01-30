@@ -11,7 +11,7 @@ router.post('/send-otp', suppliersendOtp);
 router.post('/verify-otp', supplierverifyOtp); 
 router.post('/login',loginSupplier);
 router.post('/ForgetPassword',ForgetPasswords);
-router.post('/resetPassword',resetPasswords);
+router.post('/ResetPassword',resetPasswords);
 router.get('/GetSupplier',GetSupplier); 
 router.post('/Supplier_details', Supplier_details); 
 router.get('/GetSupplier_details',GetSupplier_details); 
