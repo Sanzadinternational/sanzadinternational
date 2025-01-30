@@ -7,7 +7,7 @@ const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/Agen
 const { otpss } = require('../db/schema/OtpSchema'); 
 const {Emailotps} = require('./EmailotpsController'); 
 const bcrypt = require('bcrypt'); 
-import { desc, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 const nodemailer = require("nodemailer"); 
 // import jwt from 'jsonwebtoken'; 
 const Crypto = require("crypto");
@@ -15,6 +15,7 @@ const jwt = require('jsonwebtoken');
 import { registerTable } from "../db/schema/SupplierSchema";
 var Mailgen = require('mailgen'); 
 var randomstring = require("randomstring");
+var passwordHash = require('password-hash');
 
 export const CreateAgent = async(req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -153,14 +154,14 @@ export const ForgetPassword = async (req: Request, res: Response, next: NextFunc
                     pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
                 },
             });
-            const resetLink = `http://localhost:8000/api/V1/agent/ResetPassword?token=${GenerateToken}`;
+            const resetLink = `http://localhost:8000/api/V1/agent/ResetPassword?token=${Token}`;
             // Send an email with the retrieved data (decrypted password)
             const info = await transporter.sendMail({
                 from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
                 to: `gcaffe.jugal@gmail.com`,
                 subject: "Query from Sanzadinternational", // Subject line
                 text: `Details of New Agent Access:\nEmail: ${user[0].Email}`, // Plain text body
-                html: `<a href="${resetLink}">Forgate Password</a>`, // HTML body,
+                html: `<a href="${resetLink}">${resetLink}</a>`, // HTML body,
             });
     
             console.log("Message sent: %s", info.messageId);
@@ -186,6 +187,40 @@ export const ForgetPassword = async (req: Request, res: Response, next: NextFunc
   }
 };
 
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  const { Token, Email, Password } = req.body; // Extract fields from the request body
+
+  try {
+    // Step 1: Hash the new password
+    const hashedPassword = await bcrypt.hash(Password, 10);  
+
+    // Step 2: Verify that the user with the given Token and Email exists
+    const user = await db
+      .select({ id: AgentTable.id, Email: AgentTable.Email }) // Select necessary fields
+      .from(AgentTable)
+      .where(and(eq(AgentTable.Token, Token), eq(AgentTable.Email, Email)));
+
+    if (user.length === 0) {
+      return res.status(404).json({ error: "Invalid Token or Email" });
+    }
+
+    // Step 3: Update the user's password and reset the token
+    const result = await db
+      .update(AgentTable)
+      .set({
+        Password: hashedPassword,
+        Token: "", // Clear the token
+      })
+      .where(eq(AgentTable.id, user[0].id)) // Use the unique `id` for the update
+      .returning();
+
+    // Step 4: Respond with success
+    res.status(200).json({ message: "Password reset successful", result });
+  } catch (error) {
+    console.error("Error in resetPassword:", error);
+    next(error); // Pass the error to the next middleware
+  }
+};
 
   
 
