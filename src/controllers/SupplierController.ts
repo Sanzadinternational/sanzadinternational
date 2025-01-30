@@ -1,21 +1,21 @@
 import { Request, Response, NextFunction } from "express"; 
 import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
-
-import { desc, eq } from "drizzle-orm"; 
+      
+import { and,desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
-
+      
 import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db"; 
 const { registerTable, One_WayTable,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
     supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
- 
+      
 import { generateOTP, sendOTPEmail } from "../utils"; 
- 
+var randomstring = require("randomstring");
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken'); 
-
+const nodemailer = require("nodemailer"); 
 
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {   
@@ -96,6 +96,111 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
     }
 };
 
+export const ForgetPasswords = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { Email } = req.body;
+    
+      // Validate email input
+      if (!Email || typeof Email !== 'string') {
+        return res.status(400).send({ success: false, message: "Valid email is required." });
+      } 
+                     
+      // Check if the user exists based on the email
+      const user = await db
+        .select({ Email: registerTable.Email })
+        .from(registerTable)
+        .where(eq(registerTable.Email, Email));
+  
+      if (user.length > 0) {
+       // Generate a reset token
+       const Token = randomstring.generate();
+       const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
+  
+       // Save the reset token and expiry in the database
+       const GenerateToken = await db
+              .update(registerTable)  // Use the correct table reference
+              .set({
+                  Token,
+                  resetTokenExpiry,
+              })
+              .where(eq(registerTable.Email, Email))  // Use the `id` to target the specific row
+              .returning();  //
+  
+              const transporter = nodemailer.createTransport({
+                  service: 'Gmail', // Replace with your email service provider
+                  auth: {
+                      user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                      pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+                  },
+              });
+              const resetLink = `http://localhost:8000/api/V1/supplier/resetpassword?token=${Token}`;
+              // Send an email with the retrieved data (decrypted password)
+              const info = await transporter.sendMail({
+                  from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+                  to: `${user[0].Email}`,
+                  subject: "Query from Sanzadinternational", // Subject line
+                  text: `Details of New Agent Access:\nEmail: ${user[0].Email}`, // Plain text body
+                  html: `Please click below link then reset your password<br>Link: <a href="${resetLink}">${resetLink}</a>`, // HTML body,
+              });
+      
+              console.log("Message sent: %s", info.messageId);
+       // Ideally, you'd send this token via email. For now, we return it in the response.
+       res.status(200).send({
+         success: true,
+         message: "Password reset token generated successfully.",
+         GenerateToken: GenerateToken, // In a production app, don't send the token in the response, use email
+      
+       });
+  
+      } else {
+        // If the user does not exist
+        res.status(404).send({
+          success: false,
+          message: "User not found with the provided email.",
+        });
+      }
+  
+    } catch (error) {
+      console.error('Error in ForgetPassword API:', error);
+      next(error); // Pass the error to the next middleware for handling
+    }
+  };
+  
+  export const resetPasswords = async (req: Request, res: Response, next: NextFunction) => {
+    const { Token, Email, Password } = req.body; // Extract fields from the request body
+  
+    try {
+      // Step 1: Hash the new password
+      const hashedPassword = await bcrypt.hash(Password, 10);  
+  
+      // Step 2: Verify that the user with the given Token and Email exists
+      const user = await db
+        .select({ id: registerTable.id, Email: registerTable.Email }) // Select necessary fields
+        .from(registerTable)
+        .where(and(eq(registerTable.Token, Token), eq(registerTable.Email, Email)));
+  
+      if (user.length === 0) {
+        return res.status(404).json({ error: "Invalid Token or Email" });
+      }
+  
+      // Step 3: Update the user's password and reset the token
+      const result = await db
+        .update(registerTable)
+        .set({
+          Password: hashedPassword,
+          Token: "", // Clear the token
+        })
+        .where(eq(registerTable.id, user[0].id)) // Use the unique `id` for the update
+        .returning();
+  
+      // Step 4: Respond with success
+      res.status(200).json({ message: "Password reset successful", result });
+    } catch (error) {
+      console.error("Error in resetPassword:", error);
+      next(error); // Pass the error to the next middleware
+    }
+  };
+  
 export const GetSupplier = async (req: Request, res: Response, next: NextFunction) => {
     try {
        

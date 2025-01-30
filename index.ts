@@ -10,7 +10,7 @@ var cors = require('cors')
 // import {SupplierRoute} from './routes/SupplierRoute';
 // const SupplierRoute = require('./src/routes/SupplierRoute');
 // import mongoose from "mongoose";
-// var cors = require('cors')
+// var cors = require('cors') 
 const app = express();
 
 app.use(cors({

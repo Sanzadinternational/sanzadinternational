@@ -92,30 +92,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
         next(error);
     }
 }
-
-// export const ForgetPassword = async(req:Request,res:Response,next:NextFunction)=>{
-//     try{
-//         const { id,Email }=req.body;
-//         const user = await db.select({ Email:AgentTable.Email})
-//         if(user){
-//         const Token = randomstring.generate();
-//         const resetTokenExpiry = new Date(Date.now() + 3600000); // 1-hour expiry
-  
-//         // Save the token and expiry to the database
-//         const updateToken = await db.update(AgentTable)
-//         .set({
-//             resetToken: Token, resetTokenExpiry 
-//         })
-//           .where(eq{AgentTable.Email,id }) 
-//           .returning(); 
-//         }else{
-//             res.status(200).send({sucess:false,message:"Invalid Email"})
-//         }
-//     }catch(error){
-//         next(error)
-//     }
-// }
-
+//
 
 export const ForgetPassword = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -221,9 +198,7 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
     next(error); // Pass the error to the next middleware
   }
 };
-
-
-
+//
 export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
 {
     try{

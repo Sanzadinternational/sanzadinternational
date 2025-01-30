@@ -1,4 +1,4 @@
-import { dashboard, Supplier_price, TransportNode } from '../controllers/SupplierController';
+import { dashboard, Supplier_price, TransportNode,resetPasswords,ForgetPasswords } from '../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
 import { CreateSupplier,GetSupplier,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
@@ -10,6 +10,8 @@ router.post('/registration', CreateSupplier);
 router.post('/send-otp', suppliersendOtp); 
 router.post('/verify-otp', supplierverifyOtp); 
 router.post('/login',loginSupplier);
+router.post('/ForgetPassword',ForgetPasswords);
+router.post('/resetPassword',resetPasswords);
 router.get('/GetSupplier',GetSupplier); 
 router.post('/Supplier_details', Supplier_details); 
 router.get('/GetSupplier_details',GetSupplier_details); 
