@@ -158,10 +158,10 @@ export const ForgetPassword = async (req: Request, res: Response, next: NextFunc
             // Send an email with the retrieved data (decrypted password)
             const info = await transporter.sendMail({
                 from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
-                to: `gcaffe.jugal@gmail.com`,
+                to: `${user[0].Email}`,
                 subject: "Query from Sanzadinternational", // Subject line
                 text: `Details of New Agent Access:\nEmail: ${user[0].Email}`, // Plain text body
-                html: `<a href="${resetLink}">${resetLink}</a>`, // HTML body,
+                html: `Please click below link then reset your password<br>Link: <a href="${resetLink}">${resetLink}</a>`, // HTML body,
             });
     
             console.log("Message sent: %s", info.messageId);
@@ -222,7 +222,7 @@ export const resetPassword = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-  
+
 
 export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
 {
