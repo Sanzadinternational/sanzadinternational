@@ -2,11 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import { CreateAdmin } from "../dto/Admin.dto"
 import { AdminTable } from "../db/schema/AdminSchema";
 import { db } from "../db/db";
-import { desc, eq } from "drizzle-orm";
+import { and,desc, eq } from "drizzle-orm";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
 import { registerTable } from "../db/schema/SupplierSchema";
 const bcrypt = require('bcrypt'); 
-const nodemailer = require('nodemailer'); 
+var randomstring = require("randomstring");
+import nodemailer from "nodemailer";
+
+
 export const CreateAdmins = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { Email, Password,Company_name,IsApproved, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
@@ -45,6 +48,113 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
         next(error); // Pass other errors to the error handler
     }
 };
+
+export const ForgetAdminPassword = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { Email, Role } = req.body;
+  
+      // Validate email input
+      if (!Email || typeof Email !== "string") {
+        return res
+          .status(400)
+          .send({ success: false, message: "Valid email is required." });
+      }
+  
+      // Check if the user exists based on the email and role
+      const user = await db
+        .select({ Email: AdminTable.Email })
+        .from(AdminTable)
+        .where(eq(AdminTable.Email, Email));
+  
+      if (user.length > 0) {
+        // Generate a reset token
+        const Token = randomstring.generate();
+        const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
+  
+        // Save the reset token and expiry in the database
+        const updatedUser = await db
+          .update(AdminTable) // Use the correct table reference
+          .set({
+            Token,
+            resetTokenExpiry: resetTokenExpiry as any,
+            Role:'admin',
+          })
+          .where(and(eq(AdminTable.Email, Email), eq(AdminTable.Role, "admin")))
+          .returning(); // Explicitly specify fields to return
+  
+        // Send email with the reset link
+        const transporter = nodemailer.createTransport({
+          service: "Gmail", // Replace with your email service provider
+          auth: {
+            user: "jugalkishor556455@gmail.com", // Email address
+            pass: "vhar uhhv gjfy dpes", // Email password
+          },
+        });
+        const resetLink = `http://localhost:8000/api/V1/admin/ResetAdminPassword?token=${Token}`;
+        const info = await transporter.sendMail({
+          from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+          to: `${user[0].Email}`,
+          subject: "Password Reset Request", // Subject line
+          html: `Please click the link below to reset your password:<br><a href="${resetLink}">${resetLink}</a>`, // HTML body
+        });
+  
+        console.log("Message sent: %s", info.messageId);
+  
+        // Send a success response
+        return res.status(200).send({
+          success: true,
+          message: "Password reset token generated successfully.",
+          updatedUser, // Do not include sensitive data in production
+        });
+      } else {
+        // If the user does not exist
+        return res.status(404).send({
+          success: false,
+          message: "User not found with the provided email.",
+        });
+      }
+    } catch (error) {
+      console.error("Error in ForgetAdminPassword API:", error);
+      next(error); // Pass the error to the next middleware for handling
+    }
+  };
+  
+  
+  export const ResetAdminPassword = async (req: Request, res: Response, next: NextFunction) => {
+    const { Token, Email, Password } = req.body; // Extract fields from the request body
+  
+    try {
+      // Step 1: Hash the new password
+      const hashedPassword = await bcrypt.hash(Password, 10);  
+  
+      // Step 2: Verify that the user with the given Token and Email exists
+      const user = await db
+        .select({ id: AdminTable.id, Email: AdminTable.Email }) // Select necessary fields
+        .from(AdminTable)
+        .where(and(eq(AdminTable.Token, Token), eq(AdminTable.Email, Email)));
+  
+      if (user.length === 0) {
+        return res.status(404).json({ error: "Invalid Token or Email" });
+      }
+  
+      // Step 3: Update the user's password and reset the token
+      const result = await db
+        .update(AdminTable)
+        .set({
+          Password: hashedPassword,
+          Token: "", // Clear the token
+          resetTokenExpiry:""
+        })
+        .where(eq(AdminTable.id, user[0].id)) // Use the unique `id` for the update
+        .returning();
+  
+      // Step 4: Respond with success
+      res.status(200).json({ message: "Password reset successful", result });
+    } catch (error) {
+      console.error("Error in resetPassword:", error);
+      next(error); // Pass the error to the next middleware
+    }
+  };
 
 export const AllAdminRecords = async (req: Request, res: Response, next: NextFunction) => { 
     try {

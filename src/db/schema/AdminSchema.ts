@@ -10,7 +10,9 @@ export const AdminTable = pgTable('admin',{
     Agent_operation:boolean().default(false), 
     Supplier_account:boolean().default(false), 
     Supplier_operation:boolean().default(false), 
-    IsApproved:integer() 
+    IsApproved:integer(),
+    Token:varchar({length:255}),
+    resetTokenExpiry:varchar({length:255})  
 }) 
 
 

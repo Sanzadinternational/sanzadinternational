@@ -7,6 +7,8 @@ export interface CreateAdmin{
     Supplier_account:boolean, 
     Supplier_operation:boolean, 
     Company_name:string,
-     IsApproved:number
+     IsApproved:number,
+     Token:string,
+     resetTokenExpiry:string
 } 
  

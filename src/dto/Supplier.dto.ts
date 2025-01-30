@@ -18,7 +18,8 @@ export interface CreateSupplierInput {
   Gst_Tax_Certificate: string,
   Password: string, 
   Role:string,
-  IsApproved:number
+  IsApproved:number,
+  Token:string 
   }
 export interface SupplierPriceInput{
   country:string,
