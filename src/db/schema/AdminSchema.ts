@@ -12,7 +12,7 @@ export const AdminTable = pgTable('admin',{
     Supplier_operation:boolean().default(false), 
     IsApproved:integer(),
     Token:varchar({length:255}),
-    resetTokenExpiry:varchar({length:255})  
+    ResetTokenExpiry: varchar({length:255}),
 }) 
 
 

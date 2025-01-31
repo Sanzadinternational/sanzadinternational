@@ -1,5 +1,5 @@
 {
-  "id": "6d4615c7-e5e3-4a73-a041-e6eded5c271b",
+  "id": "337b1c90-ac78-41b5-851e-bec6a8db9104",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -81,6 +81,18 @@
         "IsApproved": {
           "name": "IsApproved",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Token": {
+          "name": "Token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ResetTokenExpiry": {
+          "name": "ResetTokenExpiry",
+          "type": "date",
           "primaryKey": false,
           "notNull": false
         }
@@ -210,6 +222,18 @@
         "IsApproved": {
           "name": "IsApproved",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Token": {
+          "name": "Token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ResetTokenExpiry": {
+          "name": "ResetTokenExpiry",
+          "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         }
@@ -1993,6 +2017,18 @@
         "IsApproved": {
           "name": "IsApproved",
           "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Token": {
+          "name": "Token",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ResetTokenExpiry": {
+          "name": "ResetTokenExpiry",
+          "type": "date",
           "primaryKey": false,
           "notNull": false
         }

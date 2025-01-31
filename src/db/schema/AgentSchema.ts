@@ -19,7 +19,8 @@ export const AgentTable = pgTable('Agent_registration', {
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(),
   Role:varchar({length:255}), 
   IsApproved:integer(),
-  Token:varchar({length:255})
+  Token:varchar({length:255}),
+  ResetTokenExpiry: varchar({length:255}),
 }); 
 export const forget_password = pgTable('forget_password', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
@@ -58,4 +59,9 @@ export const RoundTripTable =pgTable('RoundTrip',
   } 
 ) 
 
+
+
+function datetime(arg0: string): any {
+  throw new Error('Function not implemented.');
+}
 

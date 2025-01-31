@@ -69,14 +69,15 @@ export const ForgetAdminPassword = async (req: Request, res: Response, next: Nex
       if (user.length > 0) {
         // Generate a reset token
         const Token = randomstring.generate();
-        const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
+        const ResetTokenExpiry = new Date(Date.now() + 3600000).toISOString(); // Token expires in 1 hour as a string
+
   
         // Save the reset token and expiry in the database
         const updatedUser = await db
           .update(AdminTable) // Use the correct table reference
           .set({
             Token,
-            resetTokenExpiry: resetTokenExpiry as any,
+            ResetTokenExpiry,
             Role:'admin',
           })
           .where(and(eq(AdminTable.Email, Email), eq(AdminTable.Role, "admin")))
@@ -143,7 +144,7 @@ export const ForgetAdminPassword = async (req: Request, res: Response, next: Nex
         .set({
           Password: hashedPassword,
           Token: "", // Clear the token
-          resetTokenExpiry:""
+          ResetTokenExpiry:""
         })
         .where(eq(AdminTable.id, user[0].id)) // Use the unique `id` for the update
         .returning();

@@ -33,7 +33,8 @@ export interface CreateAgentInput {
   Gst_Tax_Certificate: string;
   Role:string,
   IsApproved:number,
-  Token:string
+  Token:string,
+  ResetTokenExpiry:string
 } 
 export interface CreateOtpInput {
   email:string,

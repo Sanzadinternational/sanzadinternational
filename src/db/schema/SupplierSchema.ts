@@ -20,7 +20,8 @@ export const registerTable = pgTable('supplier', {
   Password: varchar({length:255}).notNull(),
   Role:varchar({length:255}),
   IsApproved:integer(),
-  Token:varchar({length:255}) 
+  Token:varchar({length:255}),
+  ResetTokenExpiry: varchar({length:255}),
 }); 
 
 export const One_WayTable = pgTable('One_Way_Service_Details',{
@@ -211,4 +212,9 @@ export const VehicleModelTable=pgTable('VehicleModel',{
   id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
   VehicleModel:varchar({length:255})
 }) 
+
+
+function datetime(arg0: string): any {
+  throw new Error('Function not implemented.');
+}
 
