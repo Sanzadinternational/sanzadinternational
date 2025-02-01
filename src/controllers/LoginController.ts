@@ -1,3 +1,4 @@
+import { Token } from './../../node_modules/acorn/dist/acorn.d';
 import { Request, Response, NextFunction } from "express"; 
 import { and,desc, eq } from "drizzle-orm"; 
 import { registerTable } from '../db/schema/SupplierSchema'; 
@@ -325,22 +326,22 @@ const hashedPassword = await bcrypt.hash(Password, 10);
 
     // Step 2: Verify that the user with the given Token and Email exists
     const user = await db
-      .select({ id: AgentTable.id, Email: AgentTable.Email }) // Select necessary fields
+      .select({ id: AgentTable.id, Email: AgentTable.Email,Token:AgentTable.Token }) // Select necessary fields
       .from(AgentTable)
       .where(and(eq(AgentTable.Token, Token), eq(AgentTable.Email, Email),eq(AgentTable.Role,'agent')));
 
     const suppliers = await db
-      .select({ id: registerTable.id, Email: registerTable.Email }) // Select necessary fields
+      .select({ id: registerTable.id, Email: registerTable.Email,Token:registerTable.Token }) // Select necessary fields
       .from(registerTable)
       .where(and(eq(registerTable.Token, Token), eq(registerTable.Email, Email),eq(registerTable.Role,'supplier')));
 
     const admin = await db
-      .select({ id: AdminTable.id, Email: AdminTable.Email }) // Select necessary fields
+      .select({ id: AdminTable.id, Email: AdminTable.Email,Token:AdminTable.Token }) // Select necessary fields
       .from(AdminTable)
       .where(and(eq(AdminTable.Token, Token), eq(AdminTable.Email, Email),eq(AdminTable.Role,'admin')));
 
     const superadmin = await db
-      .select({ id: AdminTable.id, Email: AdminTable.Email }) // Select necessary fields
+      .select({ id: AdminTable.id, Email: AdminTable.Email,Token:AdminTable.Token }) // Select necessary fields
       .from(AdminTable)
       .where(and(eq(AdminTable.Token, Token), eq(AdminTable.Email, Email),eq(AdminTable.Role,'superadmin')));
 
