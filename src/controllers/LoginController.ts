@@ -276,7 +276,7 @@ export const ForgetPassword = async (req: Request, res: Response, next: NextFunc
                     pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
                 },
             });
-            const resetLink = `http://localhost:8000/api/V1/ResetPassword?token=${Token}`;
+            const resetLink = `http://localhost:3000/forgot-password?token=${Token}`;
             // Send an email with the retrieved data (decrypted password)
             const info = await transporter.sendMail({
                 from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
@@ -317,7 +317,11 @@ export const ResetPassword = async (req: Request, res: Response, next: NextFunct
 
   try {
     // Step 1: Hash the new password
-    const hashedPassword = await bcrypt.hash(Password, 10);  
+    if(!Token){
+//
+      res.status(404).json({message:"Token is not found"})
+    }else{
+const hashedPassword = await bcrypt.hash(Password, 10);  
 
     // Step 2: Verify that the user with the given Token and Email exists
     const user = await db
@@ -343,8 +347,7 @@ export const ResetPassword = async (req: Request, res: Response, next: NextFunct
       if (!suppliers || !user || !admin || !superadmin) {
         return res.status(400).json({ message: "Suppliers or user is missing" });
       }
-      else{
-
+//
     // Step 3: Update the user's password and reset the token
     const result = await db
       .update(AgentTable)
@@ -384,14 +387,11 @@ export const ResetPassword = async (req: Request, res: Response, next: NextFunct
       })
       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Email,Email),eq(AdminTable.Role,'superadmin'))) // Use the unique `id` for the update
       .returning();
-    // Step 4: Respond with success
-    if(!result || !supplierresult || !adminresult || !superadminresult){
-      res.status(404).send({message:"Email and Token are not metched"});
-    }else{
+
       res.status(200).json({ message: "Password reset successfully",result,supplierresult,adminresult,superadminresult });
     }
-
-  }
+   
+    //
  } catch (error) {
     console.error("Error in resetPassword:", error);
     next(error); // Pass the error to the next middleware
