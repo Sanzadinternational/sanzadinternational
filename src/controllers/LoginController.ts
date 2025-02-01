@@ -397,3 +397,33 @@ export const ResetPassword = async (req: Request, res: Response, next: NextFunct
     next(error); // Pass the error to the next middleware
   }
 };
+
+export const Verify_token = async(req:Request,res:Response,next:NextFunction)=>{
+  try{
+       const {Token}=req.body;
+       if(!Token){
+        res.status(404).json({message:"Token is not verify"})
+       }else{
+     
+        const agent=await db.select({Token:AgentTable.Token})
+       .from(AgentTable)
+       .where(and(eq(AgentTable.Token,Token),eq(AgentTable.Role,'agent')))
+
+       const supplier=await db.select({Token:registerTable.Token})
+       .from(registerTable)
+       .where(and(eq(registerTable.Token,Token),eq(registerTable.Role,'supplier')))
+
+       const admin=await db.select({Token:AdminTable.Token})
+       .from(AdminTable)
+       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'admin')))
+
+       const superadmin=await db.select({Token:AdminTable.Token})
+       .from(AdminTable)
+       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'superadmin')))
+
+       res.status(200).json({message:"Token is verify",agent,supplier,admin,superadmin})
+       }
+  }catch(error){
+    next(error)
+  }
+}
