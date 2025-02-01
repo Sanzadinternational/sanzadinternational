@@ -277,7 +277,7 @@ export const ForgetPassword = async (req: Request, res: Response, next: NextFunc
                     pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
                 },
             });
-            const resetLink = `http://localhost:3000/forgot-password?token=${Token}`;
+            const resetLink = `http://localhost:3000/forgot-password?token=${Token}&Email=${Email}`;
             // Send an email with the retrieved data (decrypted password)
             const info = await transporter.sendMail({
                 from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
