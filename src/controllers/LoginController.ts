@@ -400,26 +400,26 @@ const hashedPassword = await bcrypt.hash(Password, 10);
 
 export const Verify_token = async(req:Request,res:Response,next:NextFunction)=>{
   try{
-       const {Token}=req.body;
-       if(!Token){
-        res.status(404).json({message:"Token is not verify"})
+       const {Token,Email,Role}=req.body;
+       if(!Token || !Email || !Role){
+        res.status(404).json({message:"Token Email and Role are not verify"})
        }else{
      
-        const agent=await db.select({Token:AgentTable.Token})
+        const agent=await db.select({Token:AgentTable.Token,Email:AgentTable.Email,Role:AgentTable.Role})
        .from(AgentTable)
-       .where(and(eq(AgentTable.Token,Token),eq(AgentTable.Role,'agent')))
+       .where(and(eq(AgentTable.Token,Token),eq(AgentTable.Role,'agent'),eq(AgentTable.Email,Email)))
 
-       const supplier=await db.select({Token:registerTable.Token})
+       const supplier=await db.select({Token:registerTable.Token,Email:registerTable.Email,Role:registerTable.Role})
        .from(registerTable)
-       .where(and(eq(registerTable.Token,Token),eq(registerTable.Role,'supplier')))
+       .where(and(eq(registerTable.Token,Token),eq(registerTable.Role,'supplier'),eq(registerTable.Email,Email)))
 
-       const admin=await db.select({Token:AdminTable.Token})
+       const admin=await db.select({Token:AdminTable.Token,Email:AdminTable.Email,Role:AdminTable.Role})
        .from(AdminTable)
-       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'admin')))
+       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'admin'),eq(AdminTable.Email,Email)))
 
-       const superadmin=await db.select({Token:AdminTable.Token})
+       const superadmin=await db.select({Token:AdminTable.Token,Email:AdminTable.Email,Role:AdminTable.Role})
        .from(AdminTable)
-       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'superadmin')))
+       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'superadmin'),eq(AdminTable.Email,Email)))
 
        res.status(200).json({message:"Token is verify",agent,supplier,admin,superadmin})
        }
