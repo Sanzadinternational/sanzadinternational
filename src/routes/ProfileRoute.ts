@@ -3,7 +3,7 @@ import { getProfile } from "../controllers/ProfileController";
 import authMiddleware from '../middlewares/authMiddleware';
 const router = express.Router(); 
  
-router.get('/getProfile',authMiddleware, getProfile); 
+router.get('/getProfile', getProfile); 
 
 export {router as ProfileRoute}; 
 
