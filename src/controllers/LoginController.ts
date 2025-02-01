@@ -276,7 +276,7 @@ export const ForgetPassword = async (req: Request, res: Response, next: NextFunc
                     pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
                 },
             });
-            const resetLink = `http://localhost:3000/forgot-password?token=${Token}`;
+            const resetLink = `http://localhost:3000/forgot-password?token=${Token}&Email=${Email}`;
             // Send an email with the retrieved data (decrypted password)
             const info = await transporter.sendMail({
                 from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
@@ -325,22 +325,22 @@ const hashedPassword = await bcrypt.hash(Password, 10);
 
     // Step 2: Verify that the user with the given Token and Email exists
     const user = await db
-      .select({ id: AgentTable.id, Email: AgentTable.Email }) // Select necessary fields
+      .select({ id: AgentTable.id, Email: AgentTable.Email,Token:AgentTable.Token }) // Select necessary fields
       .from(AgentTable)
       .where(and(eq(AgentTable.Token, Token), eq(AgentTable.Email, Email),eq(AgentTable.Role,'agent')));
 
     const suppliers = await db
-      .select({ id: registerTable.id, Email: registerTable.Email }) // Select necessary fields
+      .select({ id: registerTable.id, Email: registerTable.Email, Token:registerTable.Token }) // Select necessary fields
       .from(registerTable)
       .where(and(eq(registerTable.Token, Token), eq(registerTable.Email, Email),eq(registerTable.Role,'supplier')));
 
     const admin = await db
-      .select({ id: AdminTable.id, Email: AdminTable.Email }) // Select necessary fields
+      .select({ id: AdminTable.id, Email: AdminTable.Email, Token:AdminTable.Token }) // Select necessary fields
       .from(AdminTable)
       .where(and(eq(AdminTable.Token, Token), eq(AdminTable.Email, Email),eq(AdminTable.Role,'admin')));
 
     const superadmin = await db
-      .select({ id: AdminTable.id, Email: AdminTable.Email }) // Select necessary fields
+      .select({ id: AdminTable.id, Email: AdminTable.Email,Token:AdminTable.Token }) // Select necessary fields
       .from(AdminTable)
       .where(and(eq(AdminTable.Token, Token), eq(AdminTable.Email, Email),eq(AdminTable.Role,'superadmin')));
 
@@ -400,26 +400,26 @@ const hashedPassword = await bcrypt.hash(Password, 10);
 
 export const Verify_token = async(req:Request,res:Response,next:NextFunction)=>{
   try{
-       const {Token}=req.body;
-       if(!Token){
+       const {Token,Email}=req.body;
+       if(!Token || !Email){
         res.status(404).json({message:"Token is not verify"})
        }else{
      
-        const agent=await db.select({Token:AgentTable.Token})
+        const agent=await db.select({Token:AgentTable.Token,Email:AgentTable.Email,Role:AgentTable.Role})
        .from(AgentTable)
-       .where(and(eq(AgentTable.Token,Token),eq(AgentTable.Role,'agent')))
+       .where(and(eq(AgentTable.Token,Token),eq(AgentTable.Role,'agent'),eq(AgentTable.Email,Email)))
 
-       const supplier=await db.select({Token:registerTable.Token})
+       const supplier=await db.select({Token:registerTable.Token,Email:registerTable.Email,Role:registerTable.Role})
        .from(registerTable)
-       .where(and(eq(registerTable.Token,Token),eq(registerTable.Role,'supplier')))
+       .where(and(eq(registerTable.Token,Token),eq(registerTable.Role,'supplier'),eq(registerTable.Email,Email)))
 
-       const admin=await db.select({Token:AdminTable.Token})
+       const admin=await db.select({Token:AdminTable.Token,Email:AdminTable.Email,Role:AdminTable.Role})
        .from(AdminTable)
-       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'admin')))
+       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'admin'),eq(AdminTable.Email,Email)))
 
-       const superadmin=await db.select({Token:AdminTable.Token})
+       const superadmin=await db.select({Token:AdminTable.Token,Email:AdminTable.Email,Role:AdminTable.Role})
        .from(AdminTable)
-       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'superadmin')))
+       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'superadmin'),eq(AdminTable.Email,Email)))
 
        res.status(200).json({message:"Token is verify",agent,supplier,admin,superadmin})
        }
