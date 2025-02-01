@@ -405,21 +405,21 @@ export const Verify_token = async(req:Request,res:Response,next:NextFunction)=>{
         res.status(404).json({message:"Token is not verify"})
        }else{
      
-        const agent=await db.select({Token:AgentTable.Token,Email:AgentTable.Email,Role:AgentTable.Role})
+        const agent=await db.select({Token:AgentTable.Token,Email:AgentTable.Email})
        .from(AgentTable)
-       .where(and(eq(AgentTable.Token,Token),eq(AgentTable.Role,'agent'),eq(AgentTable.Email,Email)))
+       .where(and(eq(AgentTable.Token,Token),eq(AgentTable.Email,Email)))
 
-       const supplier=await db.select({Token:registerTable.Token,Email:registerTable.Email,Role:registerTable.Role})
+       const supplier=await db.select({Token:registerTable.Token,Email:registerTable.Email})
        .from(registerTable)
-       .where(and(eq(registerTable.Token,Token),eq(registerTable.Role,'supplier'),eq(registerTable.Email,Email)))
+       .where(and(eq(registerTable.Token,Token),eq(registerTable.Email,Email)))
 
-       const admin=await db.select({Token:AdminTable.Token,Email:AdminTable.Email,Role:AdminTable.Role})
+       const admin=await db.select({Token:AdminTable.Token,Email:AdminTable.Email})
        .from(AdminTable)
-       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'admin'),eq(AdminTable.Email,Email)))
+       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Email,Email)))
 
-       const superadmin=await db.select({Token:AdminTable.Token,Email:AdminTable.Email,Role:AdminTable.Role})
+       const superadmin=await db.select({Token:AdminTable.Token,Email:AdminTable.Email})
        .from(AdminTable)
-       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Role,'superadmin'),eq(AdminTable.Email,Email)))
+       .where(and(eq(AdminTable.Token,Token),eq(AdminTable.Email,Email)))
 
        res.status(200).json({message:"Token is verify",agent,supplier,admin,superadmin})
        }
