@@ -1,9 +1,9 @@
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { getProfile } from "../controllers/ProfileController"; 
+const { updateProfile } = require("../controllers/ProfileControllers");
 import authMiddleware from '../middlewares/authMiddleware';
 const router = express.Router(); 
  
-router.get('/getProfile', getProfile); 
+router.put('/getProfile/:id', updateProfile); 
 
 export {router as ProfileRoute}; 
 
