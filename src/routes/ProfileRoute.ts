@@ -3,7 +3,7 @@ const { updateProfile } = require("../controllers/ProfileControllers");
 import authMiddleware from '../middlewares/authMiddleware';
 const router = express.Router(); 
  
-router.put('/getProfile/:id', updateProfile); 
+router.put('/UpdateProfile/:id', updateProfile); 
 
 export {router as ProfileRoute}; 
 
