@@ -239,6 +239,27 @@ export const AgentSingleView = async (req: Request, res: Response, next: NextFun
   }
 };
 
+export const SupplierSingleView = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params; // Extract email from route parameters
+  
+    if (!id) {
+      return res.status(400).json({ message: "Id parameter is required" });
+    }
+  
+    const result = await db.select()
+      .from(registerTable)
+      .where(eq(registerTable.Email, id)); // Ensure AgentTable.Email exists
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Supplier not found" });
+    }
+
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const ChangeAgentApprovalStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {

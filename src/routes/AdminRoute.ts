@@ -1,5 +1,5 @@
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import {AllGetSuppliers,AllAgentRecords,ResetAdminPassword,AgentSingleView,DestroyAdmin,ForgetAdminPassword,ChangeSupplierApprovalStatus,ChangeAgentApprovalStatus, AllAdminRecords,CreateAdmins } from "../controllers/AdminController";
+import {AllGetSuppliers,AllAgentRecords,SupplierSingleView,ResetAdminPassword,AgentSingleView,DestroyAdmin,ForgetAdminPassword,ChangeSupplierApprovalStatus,ChangeAgentApprovalStatus, AllAdminRecords,CreateAdmins } from "../controllers/AdminController";
 import { AgentMail } from "../controllers/EmailotpsController"; 
 import {SupplierMail} from "../controllers/EmailotpsController";
 const router = express.Router(); 
@@ -16,5 +16,6 @@ router.put('/ChangeAgentApprovalStatus/:id',ChangeAgentApprovalStatus);
 router.put('/ChangeSupplierApprovalStatus/:id',ChangeSupplierApprovalStatus);
 router.post('/ApprovedAgentMail',AgentMail); 
 router.post('/ApprovedSupplierMail',SupplierMail);
+router.get('/SupplierSingleView/:id',SupplierSingleView); 
 export {router as AdminRoute };  
 
