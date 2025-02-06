@@ -39,7 +39,7 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
                 Supplier_operation:Supplier_operation || false,
                 Role:'admin',
                 IsApproved:  IsApproved || Approval_status.Pending
-            })
+            }) 
             .returning();
 
         res.status(200).json(result)
@@ -216,6 +216,29 @@ export const AllAgentRecords = async(req:Request,res:Response,next:NextFunction)
         next(error)
     }
 }
+
+export const AgentSingleView = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params; // Extract email from route parameters
+
+    if (!id) {
+      return res.status(400).json({ message: "Id parameter is required" });
+    }
+
+    const result = await db.select()
+      .from(AgentTable)
+      .where(eq(AgentTable.Email, id)); // Ensure AgentTable.Email exists
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Agent not found" });
+    }
+
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const ChangeAgentApprovalStatus = async (req: Request, res: Response, next: NextFunction) => {
     try {
