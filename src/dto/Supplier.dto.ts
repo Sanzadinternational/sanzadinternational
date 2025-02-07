@@ -110,6 +110,7 @@ export interface CreateTransferCars{
   Transfer_from:string, 
   Extra_Price:string,
   Distance:string,
+  Location:string,
   Vice_versa:boolean, 
   NightTime:{ 
       type:string, 
@@ -121,10 +122,11 @@ export interface CreateTransferCars{
   SupplierCarDetailsforeign:number
 } 
 export interface UpdateTransferCars{ 
-  uniqueId:string, 
+  uniqueId:string,      
   Transfer_from:string, 
-  Distance:string, 
-  Extra_Price:string, 
+  Distance:string,      
+  Extra_Price:string,   
+  Location:string,    
   Vice_versa:boolean, 
   NightTime:{ 
       type:string, 

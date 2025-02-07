@@ -1,5 +1,5 @@
 {
-  "id": "cf0e23d2-e9ce-4ba6-842f-abda396090ff",
+  "id": "d2c71214-912d-40e5-bc42-496b69cbf6d7",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1082,6 +1082,12 @@
         },
         "Distance": {
           "name": "Distance",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Location": {
+          "name": "Location",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

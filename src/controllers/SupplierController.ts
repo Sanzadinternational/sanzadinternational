@@ -745,6 +745,7 @@ export const CreateTransferCarDetails = async (
         Transfer_from: item.Transfer_from, 
         Extra_Price:item.Extra_Price, 
         Distance: item.Distance,  
+        Location: item.Location,
         Vice_versa: item.Vice_versa, 
         Price: item.Price,
         NightTime: item.NightTime,
@@ -1083,7 +1084,7 @@ export const UpdatedSignleCarDetails = async(req:Request,res:Response,next:NextF
     
 export const UpdateExtra=async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const id =req.params.id;
+        const id =req.params.id; 
         const { Roof_Rack, Trailer_Hitch, Extended_Cargo_Space } = <UpdateExtraSpace>req.body;
         const updatedExtraSpaces = await db
                 .update(CreateExtraSpaces)
@@ -1100,17 +1101,18 @@ export const UpdateExtra=async(req:Request,res:Response,next:NextFunction)=>{
     }
 } 
     
-export const UpdateTransferCar = async(req:Request,res:Response,next:NextFunction)=>{
+export const UpdateTransferCar = async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
     const id = req.params.id; 
         
-    const { Transfer_from, Distance,Extra_Price, Vice_versa, NightTime, NightTime_Price, Price } =
+    const { Transfer_from, Distance,Extra_Price,Location, Vice_versa, NightTime, NightTime_Price, Price } =
       <UpdateTransferCars>req.body; 
         const updatedTransferCar = await db
         .update(CreateTransferCar)
         .set({
           Transfer_from,
           Distance,
+          Location,
           Vice_versa,
           Extra_Price,
           NightTime,

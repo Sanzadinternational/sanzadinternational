@@ -175,7 +175,7 @@ export type supplier_otps = {
       Extended_Cargo_Space:varchar({length:255}),
     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
     .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" })
-  })
+  }) 
 
 
 
@@ -184,7 +184,8 @@ export type supplier_otps = {
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
     Transfer_from: varchar({ length: 255 }), 
     Extra_Price: varchar({length:255}), 
-    Distance: varchar({length:255}),    
+    Distance: varchar({length:255}),  
+    Location:varchar({length:255}),  
     Vice_versa: boolean(),
     NightTime: varchar({ length: 255 }), 
     NightTime_Price: varchar({ length: 255 }), 

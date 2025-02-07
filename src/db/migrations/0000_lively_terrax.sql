@@ -176,6 +176,7 @@ CREATE TABLE IF NOT EXISTS "TransferCar" (
 	"Transfer_from" varchar(255),
 	"Extra_Price" varchar(255),
 	"Distance" varchar(255),
+	"Location" varchar(255),
 	"Vice_versa" boolean,
 	"NightTime" varchar(255),
 	"NightTime_Price" varchar(255),
