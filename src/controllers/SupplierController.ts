@@ -737,20 +737,21 @@ export const CreateTransferCarDetails = async (
       // Ensure req.body is an array
       if (!Array.isArray(req.body)) {
         return res.status(400).json({ success: false, message: "Request body must be an array." });
-      }
-  
+      } 
+       
       // Validate each item in the array (optional, depends on your validation setup)
       const transferCarDetails = req.body.map((item: CreateTransferCars) => ({
-        uniqueId: item.uniqueId,
-        Transfer_from: item.Transfer_from,
-        Transfer_to: item.Transfer_to,
-        Vice_versa: item.Vice_versa,
+        uniqueId: item.uniqueId, 
+        Transfer_from: item.Transfer_from, 
+        Extra_Price:item.Extra_Price, 
+        Distance: item.Distance,  
+        Vice_versa: item.Vice_versa, 
         Price: item.Price,
         NightTime: item.NightTime,
         NightTime_Price: item.NightTime_Price,
         SupplierCarDetailsforeign: item.SupplierCarDetailsforeign,
       }));
-  
+       
       // Perform batch insert
       const TransferCars = await db.insert(CreateTransferCar).values(transferCarDetails).returning();
   
@@ -947,7 +948,7 @@ export const GetCarDetails = async(req:Request,res:Response,next:NextFunction)=>
         res.status(404).json({message:'Data is not found'})
     }
 }
-
+ 
 export const GetTransferCarDetails = async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const CarDetailsId = req.params.id;
@@ -1103,14 +1104,15 @@ export const UpdateTransferCar = async(req:Request,res:Response,next:NextFunctio
     try{ 
     const id = req.params.id; 
         
-    const { Transfer_from, Transfer_to, Vice_versa, NightTime, NightTime_Price, Price } =
-      <UpdateTransferCars>req.body;
+    const { Transfer_from, Distance,Extra_Price, Vice_versa, NightTime, NightTime_Price, Price } =
+      <UpdateTransferCars>req.body; 
         const updatedTransferCar = await db
         .update(CreateTransferCar)
         .set({
           Transfer_from,
-          Transfer_to,
+          Distance,
           Vice_versa,
+          Extra_Price,
           NightTime,
           NightTime_Price,
           Price,

@@ -19,11 +19,11 @@ export const registerTable = pgTable('supplier', {
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(), 
   Password: varchar({length:255}).notNull(),
   Role:varchar({length:255}),
-  IsApproved:integer(),
-  Token:varchar({length:255}),
-  ResetTokenExpiry: varchar({length:255}),
+  IsApproved:integer(), 
+  Token:varchar({length:255}), 
+  ResetTokenExpiry: varchar({length:255}), 
 }); 
-
+    
 export const One_WayTable = pgTable('One_Way_Service_Details',{
     id:integer().primaryKey().generatedAlwaysAsIdentity(),
     country:varchar({length:255}).notNull(),
@@ -183,7 +183,8 @@ export type supplier_otps = {
     uniqueId:varchar({length:255}),
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
     Transfer_from: varchar({ length: 255 }), 
-    Transfer_to: varchar({ length: 255 }), 
+    Extra_Price: varchar({length:255}), 
+    Distance: varchar({length:255}),    
     Vice_versa: boolean(),
     NightTime: varchar({ length: 255 }), 
     NightTime_Price: varchar({ length: 255 }), 

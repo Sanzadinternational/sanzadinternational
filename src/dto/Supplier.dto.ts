@@ -108,7 +108,8 @@ export interface CreateTransferCars{
   uniqueId:string,
   SupplierId:string,
   Transfer_from:string, 
-  Transfer_to:string,
+  Extra_Price:string,
+  Distance:string,
   Vice_versa:boolean, 
   NightTime:{ 
       type:string, 
@@ -120,15 +121,16 @@ export interface CreateTransferCars{
   SupplierCarDetailsforeign:number
 } 
 export interface UpdateTransferCars{ 
-  uniqueId:string,
+  uniqueId:string, 
   Transfer_from:string, 
-  Transfer_to:string,
+  Distance:string, 
+  Extra_Price:string, 
   Vice_versa:boolean, 
   NightTime:{ 
       type:string, 
-      default:"no",
-      enum:['yes','no']
-    },
+      default:"no", 
+      enum:['yes','no'] 
+    }, 
   NightTime_Price:string,
   Price:string
 } 

@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "admin" (
 	"Supplier_operation" boolean DEFAULT false,
 	"IsApproved" integer,
 	"Token" varchar(255),
-	"ResetTokenExpiry" date
+	"ResetTokenExpiry" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Agent_registration" (
@@ -65,6 +65,27 @@ CREATE TABLE IF NOT EXISTS "forget_password" (
 	"password" varchar(255) NOT NULL,
 	"resetToken" varchar(255),
 	"resetTokenExpires" varchar(255)
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Booking" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Booking_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"booking_no" varchar(255),
+	"pickup" varchar(255),
+	"dropoff" varchar(255),
+	"passenger" varchar(255),
+	"date" date,
+	"time" time,
+	"return_date" date,
+	"return_time" time,
+	"estimated_trip_time" time,
+	"distance" varchar(255),
+	"vehicle_name" varchar(255),
+	"passengers_no" varchar(255),
+	"medium_bags" varchar(255),
+	"passenger_name" varchar(255),
+	"passenger_email" varchar(255),
+	"passenger_contact_no" varchar(255),
+	"agentforeign" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "otps" (
@@ -153,7 +174,8 @@ CREATE TABLE IF NOT EXISTS "TransferCar" (
 	"uniqueId" varchar(255),
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "TransferCar_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"Transfer_from" varchar(255),
-	"Transfer_to" varchar(255),
+	"Extra_Price" varchar(255),
+	"Distance" varchar(255),
 	"Vice_versa" boolean,
 	"NightTime" varchar(255),
 	"NightTime_Price" varchar(255),
@@ -323,7 +345,7 @@ CREATE TABLE IF NOT EXISTS "supplier" (
 	"Role" varchar(255),
 	"IsApproved" integer,
 	"Token" varchar(255),
-	"ResetTokenExpiry" date,
+	"ResetTokenExpiry" varchar(255),
 	CONSTRAINT "supplier_Email_unique" UNIQUE("Email")
 );
 --> statement-breakpoint
