@@ -193,8 +193,15 @@ export type supplier_otps = {
     SupplierCarDetailsforeign: integer('SupplierCarDetailsforeign')
         .references(() => SupplierCarDetailsTable.id, { onDelete: "cascade" }),
 }); 
-
-
+    
+export const SurgeChargeTable=pgTable('SurgeCharge',{
+  id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+  VehicleName:varchar({length:255}),
+  Date:date(),
+  ExtraPrice:varchar({length:255}),
+  uniqueId:varchar({length:255}),
+})   
+     
   export const VehicleTypeTable=pgTable('VehicleType',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
     VehicleType:varchar({length:255})

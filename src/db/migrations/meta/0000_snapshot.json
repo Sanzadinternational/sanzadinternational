@@ -1,5 +1,5 @@
 {
-  "id": "d2c71214-912d-40e5-bc42-496b69cbf6d7",
+  "id": "b212df59-2f8c-4608-a483-b638ed711ae9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1854,6 +1854,57 @@
         },
         "Others": {
           "name": "Others",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.SurgeCharge": {
+      "name": "SurgeCharge",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "SurgeCharge_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "VehicleName": {
+          "name": "VehicleName",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Date": {
+          "name": "Date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ExtraPrice": {
+          "name": "ExtraPrice",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "uniqueId": {
+          "name": "uniqueId",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

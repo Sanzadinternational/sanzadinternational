@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,VehicleType,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
+import { CreateSupplierInput,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
       
 import { and,desc, eq } from "drizzle-orm"; 
@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require('uuid');
       
 import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db"; 
-const { registerTable, One_WayTable,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
+const { registerTable,SurgeChargeTable, One_WayTable,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
     supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
       
 import { generateOTP, sendOTPEmail } from "../utils"; 
@@ -1239,6 +1239,29 @@ export const GetVehicleModel = async(req:Request,res:Response,next:NextFunction)
             message:'Get all data of vehicle model',
             data:result
         })
+    }catch(error){
+        next(error)
+    }
+}
+
+export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const{
+              VehicleName,
+              Date,
+              ExtraPrice,
+              uniqueId
+         }=<SurgeCharge>req.body;
+ 
+         const result = await db.insert(SurgeChargeTable)
+         .values({
+            VehicleName,
+            Date,
+            ExtraPrice,
+            uniqueId
+         })
+         .returning();
+         res.status(200).json(result);
     }catch(error){
         next(error)
     }

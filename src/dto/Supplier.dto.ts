@@ -286,8 +286,14 @@ export interface UpdateCreateCartDetails{
   From:string, 
   To:string,
   Others:string
-} 
-
+}  
+   
+export interface SurgeCharge{ 
+  VehicleName:string,
+  Date:string,
+  ExtraPrice:string,
+  uniqueId:string
+}
 
 export interface VehicleType{
   VehicleType:string

@@ -299,6 +299,14 @@ CREATE TABLE IF NOT EXISTS "Car_Details" (
 	"Others" varchar(255)
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "SurgeCharge" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "SurgeCharge_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"VehicleName" varchar(255),
+	"Date" date,
+	"ExtraPrice" varchar(255),
+	"uniqueId" varchar(255)
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transport_nodes" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "transport_nodes_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"formatted_address" varchar(255),
