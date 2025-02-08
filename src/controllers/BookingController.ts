@@ -2,12 +2,12 @@ import { BookingTable } from './../db/schema/BookingSchema';
 import { Request, Response, NextFunction } from "express"; 
 import { db } from "../db/db"; 
 import { and, desc, eq } from "drizzle-orm"; 
-import {CreateBooking} from "../dto/Booking.dto";  
+import { CreateBooking } from "../dto/Booking.dto";  
 
 export const Booking = async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
-          const { 
-            booking_no,
+          const {  
+            booking_no, 
             pickup,
             dropoff,
             passenger,
@@ -25,10 +25,13 @@ export const Booking = async(req:Request,res:Response,next:NextFunction)=>{
             passenger_contact_no,
             agentforeign
           } = <CreateBooking>req.body; 
-    
-          const result = await db.insert(BookingTable)
+          function getSixDigitRandom() {
+            return Math.random().toString().substring(2, 8);
+          }
+          const booking_numbers = getSixDigitRandom();
+          const result = await db.insert(BookingTable) 
           .values({
-            booking_no,
+            booking_no:booking_numbers,
             pickup,
             dropoff,
             passenger,
