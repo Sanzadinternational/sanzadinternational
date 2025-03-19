@@ -54,24 +54,24 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
            .from(AdminTable)
            .orderBy(desc(AdminTable.id))
            .limit(1);
-    const transporter = nodemailer.createTransport({
-        service: 'Gmail', // Replace with your email service provider
-        auth: {
-            user: 'jugalkishor556455@gmail.com', // Email address from environment variable
-            pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
-        },
-    });
+    // const transporter = nodemailer.createTransport({
+    //     service: 'Gmail', // Replace with your email service provider
+    //     auth: {
+    //         user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+    //         pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+    //     },
+    // });
   
     // Send an email with the retrieved data (decrypted password)
-    const info = await transporter.sendMail({
-        from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
-        to: `${results[0].Email}`,
-        subject: "Query from Sanzadinternational", // Subject line
-        text: `Details of New Admin Access:\nEmail: ${results[0].Email}`, // Plain text body
-        html: `<p>Details of New Admin Access:</p><ul><li>Email: ${results[0].Email}</li></ul>`, // HTML body
-    });
+//     const info = await transporter.sendMail({
+//         from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+//         to: `${results[0].Email}`,
+//         subject: "Query from Sanzadinternational", // Subject line
+//         text: `Details of New Admin Access:\nEmail: ${results[0].Email}`, // Plain text body
+//         html: `<p>Details of New Admin Access:</p><ul><li>Email: ${results[0].Email}</li></ul>`, // HTML body
+//     });
         
-    console.log("Message sent: %s", info.messageId);
+  
 
         return res.status(200).json({message:"New Admin is Created Successfully",results})
     } catch (error) {
@@ -409,7 +409,8 @@ export const ChangeSupplierApprovalStatus = async(req:Request,res:Response,next:
         const result = await db
         .select({
             Email: registerTable.Email,
-            Password: registerTable.Password, // Assuming the password is encrypted
+            Password: registerTable.Password,
+            CompanyName: registerTable.Company_name // Assuming the password is encrypted
             // IV: AgentTable.IV, // IV used for encryption
         })
         .from(registerTable)
@@ -424,17 +425,33 @@ export const ChangeSupplierApprovalStatus = async(req:Request,res:Response,next:
         service: 'Gmail', // Replace with your email service provider
         auth: {
             user: 'jugalkishor556455@gmail.com', // Email address from environment variable
-            pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+            pass: 'vhar uhhv gjfy dpes', 
+            // Email password from environment variable
         },
     });
   
-    // Send an email with the retrieved data (decrypted password)
     const info = await transporter.sendMail({
-        from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
-        to: `${result[0].Email}`,
-        subject: "Query from Sanzadinternational", // Subject line
-        text: `Details of New Supplier Access:\nEmail: ${result[0].Email}\nPassword: ${result[0].Password}`, // Plain text body
-        html: `<p>Details of New Supplier Access:</p><ul><li>Email: ${result[0].Email}</li><li>Password: ${result[0].Password}</li></ul>`, // HTML body
+      from: '"Sanzad International" <jugalkishor556455@gmail.com>', // Sender address
+      to: `${result[0].Email}`, // Recipient email
+      subject: "🎉 Congratulations! Your Account is Now Active", // Subject line
+      html: `
+        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+          <h2 style="color: #007bff;">Welcome to Sanzad International!</h2>
+          <p>Dear <strong>${result[0].CompanyName}</strong>,</p>
+          <p>We are excited to inform you that your account has been successfully activated. You can now log in and start using our services.</p>
+          
+          <p>To log in, click the button below:</p>
+          <p style="text-align: center;">
+            <a href="http://localhost:3000/login" style="background: #007bff; color: #fff; padding: 12px 20px; text-decoration: none; border-radius: 5px; display: inline-block; font-size: 16px; font-weight: bold;">
+              Login Now
+            </a>
+          </p>
+    
+          <p>If you have any questions, feel free to contact our support team.</p>
+          <p>Best regards,</p>
+          <p><strong>Sanzad International Team</strong></p>
+        </div>
+      `,
     });
 
     console.log("Message sent: %s", info.messageId);

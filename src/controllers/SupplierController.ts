@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleBrand,UpdateServiceType,UpdateVehicleModel,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
+import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleModel,UpdateServiceType,UpdateVehicleBrand,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
       
 import { and,desc, eq } from "drizzle-orm"; 
@@ -106,14 +106,29 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
         },
     });
   
-    // Send an email with the retrieved data (decrypted password)
+
     const info = await transporter.sendMail({
         from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
         to: `${result[0].Email}`,
-        subject: "Query from Sanzadinternational", // Subject line
-        text: `Details of New Supplier Access:\nEmail: ${result[0].Email}`, // Plain text body
-        html: `<p>Details of New Supplier Access:</p><ul><li>Email: ${result[0].Email}</li></ul>`, // HTML body
+        subject: "Your Account Has Been Created", // Updated subject line
+        text: `Dear User,\n\nYour account has been successfully created. Once your account is approved, you will be notified.\n\nBest regards,\nSanzadinternational`, // Plain text fallback
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #2c3e50;">Welcome to Sanzadinternational!</h2>
+                <p style="font-size: 16px; color: #555;">Dear User,</p>
+                <p style="font-size: 16px; color: #555;">
+                    Your account has been successfully created. Once your account is approved, you will receive a notification.
+                </p>
+                <div style="margin: 20px 0; padding: 10px; background: #f4f4f4; border-radius: 5px;">
+                    <p style="font-size: 16px; color: #333;"><strong>Email:</strong> ${result[0].Email}</p>
+                </div>
+                <p style="font-size: 16px; color: #555;">Best regards,</p>
+                <p style="font-size: 16px; color: #555;"><strong>Sanzadinternational Team</strong></p>
+            </div>
+        `, // Professional HTML email body
     });
+    
+    
         
     console.log("Message sent: %s", info.messageId);
 
@@ -1225,6 +1240,7 @@ export const CreateVehicleType=async(req:Request,res:Response,next:NextFunction)
     next(error)
    }
 }
+
 
 export const UpdateVehicleTypes=async(req:Request,res:Response,next:NextFunction)=>{
     try{

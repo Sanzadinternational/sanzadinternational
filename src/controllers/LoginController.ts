@@ -193,6 +193,11 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
       Email:AdminTable.Email, 
       Company_name:AdminTable.Company_name,
       Role:AdminTable.Role,
+      AgentAcount: AdminTable.Agent_account,
+      AgentOpration: AdminTable.Agent_operation,
+      SupplierAccount: AdminTable.Supplier_account,
+      SupplierOPration: AdminTable.Supplier_operation,
+
     })
     .from(AdminTable)
     .where(eq(AdminTable.id,userID)) 
@@ -204,6 +209,11 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     Email: user.Email, 
     Company_name:user.Company_name,
     role: user.Role,
+    AgentAccount: user.AgentAcount,
+    AgentOperation: user.AgentOpration,
+    SupplierAccount: user.SupplierAccount,
+    SupplierOpration: user.SupplierOPration,
+
   }); 
      
   } 
