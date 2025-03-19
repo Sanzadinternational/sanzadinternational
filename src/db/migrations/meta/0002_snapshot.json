@@ -1,6 +1,6 @@
 {
-  "id": "b212df59-2f8c-4608-a483-b638ed711ae9",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "434615eb-8871-45c2-99f7-b9b37d3bf6c3",
+  "prevId": "a9ec9c7c-4515-4289-b43c-8fef9a346f05",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -2007,6 +2007,12 @@
         },
         "VehicleBrand": {
           "name": "VehicleBrand",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ServiceType": {
+          "name": "ServiceType",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

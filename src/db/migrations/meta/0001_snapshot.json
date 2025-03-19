@@ -1,6 +1,6 @@
 {
-  "id": "b212df59-2f8c-4608-a483-b638ed711ae9",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "a9ec9c7c-4515-4289-b43c-8fef9a346f05",
+  "prevId": "b212df59-2f8c-4608-a483-b638ed711ae9",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -92,6 +92,39 @@
         },
         "ResetTokenExpiry": {
           "name": "ResetTokenExpiry",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.vehicle_type": {
+      "name": "vehicle_type",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "vehicle_type_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "vehicle_type": {
+          "name": "vehicle_type",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
