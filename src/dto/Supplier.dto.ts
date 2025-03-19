@@ -320,7 +320,16 @@ export interface VehicleType{
   VehicleType:string
 }
 
+export interface UpdateVehicleType{
+  VehicleType:string
+}
+
 export interface VehicleBrand{
+  VehicleBrand:string,
+  serviceType:string
+}
+
+export interface UpdateVehicleBrand{
   VehicleBrand:string,
   serviceType:string
 }
@@ -329,6 +338,14 @@ export interface ServiceType{
   ServiceType:string
 }
 
+export interface UpdateServiceType{
+  ServiceType:string
+}
+
 export interface VehicleModel{
+  VehicleModel:string
+}
+
+export interface UpdateVehicleModel{
   VehicleModel:string
 }

@@ -1,8 +1,8 @@
 import { dashboard, Supplier_price, TransportNode,resetPasswords,ForgetPasswords, CreateVehicles, GetVehiclebyId } from '../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
-    GetCarDetails,GetServiceType,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+import { CreateSupplier,UpdateServiceTypes,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
+    GetCarDetails,GetServiceType,UpdateVehicleModels,UpdateVehicleBrands,UpdateVehicleTypes,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
 
 const router = express.Router(); 
 
@@ -37,16 +37,20 @@ router.get('/GetAllCarDetails',GetAllCarDetails);
 // router.get('/ExtraSpace',ExtraSpace);
 router.post('/CreateVehicleType',CreateVehicleType); 
 router.get('/GetVehicleType',GetVehicleType); 
+router.put('/UpdateVehicleTypes/:id',UpdateVehicleTypes);
 router.delete('/DeleteVehicleType/:id',DeleteVehicleType);
 router.post('/CreateVehicleBrand',CreateVehicleBrand); 
 router.get('/GetVehicleBrand',GetVehicleBrand),
 router.delete('/DeleteVehicleBrand/:id',DeleteVehicleBrand);
+router.put('/UpdateVehicleBrands/:id',UpdateVehicleBrands)
 router.post('/CreateServiceType',CreateServiceType);
 router.get('/GetServiceType',GetServiceType)
 router.delete('/DeleteServiceType/:id',DeleteServiceType)
+router.put('/UpdateServiceTypes/:id',UpdateServiceTypes)
 router.post('/CreateVehicleModel',CreateVehicleModel); 
 router.get('/GetVehicleModel',GetVehicleModel) 
 router.delete('/DeleteVehicleModel/:id',DeleteVehicleModel);
+router.put('/UpdateVehicleModels/:id',UpdateVehicleModels)
 router.get('/GetVehicleType',GetVehicleType)
 router.post('/SurgeCharges',SurgeCharges);
 router.get('/dashboard', authMiddleware, dashboard);

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"; 
-import { CreateSupplierInput,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
+import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleBrand,UpdateServiceType,UpdateVehicleModel,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
       
 import { and,desc, eq } from "drizzle-orm"; 
@@ -1226,6 +1226,24 @@ export const CreateVehicleType=async(req:Request,res:Response,next:NextFunction)
    }
 }
 
+export const UpdateVehicleTypes=async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const {id} = req.params;
+         const {
+            VehicleType
+         }=<UpdateVehicleType>req.body;
+         const UpdateVehicleType=await db.update(VehicleTypeTable)
+         .set({
+            VehicleType
+         })
+         .where(eq(VehicleTypeTable.id,id))
+         .returning();
+         res.status(200).json({message:"VehicleType is updated Successfully",UpdateVehicleType})
+    }catch(error){
+        next(error)
+    }
+}
+
 export const GetVehicleType = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = await db.select({
@@ -1269,6 +1287,26 @@ export const CreateVehicleBrand = async(req:Request,res:Response,next:NextFuncti
         .values({VehicleBrand: VehicleBrand, ServiceType: serviceType})
         .returning()
         return res.status(200).json(NewVehicleBrand); 
+    }catch(error){
+        next(error)
+    }
+}
+
+export const UpdateVehicleBrands=async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const {id} = req.params;
+         const {
+            VehicleBrand,
+            serviceType
+         }=<UpdateVehicleBrand>req.body;
+         const UpdateVehicleBrand=await db.update(VehicleBrandTable)
+         .set({
+             VehicleBrand,
+            serviceType
+         })
+         .where(eq(VehicleBrandTable.id,id))
+         .returning();
+         res.status(200).json({message:"VehicleBrand is updated Successfully",UpdateVehicleBrand})
     }catch(error){
         next(error)
     }
@@ -1320,6 +1358,24 @@ export const CreateServiceType = async(req:Request,res:Response,next:NextFunctio
     }
 }   
 
+export const UpdateServiceTypes=async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const {id} = req.params;
+         const {
+            ServiceType
+         }=<UpdateServiceType>req.body;
+         const UpdateServiceType=await db.update(ServiceTypeTable)
+         .set({
+            ServiceType
+         })
+         .where(eq(ServiceTypeTable.id,id))
+         .returning();
+         res.status(200).json({message:"ServiceType is updated Successfully",UpdateServiceType})
+    }catch(error){
+        next(error)
+    }
+}
+
 export const GetServiceType=async(req:Request,res:Response,next:NextFunction)=>{
     try{
          const result = await db.select({
@@ -1360,6 +1416,24 @@ export const CreateVehicleModel = async(req:Request,res:Response,next:NextFuncti
           .values({VehicleModel}) 
           .returning() 
           return res.status(200).json(NewVehicleModel) 
+    }catch(error){
+        next(error)
+    }
+}
+
+export const UpdateVehicleModels=async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const {id} = req.params;
+         const {
+            VehicleModel
+         }=<UpdateVehicleModel>req.body;
+         const UpdateVehicleModels=await db.update(VehicleModelTable)
+         .set({
+            VehicleModel
+         })
+         .where(eq(VehicleModelTable.id,id))
+         .returning();
+         res.status(200).json({message:"Vehicle Model is updated Successfully",UpdateVehicleModels})
     }catch(error){
         next(error)
     }
