@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS "admin" (
 	"Company_name" varchar(255),
 	"Password" varchar(255),
 	"Role" "role" NOT NULL,
+	"Product" boolean DEFAULT false,
 	"Agent_account" boolean DEFAULT false,
 	"Agent_operation" boolean DEFAULT false,
 	"Supplier_account" boolean DEFAULT false,
@@ -184,6 +185,22 @@ CREATE TABLE IF NOT EXISTS "TransferCar" (
 	"SupplierCarDetailsforeign" integer
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Vehicles" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Vehicles_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+	"SupplierId" varchar(255),
+	"VehicleType" varchar(255),
+	"VehicleBrand" varchar(255),
+	"ServiceType" varchar(255),
+	"VehicleModel" varchar(255),
+	"Doors" varchar(255),
+	"Seats" varchar(255),
+	"Cargo" varchar(255),
+	"Passengers" varchar(255),
+	"MediumBag" varchar(255),
+	"SmallBag" varchar(255),
+	"Extraspace" jsonb
+);
+--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "One_Way_Service_Details" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "One_Way_Service_Details_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"country" varchar(255) NOT NULL,
@@ -320,7 +337,8 @@ CREATE TABLE IF NOT EXISTS "transport_nodes" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "VehicleBrand" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "VehicleBrand_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"VehicleBrand" varchar(255)
+	"VehicleBrand" varchar(255),
+	"ServiceType" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "VehicleModel" (

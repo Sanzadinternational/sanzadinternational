@@ -1,5 +1,5 @@
 {
-  "id": "b212df59-2f8c-4608-a483-b638ed711ae9",
+  "id": "ecc56014-f8e2-4a92-bc2a-5433403a41af",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -49,6 +49,13 @@
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
+        },
+        "Product": {
+          "name": "Product",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
         },
         "Agent_account": {
           "name": "Agent_account",
@@ -1142,6 +1149,105 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+    "public.Vehicles": {
+      "name": "Vehicles",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "Vehicles_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "SupplierId": {
+          "name": "SupplierId",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "VehicleType": {
+          "name": "VehicleType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "VehicleBrand": {
+          "name": "VehicleBrand",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ServiceType": {
+          "name": "ServiceType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "VehicleModel": {
+          "name": "VehicleModel",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Doors": {
+          "name": "Doors",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Seats": {
+          "name": "Seats",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Cargo": {
+          "name": "Cargo",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Passengers": {
+          "name": "Passengers",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "MediumBag": {
+          "name": "MediumBag",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "SmallBag": {
+          "name": "SmallBag",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Extraspace": {
+          "name": "Extraspace",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "public.One_Way_Service_Details": {
       "name": "One_Way_Service_Details",
       "schema": "",
@@ -2007,6 +2113,12 @@
         },
         "VehicleBrand": {
           "name": "VehicleBrand",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "ServiceType": {
+          "name": "ServiceType",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

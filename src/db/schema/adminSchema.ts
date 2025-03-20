@@ -6,6 +6,7 @@ export const AdminTable = pgTable('admin',{
     Company_name:varchar({length:255}), 
     Password:varchar({length:255}), 
     Role: RoleEnum().notNull(), 
+    Product:boolean().default(false),
     Agent_account: boolean().default(false), 
     Agent_operation:boolean().default(false), 
     Supplier_account:boolean().default(false), 
