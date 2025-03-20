@@ -1313,12 +1313,12 @@ export const UpdateVehicleBrands=async(req:Request,res:Response,next:NextFunctio
          const {id} = req.params;
          const {
             VehicleBrand,
-            serviceType
+            ServiceType
          }=<UpdateVehicleBrand>req.body;
          const UpdateVehicleBrand=await db.update(VehicleBrandTable)
          .set({
              VehicleBrand,
-            serviceType
+             ServiceType
          })
          .where(eq(VehicleBrandTable.id,id))
          .returning();
