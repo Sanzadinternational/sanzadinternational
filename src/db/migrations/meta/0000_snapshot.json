@@ -1,5 +1,5 @@
 {
-  "id": "78e5e0de-8ef9-40e0-a05b-90f4fe629b11",
+  "id": "6474f1a6-f7a8-4311-96a1-98425c1bb976",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -180,12 +180,6 @@
         },
         "Email": {
           "name": "Email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Otp": {
-          "name": "Otp",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true

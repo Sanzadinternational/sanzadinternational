@@ -29,7 +29,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Gst_Vat_Tax_number, 
             Contact_Person,
             Email,
-            Otp,
+        
             Password,
             Office_number,
             Mobile_number,
@@ -76,7 +76,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
                 Gst_Vat_Tax_number, 
                 Contact_Person,
                 Email,
-                Otp,
+            
                 Password:hashedPassword, // Save hashed password
                 Office_number,
                 Mobile_number,

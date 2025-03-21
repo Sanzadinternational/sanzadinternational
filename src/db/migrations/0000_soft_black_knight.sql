@@ -31,7 +31,6 @@ CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"Gst_Vat_Tax_number" varchar(255) NOT NULL,
 	"Contact_Person" varchar(255) NOT NULL,
 	"Email" varchar(255) NOT NULL,
-	"Otp" varchar(255) NOT NULL,
 	"Password" varchar(255) NOT NULL,
 	"Office_number" varchar(255) NOT NULL,
 	"Mobile_number" varchar(255) NOT NULL,
