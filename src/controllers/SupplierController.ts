@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"; 
 import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleModel,UpdateServiceType,UpdateVehicleBrand,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
-      
+
 import { and,desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 import { Create_Vehicles } from "../db/schema/SupplierSchema";
@@ -35,7 +35,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             Gst_Vat_Tax_number, 
             PAN_number, 
             Currency,
-            Gst_Tax_Certificate,
+
             Password,
             Role,
            IsApproved
@@ -63,7 +63,9 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
     }
     
         const id = uuidv4(); 
-      
+        
+        const Gst_Tax_Certificate = (req as any).file ? (req as any).file.filename : null;
+
         const hashedPassword = await bcrypt.hash(Password, 10); 
         const newSupplier = await db
             .insert(registerTable)

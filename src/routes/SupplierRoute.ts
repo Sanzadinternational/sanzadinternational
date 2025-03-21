@@ -3,10 +3,29 @@ import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
 import { CreateSupplier,UpdateVehicleTypes,UpdateVehicleModels,UpdateVehicleBrands,UpdateServiceTypes,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
     GetCarDetails,GetServiceType,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,loginSupplier,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+const multer = require('multer');
+import fs from 'fs';
+import path from 'path';
+const uploadDir = path.join(__dirname, '../uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
+// Configure Multer
+const storage = multer.diskStorage({
+    destination: (req: Request, file: any, cb: (error: Error | null, destination: string) => void) => {
+        cb(null, uploadDir);
+    },
+    filename: (req: Request, file: any, cb: (error: Error | null, filename: string) => void) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+
+const upload = multer({ storage });
+    
 const router = express.Router(); 
 
-router.post('/registration', CreateSupplier); 
+router.post('/registration', upload.single('Gst_Tax_Certificate'),CreateSupplier); 
 router.post('/send-otp', suppliersendOtp); 
 router.post('/verify-otp', supplierverifyOtp); 
 router.post('/login',loginSupplier);
