@@ -7,141 +7,150 @@ import { SupplierApidataTable } from "../db/schema/SupplierSchema";
 import { SupplierCarDetailsTable } from "../db/schema/SupplierSchema";
 import { CreateTransferCar } from "../db/schema/SupplierSchema";
 import { sql, inArray } from "drizzle-orm";
+import { zones, transfers_Vehicle
+ } from "../db/schema/SupplierSchema";
 
-// Function to calculate distance using Haversine Formula
-const haversineDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-  const R = 6371; // Earth radius in km
-  const toRadians = (degree: number) => (degree * Math.PI) / 180;
+ const GOOGLE_MAPS_API_KEY = "YOUR_GOOGLE_API_KEY"; // Replace with actual API key
 
-  const dLat = toRadians(lat2 - lat1);
-  const dLon = toRadians(lon2 - lon1);
+// export const fetchFromDatabase = async (pickupLocation: string, dropoffLocation: string, providedDistance?: number): Promise<any[]> => {
+//     // Parse pickup location coordinates
+//     const [fromLat, fromLng] = pickupLocation.split(",").map(Number);
+//     const [toLat, toLng] = dropoffLocation.split(",").map(Number);
+//     try {
+//       // Step 1: Find all zones that contain either 'From' or 'To' location
+//       const zones = await db.execute(
+//           sql`SELECT id, name, radius_km, extra_price_per_km, geojson
+//           FROM zones 
+//           WHERE ST_Contains(
+//               ST_SetSRID(ST_GeomFromGeoJSON(geojson::TEXT), 4326), 
+//               ST_SetSRID(ST_MakePoint(${fromLng}, ${fromLat}), 4326)
+//           ) 
+//           OR ST_Contains(
+//               ST_SetSRID(ST_GeomFromGeoJSON(geojson::TEXT), 4326), 
+//               ST_SetSRID(ST_MakePoint(${toLng}, ${toLat}), 4326)
+//           )`
+//       );
 
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+//       if (!zones.length) {
+//           throw new Error("No zones found for the selected locations.");
+//       }
 
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//       // Extract zone IDs
+//       const zoneIds = zones.map(zone => zone.id);
 
-  return R * c; // Distance in km
-};
+//       // Step 2: Fetch all vehicles for the found zones
+//       const transfers = await db.execute(
+//           sql`SELECT t.*, v.*
+//           FROM Vehicle_transfers t
+//           JOIN all_Vehicles v ON t.vehicle_id = v.id
+//           WHERE t.zone_id = ANY(${zoneIds})`
+//       );
 
-export const fetchFromDatabase = async (pickupLocation: string): Promise<any[]> => {
-  try {
-    // Parse pickup location coordinates
-    const [pickupLat, pickupLon] = pickupLocation.split(",").map(Number);
+//       // Step 3: Calculate Distance
+//       const distance = providedDistance || getRoadDistance(fromLat, fromLng, toLat, toLng);
 
-    if (isNaN(pickupLat) || isNaN(pickupLon)) {
-      throw new Error("Invalid coordinate format. Expected 'latitude,longitude'");
-    }
+//       // Step 4: Determine if extra pricing applies
+//       const fromZone = zones.find(zone =>
+//           isPointInsidePolygon(fromLng, fromLat, zone.geojson.coordinates)
+//       );
 
-    // Fetch all car data from the database
-    const allCars = await db.select({
-      uniqueId: CreateTransferCar.uniqueId,
-      price: CreateTransferCar.Price,
-      Location: CreateTransferCar.Location,}
-    ).from(CreateTransferCar);
+//       const toZone = zones.find(zone =>
+//           isPointInsidePolygon(toLng, toLat, zone.geojson.coordinates)
+//       );
 
-    // Debug: Check fetched data
-    console.log("Fetched Cars:", allCars.length);
+//       // Step 5: Calculate Pricing for Each Vehicle
+//       const vehiclesWithPricing = transfers.map(transfer => {
+//           let totalPrice = transfer.price * distance; // Base price
 
-    // Filter results using Haversine Formula (1km radius)
-    const filteredCars = allCars.filter((car) => {
-      if (!car.Location || typeof car.Location !== "string") {
-        console.warn("Skipping car with invalid location:", car);
-        return false; // Skip cars with null or invalid locations
-      }
+//           // Apply extra charge if 'To' location is outside the zone
+//           if (fromZone && !toZone) {
+//               const boundaryDistance = getDistanceFromZoneBoundary(fromLng, fromLat, toLng, toLat, fromZone);
+//               const extraCharge = boundaryDistance * (transfer.extra_price_per_mile || 0);
+//               totalPrice += extraCharge;
+//           }
 
-      const locationParts = car.Location.split(",");
-      if (locationParts.length !== 2) {
-        console.warn("Skipping car with malformed location:", car.Location);
-        return false;
-      }
+//           return {
+//               vehicleId: transfer.vehicle_id,
+//               vehicleName: transfer.name,
+//               basePrice: transfer.price,
+//               extraPricePerMile: transfer.extra_price_per_mile,
+//               totalPrice: totalPrice.toFixed(2),
+//               currency: transfer.currency,
+//               nightTime: transfer.night_time,
+//               nightTimePrice: transfer.night_time_price,
+//               transferInfo: transfer.transfer_info
+//           };
+//       });
 
-      const [carLat, carLon] = locationParts.map(Number);
+//       return { zones, vehicles: vehiclesWithPricing, distance };
+//   } catch (error) {
+//       console.error("Error fetching zones and vehicles:", error);
+//       throw new Error("Failed to fetch zones and vehicle pricing.");
+//   }
+//   }
 
-      if (isNaN(carLat) || isNaN(carLon)) {
-        console.warn("Skipping car with NaN coordinates:", car.Location);
-        return false;
-      }
+// // Function to check if a point is inside a polygon (GeoJSON)
+// function isPointInsidePolygon(lng: number, lat: number, polygonCoordinates: number[][][]) {
+//   const point = [lng, lat];
+//   let inside = false;
+//   const coordinates = polygonCoordinates[0];
 
-      const distance = haversineDistance(pickupLat, pickupLon, carLat, carLon);
+//   for (let i = 0, j = coordinates.length - 1; i < coordinates.length; j = i++) {
+//       const xi = coordinates[i][0],
+//           yi = coordinates[i][1];
+//       const xj = coordinates[j][0],
+//           yj = coordinates[j][1];
+
+//       const intersect =
+//           yi > lat !== yj > lat &&
+//           lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi;
+//       if (intersect) inside = !inside;
+//   }
+
+//   return inside;
+// }
+
+// // Function to get road distance using Google Maps Distance Matrix API
+// export async function getRoadDistance(fromLat: number, fromLng: number, toLat: number, toLng: number) {
+//   try {
+//       const response = await axios.get(
+//           `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${fromLat},${fromLng}&destinations=${toLat},${toLng}&units=imperial&key=${GOOGLE_MAPS_API_KEY}`
+//       );
       
-      // Debugging log
-      console.log(`Car ID: ${car.uniqueId}, Distance: ${distance.toFixed(2)} km`);
+//       const distanceInMiles = response.data.rows[0]?.elements[0]?.distance?.text;
+//       if (!distanceInMiles) throw new Error("Distance not found");
 
-      return distance <= 2; // Only return cars within 1km
-    });
+//       return parseFloat(distanceInMiles.replace(" mi", "")); // Convert "12.3 mi" to 12.3
+//   } catch (error) {
+//       console.error("Error fetching road distance:", error);
+//       return null; // Handle errors gracefully
+//   }
+// }
 
-    console.log("Filtered Cars:", filteredCars.length);
-    if (filteredCars.length === 0) {
-      console.warn("No cars found within the radius.");
-      return [];
-    }
+// // Function to calculate the extra distance from the 'to' location to the nearest zone boundary
+// export async function getDistanceFromZoneBoundary(fromLng: number, fromLat: number, toLng: number, toLat: number, zone) {
+//   try {
+//       // Approximate the zone center (first coordinate in the polygon)
+//       const zoneCenterLng = zone.geojson.coordinates[0][0][0];
+//       const zoneCenterLat = zone.geojson.coordinates[0][0][1];
 
-    // Extract unique IDs from filtered cars
-    const uniqueIds = filteredCars.map(car => car.uniqueId);
+//       // Get total road distance
+//       const totalDistance = await getRoadDistance(fromLat, fromLng, toLat, toLng);
+//       if (totalDistance === null) throw new Error("Failed to fetch total distance");
 
-    // Fetch additional details for these cars
-    const carDetails = await db
-      .select({
-        uniqueId: SupplierCarDetailsTable.uniqueId,
-        vehicalType: SupplierCarDetailsTable.VehicleType,
-        brand: SupplierCarDetailsTable.VehicleBrand,
-        currency: SupplierCarDetailsTable.Currency,
-        passengers: SupplierCarDetailsTable.Passengers,
-        mediumBag: SupplierCarDetailsTable.MediumBag,
-      })
-      .from(SupplierCarDetailsTable)
-      .where(inArray(SupplierCarDetailsTable.uniqueId as any, uniqueIds)); // ✅ Correct way to filter by multiple uniqueIds      // Fetch details for matching unique IDs
+//       // Get road distance from the zone center to the 'to' location
+//       const zoneToDestinationDistance = await getRoadDistance(zoneCenterLat, zoneCenterLng, toLat, toLng);
+//       if (zoneToDestinationDistance === null) throw new Error("Failed to fetch zone distance");
 
-    console.log("Fetched Additional Details:", carDetails.length);
+//       // Extra distance outside the zone
+//       const extraDistance = Math.max(0, zoneToDestinationDistance - zone.radius_km * 0.621371); // Convert km to miles
 
-    // Merge additional details with filtered cars
-    const finalCars = filteredCars.map(car => {
-      const details = carDetails.find(detail => detail.uniqueId === car.uniqueId) || {};
-      return {...car, ...details }; // Merge car data with additional details
-    });
-
-    return finalCars;
-  } catch (error: any) {
-    console.error("Error fetching data:", error.message);
-    return [];
-  }
-};
-
-
-
-
-// export const fetchFromDatabase2 = async (pickup: string) => {
-//     // Fetch car details based on the provided pickup
-//     const carDetail2 = await fetchFromDatabase(pickup);
-  
-//     // Map through the carDetail2 items
-//     const results = await Promise.all(
-//       carDetail2.map(async (item: any) => {
-//         const id = item.id;
-  
-//         // Fetch supplier data
-//         const SupplierData2 = await db
-//           .select({
-//             price: CreateTransferCar.Price,
-//           })
-//           .from(CreateTransferCar)
-//           .where(eq(CreateTransferCar.uniqueId, id));
-  
-//         // Return transformed data for this item
-//         return {
-//           id,
-//           price: SupplierData2,
-//         };
-//       })
-//     );
-  
-//     // Return the results from mapping
-//     return results;
-//   };
-  
+//       return extraDistance;
+//   } catch (error) {
+//       console.error("Error fetching zone boundary distance:", error);
+//       return null;
+//   }
+// }
 
 export const getBearerToken = async (
     url: string,
@@ -245,12 +254,11 @@ export const Search = async (req: Request, res: Response, next: NextFunction) =>
       pickupLocation
     );
 
-    const DatabaseData = await fetchFromDatabase(pickupLocation);
+    // const DatabaseData = await fetchFromDatabase(pickupLocation);
     const [pickupLat, pickupLon] = pickupLocation.split(",").map(Number);
     const [dropLat, dropLon] = dropoffLocation.split(",").map(Number);
-    const distance = haversineDistance(pickupLat, pickupLon, dropLat, dropLon);
     // Merge database and API data
-    const mergedData = [ ...apiData.flat(), ...DatabaseData];
+    const mergedData = [ ...apiData.flat()];
 
     res.json({ success: true, data: mergedData });
   } catch (error: any) {

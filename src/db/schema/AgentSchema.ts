@@ -11,12 +11,13 @@ export const AgentTable = pgTable('Agent_registration', {
   Gst_Vat_Tax_number: varchar({ length: 255 }).notNull(),
   Contact_Person: varchar({ length: 255 }).notNull(),
   Email: varchar({ length: 255 }).notNull(),
- 
+
   Password: varchar({ length: 255 }).notNull(),
   Office_number: varchar({ length: 255 }).notNull(),
   Mobile_number: varchar({ length: 255 }).notNull(),
   Currency: varchar({ length: 255 }).notNull(),
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(),
+  profileImage:varchar({length:255}),
   Role:varchar({length:255}), 
   IsApproved:integer(),
   Token:varchar({length:255}),

@@ -21,7 +21,7 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
 
         role = role.toLowerCase(); // Normalize Role input
         let updateResult;
-        const Gst_Tax_Certificate = (req as any).file ? (req as any).file.filename : null;
+
         if (role === "agent") {
             const agentData = req.body as AgentInput;
             updateResult = await db
@@ -39,8 +39,9 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
                     Office_number: agentData.Office_number,
                     Mobile_number: agentData.Mobile_number,
                     Currency: agentData.Currency,
-                    Gst_Tax_Certificate: Gst_Tax_Certificate,
-                    Role:agentData.Role
+                    Gst_Tax_Certificate: agentData.Gst_Tax_Certificate,
+                    Role:agentData.Role,
+                    profileImage:agentData.profile_img
                 })
                 .where(eq(AgentTable.id, id))
                 .returning(); 
@@ -63,7 +64,8 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
                     Gst_Vat_Tax_number: supplierData.Gst_Vat_Tax_number, 
                     PAN_number: supplierData.PAN_number, 
                     Currency: supplierData.Currency,
-                    Gst_Tax_Certificate: Gst_Tax_Certificate
+                    Gst_Tax_Certificate: supplierData.Gst_Tax_Certificate,
+                    profileImage:supplierData.profileImage
                 })
                 .where(eq(registerTable.id, id))
                 .returning();
@@ -79,6 +81,7 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
                     Supplier_account: AdminData.Supplier_account, 
                     Supplier_operation: AdminData.Supplier_operation, 
                     Company_name: AdminData.Company_name,
+                    profileImage:AdminData.profileImage
                 })
                 .where(eq(AdminTable.id, id))
                 .returning();

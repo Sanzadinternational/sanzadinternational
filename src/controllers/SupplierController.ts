@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express"; 
 import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleModel,UpdateServiceType,UpdateVehicleBrand,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
-
 import { and,desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 import { Create_Vehicles } from "../db/schema/SupplierSchema";
@@ -10,14 +9,15 @@ import { AgentTable } from "../db/schema/AgentSchema";
 import { db } from "../db/db"; 
 const { registerTable,SurgeChargeTable, One_WayTable,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
     supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
-      
+import { zones } from "../db/schema/SupplierSchema";
 import { generateOTP, sendOTPEmail } from "../utils"; 
 var randomstring = require("randomstring");
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
 const bcrypt = require('bcrypt'); 
 const jwt = require('jsonwebtoken'); 
 const nodemailer = require("nodemailer"); 
-
+import * as turf from "@turf/turf";
+import { transfers_Vehicle } from "../db/schema/SupplierSchema";
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
     try {   
         const { 
@@ -30,12 +30,12 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             Office_number,
             Email,
             Contact_Person,
-        
+      
             Mobile_number,
             Gst_Vat_Tax_number, 
             PAN_number, 
             Currency,
-
+        
             Password,
             Role,
            IsApproved
@@ -63,7 +63,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
     }
     
         const id = uuidv4(); 
-        
+
         const Gst_Tax_Certificate = (req as any).file ? (req as any).file.filename : null;
 
         const hashedPassword = await bcrypt.hash(Password, 10); 
@@ -79,7 +79,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 Office_number,
                 Email,
                 Contact_Person,
-            
+          
                 Mobile_number,
                 Gst_Vat_Tax_number, 
                 PAN_number, 
@@ -642,110 +642,6 @@ export const supplierverifyOtp = async (req: Request, res: Response, next: NextF
 
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
 const JWT_REFRESH_SECRET = "abhi123";
-export const loginSupplier = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { Email, Password } = req.body; 
-
-        // Fetch the agent by email 
-        const [user] = await db
-            .select({
-                id:registerTable.id,
-                Company_name:registerTable.Company_name,
-                Owner:registerTable.Owner,
-                Address:registerTable.Address,
-                Country:registerTable.Country, 
-                City:registerTable.City,
-                Zip_code:registerTable.Zip_code,
-                Office_number:registerTable.Office_number,
-                Email:registerTable.Email,
-                Contact_Person:registerTable.Contact_Person,
-                Otp:registerTable.Otp,
-                Mobile_number:registerTable.Mobile_number,
-                Gst_Vat_Tax_number:registerTable.Gst_Vat_Tax_number, 
-                PAN_number:registerTable.PAN_number, 
-                Currency:registerTable.Currency,
-                Gst_Tax_Certificate:registerTable.Gst_Tax_Certificate,
-                Password:registerTable.Password
-                // Api_key:registerTable.Api_key,
-                // Is_up:registerTable.Is_up
-            })
-            .from(registerTable) 
-            .where(eq(registerTable.Email, Email)); 
-
-        // Check if the agent was found
-        if (!user) {
-            return res.status(404).json({ message: "Agent not found" });
-        }
-
-        // Compare the provided password with the hashed password in the database
-        const isPasswordValid = await bcrypt.compare(Password, user.Password); // 'password' (lowercase)
-
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        // Generate a JWT token 
-        // const token = jwt.sign( 
-        //     {  email: user.Email }, // Use 'agent.email' (lowercase)
-        //     JWT_SECRET,
-        //     { expiresIn: '1h' }  // Token valid for 1 hour
-        // );
-        const accessToken = jwt.sign({ id: user.id, email: user.Email }, JWT_SECRET, { expiresIn: '15m' });
-        // Return a successful response with the token
-        return res.status(200).json({
-            message: 'Login Successfully', 
-            // token,
-            accessToken,
-            user,
-        });
-
-    } catch (error) { 
-        next(error); // Pass error to global error handler 
-    }
-};
-export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
-    const userID = req.body.id;
-    //
-    const [user] = await db
-            .select({
-                id:registerTable.id,
-                Company_name:registerTable.Company_name,
-                Owner:registerTable.Owner,
-                Address:registerTable.Address,
-                Country:registerTable.Country, 
-                City:registerTable.City,
-                Zip_code:registerTable.Zip_code,
-                Office_number:registerTable.Office_number,
-                Email:registerTable.Email,
-                Contact_Person:registerTable.Contact_Person,
-                Otp:registerTable.Otp,
-                Mobile_number:registerTable.Mobile_number,
-                Gst_Vat_Tax_number:registerTable.Gst_Vat_Tax_number, 
-                PAN_number:registerTable.PAN_number, 
-                Currency:registerTable.Currency,
-                Gst_Tax_Certificate:registerTable.Gst_Tax_Certificate,
-                Role:registerTable.Role
-                // Api_key:registerTable.Api_key,
-                // Is_up:registerTable.Is_up
-            })
-            .from(registerTable)
-            .where(eq(registerTable.id, userID)); 
-    res.status(200).send({ 
-        success: true, 
-        message: "Access granted to protected resource", 
-
-        // userId: userID,
-        // user_information: {
-        //     companyName: user.Company_name,
-        // },
-        // role: "supplier",
-
-        userId: req.body.id,
-        Company_name: user.Company_name,
-        Email:user.Email,
-        role: user.Role,
-      });
-};
 export const CreateSupplierApi = async (req: Request, res: Response, next: NextFunction) => { 
     try {
         // Destructure request body 
@@ -936,61 +832,6 @@ export const CreateCartDetail= async(req:Request,res:Response,next:NextFunction)
             return res.status(200).json(CartDetails);
     }catch(error){
         next(error)
-    }
-}
-
-export const CreateVehicles = async(req:Request,res:Response,next:NextFunction)=>{ 
-    try{ 
-         const {  
-            SupplierId,
-            VehicleType, 
-            VehicleBrand,
-            ServiceType,
-            VehicleModel,
-            Doors,
-            Seats, 
-            Cargo,
-            Passengers,
-            MediumBag,
-            SmallBag, 
-            Extraspace
-        } =<CreateVehicle>req.body;
-
-
-
-        const uniId = uuidv4(); 
-            const New_Vehicle = await db.insert(Create_Vehicles)
-            .values({
-                SupplierId,
-            VehicleType,
-            VehicleBrand,
-            ServiceType,
-            VehicleModel,
-            Doors,
-            Seats, 
-            Cargo,
-            Passengers,
-            MediumBag,
-            SmallBag,
-           ExtraSpace: JSON.stringify(Extraspace),
-
-            })
-            .returning(); 
-            return res.status(200).json(New_Vehicle);
-    }catch(error){
-        next(error)
-    }
-}
-
-export const GetVehiclebyId = async(req:Request,res:Response,next:NextFunction)=>{
-    try{
-         const VehicleId = req.params.id;
-         const result= await db.select()
-         .from(Create_Vehicles)
-         .where(eq(Create_Vehicles.SupplierId, VehicleId));
-         res.status(200).json(result) 
-    }catch(error){
-        res.status(404).json({message:'Data is not found'})
     }
 }
 
@@ -1512,3 +1353,239 @@ export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{
         next(error)
     }
 }
+
+export const CreateVehicles = async(req:Request,res:Response,next:NextFunction)=>{ 
+    try{ 
+         const {  
+            SupplierId,
+            VehicleType, 
+            VehicleBrand,
+            ServiceType,
+            VehicleModel,
+            Doors,
+            Seats, 
+            Cargo,
+            Passengers,
+            MediumBag,
+            SmallBag, 
+            Extraspace
+        } =<CreateVehicle>req.body;
+            const New_Vehicle = await db.insert(Create_Vehicles)
+            .values({
+                SupplierId,
+            VehicleType,
+            VehicleBrand,
+            ServiceType,
+            VehicleModel,
+            Doors,
+            Seats, 
+            Cargo,
+            Passengers,
+            MediumBag,
+            SmallBag,
+           ExtraSpace: JSON.stringify(Extraspace),
+
+            })
+            .returning(); 
+            return res.status(200).json(New_Vehicle);
+    }catch(error){
+        next(error)
+    }
+}
+// Update Vehicle
+export const UpdateVehicle = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+        
+        const updatedVehicle = await db.update(Create_Vehicles)
+            .set({ ...updateData, ExtraSpace: JSON.stringify(updateData.Extraspace) })
+            .where(eq(Create_Vehicles.id, id))
+            .returning();
+
+        return res.status(200).json(updatedVehicle);
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Delete Vehicle
+export const DeleteVehicle = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        
+        await db.delete(Create_Vehicles)
+            .where(eq(Create_Vehicles.id, id));
+
+        return res.status(200).json({ message: "Vehicle deleted successfully" });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const GetVehiclebyId = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const VehicleId = req.params.id;
+         const result= await db.select()
+         .from(Create_Vehicles)
+         .where(eq(Create_Vehicles.SupplierId, VehicleId));
+         res.status(200).json(result) 
+    }catch(error){
+        res.status(404).json({message:'Data is not found'})
+    }
+}
+
+export const CreateZone=async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+        const { name,supplier_id, latitude, longitude, radius_miles } = req.body;
+        const center = turf.point([longitude, latitude]);
+        const circle = turf.circle(center, radius_miles, { steps: 64, units: "miles" });
+    
+        const newZone = await db.insert(zones).values({
+            name,
+            supplier_id,
+          latitude,
+          longitude,
+          radius_miles,
+          geojson: circle,
+         })
+         .returning();
+    
+        res.status(201).json({ message: "Zone created successfully", zone: newZone });
+      } catch (error) {
+        res.status(500).json({ message: "Error creating zone", error });
+      }
+}
+
+// Get Zone by ID
+export const getZoneById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const zone = await db.select().from(zones).where(eq(zones.id, id));
+        
+        if (!zone) {
+            return res.status(404).json({ message: "Zone not found" });
+        }
+        res.json(zone);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching zone", error });
+    }
+};
+
+// Update Zone
+export const updateZone = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const { name, supplier_id, latitude, longitude, radius_miles } = req.body;
+        const center = turf.point([longitude, latitude]);
+        const circle = turf.circle(center, radius_miles, { steps: 64, units: "miles" });
+        
+        const updatedZone = await db.update(zones).set({
+            name,
+            supplier_id,
+            latitude,
+            longitude,
+            radius_miles,
+            geojson: circle,
+        }).where(eq(zones.id, id)).returning();
+        
+        if (!updatedZone) {
+            return res.status(404).json({ message: "Zone not found" });
+        }
+        res.json({ message: "Zone updated successfully", zone: updatedZone });
+    } catch (error) {
+        res.status(500).json({ message: "Error updating zone", error });
+    }
+};
+
+// Delete Zone
+export const deleteZone = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        
+        const deletedZone = await db.delete(zones).where(eq(zones.id, id)).returning();
+        
+        if (!deletedZone) {
+            return res.status(404).json({ message: "Zone not found" });
+        }
+        res.json({ message: "Zone deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting zone", error });
+    }
+};
+
+export const createTransfer = async (req: Request, res: Response) => {
+    try {
+        const { rows } = req.body;
+
+        if (!Array.isArray(rows) || rows.length === 0) {
+            return res.status(400).json({ message: "Invalid input: Expected an array of transfers under 'rows'" });
+        }
+
+        const newTransfers = await db.insert(transfers_Vehicle).values(
+            rows.map(({ uniqueId, SelectZone, Price, Extra_Price, Currency, TransferInfo, NightTime, NightTime_Price }) => ({
+                vehicle_id: uniqueId,
+                zone_id: SelectZone,
+                price: Price,
+                extra_price_per_mile: Extra_Price,
+                Currency,
+                Transfer_info: TransferInfo,
+                NightTime,
+                NightTime_Price,
+            }))
+        ).returning();
+
+        res.status(201).json({ message: "Transfers created successfully", transfers: newTransfers });
+    } catch (error) {
+        res.status(500).json({ message: "Error creating transfers", error });
+    }
+};
+
+
+// Get Transfer by ID
+export const getTransferById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const transfer = await db.select().from(transfers_Vehicle).where(eq(transfers_Vehicle.id, id));
+        
+        if (!transfer) {
+            return res.status(404).json({ message: "Transfer not found" });
+        }
+        res.json(transfer);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching transfer", error });
+    }
+};
+
+// Update Transfer
+export const updateTransfer = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const updateData = req.body;
+        
+        const updatedTransfer = await db.update(transfers_Vehicle).set(updateData).where(eq(transfers_Vehicle.id, id)).returning();
+        
+        if (!updatedTransfer) {
+            return res.status(404).json({ message: "Transfer not found" });
+        }
+        res.json({ message: "Transfer updated successfully", transfer: updatedTransfer });
+    } catch (error) {
+        res.status(500).json({ message: "Error updating transfer", error });
+    }
+};
+
+// Delete Transfer
+export const deleteTransfer = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        
+        const deletedTransfer = await db.delete(transfers_Vehicle).where(eq(transfers_Vehicle.id, id)).returning();
+        
+        if (!deletedTransfer) {
+            return res.status(404).json({ message: "Transfer not found" });
+        }
+        res.json({ message: "Transfer deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ message: "Error deleting transfer", error });
+    }
+};

@@ -111,7 +111,8 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               PAN_number:registerTable.PAN_number, 
               Currency:registerTable.Currency,
               Gst_Tax_Certificate:registerTable.Gst_Tax_Certificate,
-              Role:registerTable.Role
+              Role:registerTable.Role,
+              profileImage: registerTable.profileImage,
               // Api_key:registerTable.Api_key,
               // Is_up:registerTable.Is_up
           })
@@ -130,6 +131,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
       userId: req.body.id,
       Company_name: user.Company_name,
       Owner: user.Owner,
+      profileImage: user.profileImage,
       Address:user.Address,
       Country:user.Country,
       City:user.City,
@@ -162,6 +164,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
                 Mobile_number:AgentTable.Mobile_number,
                 Currency:AgentTable.Currency,
                 Role: AgentTable.Role,
+                profile: AgentTable.profileImage,
                 Gst_Tax_Certificate:AgentTable.Gst_Tax_Certificate
             })
             .from(AgentTable)
@@ -184,6 +187,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               Currency:user.Currency,
               Contact_Person:user.Contact_Person,
               role: user.Role, 
+              profileImage:user.profile,
               Gst_Tax_Certificate:user.Gst_Tax_Certificate
             }); 
   }
@@ -197,7 +201,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
       AgentOpration: AdminTable.Agent_operation,
       SupplierAccount: AdminTable.Supplier_account,
       SupplierOPration: AdminTable.Supplier_operation,
-
+      profile:AdminTable.profileImage,
     })
     .from(AdminTable)
     .where(eq(AdminTable.id,userID)) 
@@ -213,7 +217,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     AgentOperation: user.AgentOpration,
     SupplierAccount: user.SupplierAccount,
     SupplierOpration: user.SupplierOPration,
-
+    profileImage:user.profile
   }); 
      
   } 

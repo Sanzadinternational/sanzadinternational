@@ -1,9 +1,9 @@
-import { dashboard } from './../controllers/SupplierController';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
 import authMiddleware from '../middlewares/authMiddleware';
 import { ForgetPassword,resetPassword } from '../controllers/AgentController';
 import { CreateAgent,GetAgent,loginAgent,GetBill,OneWayTrip,RoundTrip,GetOneWayTrip,GetRoundTrip,UpdateOneWayTrip, sendOtp, verifyOtp } from '../controllers'; 
 import { Emailotps } from '../controllers/EmailotpsController'; 
+import { dashboard } from '../controllers/LoginController';
 const multer = require('multer');
 import fs from 'fs';
 import path from 'path';
@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 const router = express.Router(); 
 
-router.post('/registration', upload.single('Gst_Tax_Certificate'), CreateAgent); 
+router.post('/registration',upload.single('Gst_Tax_Certificate'),  CreateAgent); 
 // router.post('/forgotpassword',forgotPassword); 
 // router.post('/resetpassword',resetpassword);
 router.post('/ForgetPassword',ForgetPassword); 

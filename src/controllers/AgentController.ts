@@ -29,12 +29,12 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Gst_Vat_Tax_number, 
             Contact_Person,
             Email,
-        
+          
             Password,
             Office_number,
             Mobile_number,
             Currency,
-          
+            
             Role,
             IsApproved
         } = req.body as CreateAgentInput; 
@@ -56,7 +56,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
         });
     }
         // const id = uuidv4();
-       const Gst_Tax_Certificate = (req as any).file ? (req as any).file.filename : null;
+        const Gst_Tax_Certificate = (req as any).file ? (req as any).file.filename : null;
         // Hash the password before storing 
         const hashedPassword = await bcrypt.hash(Password, 10);  
         const Approval_status = {

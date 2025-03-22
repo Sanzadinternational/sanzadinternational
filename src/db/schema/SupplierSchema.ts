@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, text,timestamp, date, jsonb, boolean } from 'drizzle-orm/pg-core'; 
+import { integer, pgTable, varchar, text,timestamp, date, jsonb, boolean, numeric, uuid } from 'drizzle-orm/pg-core'; 
 
 export const registerTable = pgTable('supplier', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(), 
@@ -17,6 +17,7 @@ export const registerTable = pgTable('supplier', {
   PAN_number: varchar({length:255}).notNull(), 
   Currency: varchar({ length: 255 }).notNull(),
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(), 
+  profileImage:varchar({length:255}),
   Password: varchar({length:255}).notNull(),
   Role:varchar({length:255}),
   IsApproved:integer(), 
@@ -67,7 +68,32 @@ export const PriceTable = pgTable('price',{
     to_date: varchar({length:255}),   
     price: varchar({length:255}), 
     new_location: varchar({ length: 255 }),
-})
+});
+
+export const zones = pgTable("zones", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  supplier_id: varchar({length:255}),
+  name: varchar("name", { length: 255 }).notNull(),
+  latitude: numeric("latitude", { precision: 10, scale: 6 }).notNull(),
+  longitude: numeric("longitude", { precision: 10, scale: 6 }).notNull(),
+  radius_miles: numeric("radius_km", { precision: 5, scale: 2 }).notNull(),
+  geojson: jsonb("geojson").default(null),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
+// Transfers Table
+export const transfers_Vehicle = pgTable("Vehicle_transfers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  vehicle_id: uuid("vehicle_id").references(() => Create_Vehicles.id).notNull(),
+  zone_id: uuid("zone_id").references(() => zones.id).notNull(),
+  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+  extra_price_per_mile: numeric("extra_price_per_mile", { precision: 5, scale: 2 }).notNull(),
+  Currency:varchar({length:255}),
+  Transfer_info:varchar({length:255}),
+  NightTime: varchar({ length: 255 }), 
+  NightTime_Price: varchar({ length: 255 }), 
+  created_at: timestamp("created_at").defaultNow(),
+});
 
 export const TransportNodes = pgTable('transport_nodes',{
 
@@ -163,8 +189,8 @@ export type supplier_otps = {
     Others:varchar({length:255}) 
   }) 
 
-  export const Create_Vehicles = pgTable('Vehicles',{ 
-    id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
+  export const Create_Vehicles = pgTable('all_Vehicles',{ 
+    id: uuid("id").primaryKey().defaultRandom(),
     SupplierId:varchar({length:255}), 
     VehicleType: varchar({length:255}), 
     VehicleBrand:varchar({length:255}), 

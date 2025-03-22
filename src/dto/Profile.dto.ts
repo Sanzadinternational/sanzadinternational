@@ -12,7 +12,8 @@ export interface AgentInput{
                 Mobile_number:string,
                 Currency:string,
                 Gst_Tax_Certificate:string,
-                Role:string
+                Role:string,
+                profile_img: string
 } 
 
 export interface SupplierInput { 
@@ -28,7 +29,8 @@ export interface SupplierInput {
     Gst_Vat_Tax_number: string, 
     PAN_number: string, 
     Currency: string,
-    Gst_Tax_Certificate: string
+    Gst_Tax_Certificate: string,
+    profileImage:string
     }
 export interface AdminInput{ 
     Agent_account:boolean, 
@@ -36,4 +38,5 @@ export interface AdminInput{
     Supplier_account:boolean, 
     Supplier_operation:boolean, 
     Company_name:string,
+    profileImage:string
 }

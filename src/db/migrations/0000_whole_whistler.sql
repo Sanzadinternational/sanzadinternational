@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS "admin" (
 	"Agent_operation" boolean DEFAULT false,
 	"Supplier_account" boolean DEFAULT false,
 	"Supplier_operation" boolean DEFAULT false,
+	"profileImage" varchar(255),
 	"IsApproved" integer,
 	"Token" varchar(255),
 	"ResetTokenExpiry" varchar(255)
@@ -36,6 +37,7 @@ CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"Mobile_number" varchar(255) NOT NULL,
 	"Currency" varchar(255) NOT NULL,
 	"Gst_Tax_Certificate" varchar(255) NOT NULL,
+	"profileImage" varchar(255),
 	"Role" varchar(255),
 	"IsApproved" integer,
 	"Token" varchar(255),
@@ -184,8 +186,8 @@ CREATE TABLE IF NOT EXISTS "TransferCar" (
 	"SupplierCarDetailsforeign" integer
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Vehicles" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Vehicles_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+CREATE TABLE IF NOT EXISTS "all_Vehicles" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"SupplierId" varchar(255),
 	"VehicleType" varchar(255),
 	"VehicleBrand" varchar(255),
@@ -366,6 +368,7 @@ CREATE TABLE IF NOT EXISTS "supplier" (
 	"PAN_number" varchar(255) NOT NULL,
 	"Currency" varchar(255) NOT NULL,
 	"Gst_Tax_Certificate" varchar(255) NOT NULL,
+	"profileImage" varchar(255),
 	"Password" varchar(255) NOT NULL,
 	"Role" varchar(255),
 	"IsApproved" integer,
@@ -379,6 +382,30 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 	"email" text NOT NULL,
 	"otp" text NOT NULL,
 	"otpExpiry" timestamp NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Vehicle_transfers" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"vehicle_id" uuid NOT NULL,
+	"zone_id" uuid NOT NULL,
+	"price" numeric(10, 2) NOT NULL,
+	"extra_price_per_mile" numeric(5, 2) NOT NULL,
+	"Currency" varchar(255),
+	"Transfer_info" varchar(255),
+	"NightTime" varchar(255),
+	"NightTime_Price" varchar(255),
+	"created_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "zones" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"supplier_id" varchar(255),
+	"name" varchar(255) NOT NULL,
+	"latitude" numeric(10, 6) NOT NULL,
+	"longitude" numeric(10, 6) NOT NULL,
+	"radius_km" numeric(5, 2) NOT NULL,
+	"geojson" jsonb DEFAULT 'null'::jsonb,
+	"created_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 DO $$ BEGIN
@@ -395,6 +422,18 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Id_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Vehicle_transfers" ADD CONSTRAINT "Vehicle_transfers_vehicle_id_all_Vehicles_id_fk" FOREIGN KEY ("vehicle_id") REFERENCES "public"."all_Vehicles"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Vehicle_transfers" ADD CONSTRAINT "Vehicle_transfers_zone_id_zones_id_fk" FOREIGN KEY ("zone_id") REFERENCES "public"."zones"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

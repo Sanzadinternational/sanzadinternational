@@ -11,6 +11,7 @@ export const AdminTable = pgTable('admin',{
     Agent_operation:boolean().default(false), 
     Supplier_account:boolean().default(false), 
     Supplier_operation:boolean().default(false), 
+    profileImage:varchar({length:255}),
     IsApproved:integer(),
     Token:varchar({length:255}),
     ResetTokenExpiry: varchar({length:255}),
