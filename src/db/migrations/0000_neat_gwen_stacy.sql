@@ -361,7 +361,6 @@ CREATE TABLE IF NOT EXISTS "supplier" (
 	"Office_number" varchar(255) NOT NULL,
 	"Email" varchar(255) NOT NULL,
 	"Contact_Person" varchar(255) NOT NULL,
-	"Otp" varchar(255) NOT NULL,
 	"Mobile_number" varchar(255) NOT NULL,
 	"Gst_Vat_Tax_number" varchar(255) NOT NULL,
 	"PAN_number" varchar(255) NOT NULL,

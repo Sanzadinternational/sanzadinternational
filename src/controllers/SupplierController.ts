@@ -30,7 +30,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
             Office_number,
             Email,
             Contact_Person,
-            Otp,
+        
             Mobile_number,
             Gst_Vat_Tax_number, 
             PAN_number, 
@@ -79,7 +79,7 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 Office_number,
                 Email,
                 Contact_Person,
-                Otp,
+            
                 Mobile_number,
                 Gst_Vat_Tax_number, 
                 PAN_number, 

@@ -11,7 +11,7 @@ export const registerTable = pgTable('supplier', {
   Office_number: varchar({length:255}).notNull(), 
   Email: varchar({ length: 255 }).notNull().unique(), 
   Contact_Person: varchar({length:255}).notNull(),
-  Otp:varchar({length:255}).notNull(),
+
   Mobile_number: varchar({length:255}).notNull(),
   Gst_Vat_Tax_number: varchar({length:255}).notNull(), 
   PAN_number: varchar({length:255}).notNull(), 

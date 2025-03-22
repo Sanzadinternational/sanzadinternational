@@ -1,5 +1,5 @@
 {
-  "id": "6474f1a6-f7a8-4311-96a1-98425c1bb976",
+  "id": "79ac7787-a1d2-4494-9752-8951bab9ffac",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -2260,12 +2260,6 @@
         },
         "Contact_Person": {
           "name": "Contact_Person",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "Otp": {
-          "name": "Otp",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
