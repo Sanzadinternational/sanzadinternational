@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"; 
 import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleModel,UpdateServiceType,UpdateVehicleBrand,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
-import { and,desc, eq } from "drizzle-orm"; 
+import { and,desc, eq, SQL } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 import { Create_Vehicles } from "../db/schema/SupplierSchema";
 import { CreateVehicle } from "../dto";
@@ -1409,6 +1409,21 @@ export const UpdateVehicle = async (req: Request, res: Response, next: NextFunct
     }
 };
 
+export const GetVehicleBySupplierId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        
+        // Fetch vehicles where supplier_id matches
+        const GetVehicleSupplier = await db.select()
+            .from(Create_Vehicles)
+            .where(eq(Create_Vehicles.SupplierId, id))
+        res.status(200).json(GetVehicleSupplier);
+    } catch (error) {
+        console.error("Error fetching vehicles by supplier ID:", error);
+        next(error);
+    }
+};
+
 // Delete Vehicle
 export const DeleteVehicle = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -1456,6 +1471,21 @@ export const CreateZone=async(req:Request,res:Response,next:NextFunction)=>{
         res.status(500).json({ message: "Error creating zone", error });
       }
 }
+
+export const GetZoneBySupplierId = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        
+        // Fetch vehicles where supplier_id matches
+        const GetZoneSupplier = await db.select()
+            .from(zones)
+            .where(eq(zones.supplier_id, id))
+        res.status(200).json(GetZoneSupplier);
+    } catch (error) {
+        console.error("Error fetching zones by supplier ID:", error);
+        next(error);
+    }
+};
 
 // Get Zone by ID
 export const getZoneById = async (req: Request, res: Response) => {
@@ -1589,3 +1619,7 @@ export const deleteTransfer = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error deleting transfer", error });
     }
 };
+function fullJoin(registerTable: any, arg1: SQL<unknown>) {
+    throw new Error("Function not implemented.");
+}
+

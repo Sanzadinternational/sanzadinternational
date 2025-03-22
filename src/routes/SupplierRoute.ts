@@ -1,8 +1,8 @@
 import { Supplier_price, TransportNode,resetPasswords,ForgetPasswords, CreateVehicles, GetVehiclebyId, CreateZone, createTransfer, updateZone } from '../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,UpdateVehicleTypes,UpdateVehicleModels,UpdateVehicleBrands,UpdateServiceTypes,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
-    GetCarDetails,GetServiceType,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+import { CreateSupplier,GetVehicleBySupplierId,UpdateVehicleTypes,UpdateVehicleModels,UpdateVehicleBrands,UpdateServiceTypes,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
+    GetCarDetails,GetServiceType,GetZoneBySupplierId,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
     const multer = require('multer');
     import fs from 'fs';
     import path from 'path';
@@ -54,6 +54,7 @@ router.get('/GetAllCarDetails',GetAllCarDetails);
 // router.get('/ExtraSpace',ExtraSpace);
 router.post('/CreateVehicleType',CreateVehicleType); 
 router.get('/GetVehicleType',GetVehicleType); 
+router.get("/GetVehicleBySupplierId/:id",GetVehicleBySupplierId);
 router.put('/UpdateVehicleTypes/:id',UpdateVehicleTypes);
 router.delete('/DeleteVehicleType/:id',DeleteVehicleType);
 router.post('/CreateVehicleBrand',CreateVehicleBrand); 
@@ -71,6 +72,7 @@ router.put('/UpdateVehicleModels/:id',UpdateVehicleModels);
 router.get('/GetVehicleType',GetVehicleType)
 router.post('/SurgeCharges',SurgeCharges);
 router.post('/new-zone',CreateZone);
+router.get('/GetZoneBySupplierId/:id',GetZoneBySupplierId);
 router.put('/update-zone/:id',updateZone);
 router.post('/new_transfer',createTransfer);
 // router.get('/products', GetProducts); 
