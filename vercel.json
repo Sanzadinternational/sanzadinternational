@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "version":2,
   "builds":[
 {"src":"*.ts","use":"@vercel/node"}
@@ -10,3 +11,18 @@
 }
 ]
 }
+=======
+    "builds": [
+      {
+        "src": "./index.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "index.js"
+      }
+    ]
+  }
+>>>>>>> Supplier
