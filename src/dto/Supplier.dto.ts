@@ -237,7 +237,7 @@ export interface CreateVehicle{
   Passengers:string,
   MediumBag:string,
   SmallBag:string, 
-  Extraspace:ExtraSpaceItem[],
+  ExtraSpace:ExtraSpaceItem[],
 } 
 //Vehicle Type
 

@@ -73,6 +73,7 @@ export const PriceTable = pgTable('price',{
 export const zones = pgTable("zones", {
   id: uuid("id").primaryKey().defaultRandom(),
   supplier_id: varchar({length:255}),
+  address: varchar({length:255}),
   name: varchar("name", { length: 255 }).notNull(),
   latitude: numeric("latitude", { precision: 10, scale: 6 }).notNull(),
   longitude: numeric("longitude", { precision: 10, scale: 6 }).notNull(),
@@ -84,6 +85,7 @@ export const zones = pgTable("zones", {
 // Transfers Table
 export const transfers_Vehicle = pgTable("Vehicle_transfers", {
   id: uuid("id").primaryKey().defaultRandom(),
+  supplier_id: varchar({length:255}),
   vehicle_id: uuid("vehicle_id").references(() => Create_Vehicles.id).notNull(),
   zone_id: uuid("zone_id").references(() => zones.id).notNull(),
   price: numeric("price", { precision: 10, scale: 2 }).notNull(),

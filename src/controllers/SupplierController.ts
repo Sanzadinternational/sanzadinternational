@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"; 
 import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleModel,UpdateServiceType,UpdateVehicleBrand,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
-import { and,desc, eq, SQL } from "drizzle-orm"; 
+import { and,desc, eq } from "drizzle-orm"; 
 const { v4: uuidv4 } = require('uuid'); 
 import { Create_Vehicles } from "../db/schema/SupplierSchema";
 import { CreateVehicle } from "../dto";
@@ -1368,7 +1368,7 @@ export const CreateVehicles = async(req:Request,res:Response,next:NextFunction)=
             Passengers,
             MediumBag,
             SmallBag, 
-            Extraspace
+            ExtraSpace
         } =<CreateVehicle>req.body;
             const New_Vehicle = await db.insert(Create_Vehicles)
             .values({
@@ -1383,7 +1383,7 @@ export const CreateVehicles = async(req:Request,res:Response,next:NextFunction)=
             Passengers,
             MediumBag,
             SmallBag,
-           ExtraSpace: JSON.stringify(Extraspace),
+           ExtraSpace: JSON.stringify(ExtraSpace),
 
             })
             .returning(); 
@@ -1405,21 +1405,6 @@ export const UpdateVehicle = async (req: Request, res: Response, next: NextFunct
 
         return res.status(200).json(updatedVehicle);
     } catch (error) {
-        next(error);
-    }
-};
-
-export const GetVehicleBySupplierId = async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const { id } = req.params;
-        
-        // Fetch vehicles where supplier_id matches
-        const GetVehicleSupplier = await db.select()
-            .from(Create_Vehicles)
-            .where(eq(Create_Vehicles.SupplierId, id))
-        res.status(200).json(GetVehicleSupplier);
-    } catch (error) {
-        console.error("Error fetching vehicles by supplier ID:", error);
         next(error);
     }
 };
@@ -1448,29 +1433,22 @@ export const GetVehiclebyId = async(req:Request,res:Response,next:NextFunction)=
     }catch(error){
         res.status(404).json({message:'Data is not found'})
     }
-}
+};
 
-export const CreateZone=async(req:Request,res:Response,next:NextFunction)=>{
+export const GetVehicleBySupplierId = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name,supplier_id, latitude, longitude, radius_miles } = req.body;
-        const center = turf.point([longitude, latitude]);
-        const circle = turf.circle(center, radius_miles, { steps: 64, units: "miles" });
-    
-        const newZone = await db.insert(zones).values({
-            name,
-            supplier_id,
-          latitude,
-          longitude,
-          radius_miles,
-          geojson: circle,
-         })
-         .returning();
-    
-        res.status(201).json({ message: "Zone created successfully", zone: newZone });
-      } catch (error) {
-        res.status(500).json({ message: "Error creating zone", error });
-      }
-}
+        const { id } = req.params;
+        
+        // Fetch vehicles where supplier_id matches
+        const GetVehicleSupplier = await db.select()
+            .from(Create_Vehicles)
+            .where(eq(Create_Vehicles.SupplierId, id))
+        res.status(200).json(GetVehicleSupplier);
+    } catch (error) {
+        console.error("Error fetching vehicles by supplier ID:", error);
+        next(error);
+    }
+};
 
 export const GetZoneBySupplierId = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -1482,10 +1460,33 @@ export const GetZoneBySupplierId = async (req: Request, res: Response, next: Nex
             .where(eq(zones.supplier_id, id))
         res.status(200).json(GetZoneSupplier);
     } catch (error) {
-        console.error("Error fetching zones by supplier ID:", error);
+        console.error("Error fetching Zone by supplier ID:", error);
         next(error);
-    }
+    }
 };
+
+export const CreateZone=async(req:Request,res:Response,next:NextFunction)=>{
+    try {
+        const { name,supplier_id,address, latitude, longitude, radius_miles } = req.body;
+        const center = turf.point([longitude, latitude]);
+        const circle = turf.circle(center, radius_miles, { steps: 64, units: "miles" });
+    
+        const newZone = await db.insert(zones).values({
+            name,
+            supplier_id,
+          latitude,
+          longitude,
+          radius_miles,
+          address,
+          geojson: circle,
+         })
+         .returning();
+    
+        res.status(201).json({ message: "Zone created successfully", zone: newZone });
+      } catch (error) {
+        res.status(500).json({ message: "Error creating zone", error });
+      }
+}
 
 // Get Zone by ID
 export const getZoneById = async (req: Request, res: Response) => {
@@ -1506,7 +1507,7 @@ export const getZoneById = async (req: Request, res: Response) => {
 export const updateZone = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const { name, supplier_id, latitude, longitude, radius_miles } = req.body;
+        const { name, supplier_id, latitude, longitude,address, radius_miles } = req.body;
         const center = turf.point([longitude, latitude]);
         const circle = turf.circle(center, radius_miles, { steps: 64, units: "miles" });
         
@@ -1516,6 +1517,7 @@ export const updateZone = async (req: Request, res: Response) => {
             latitude,
             longitude,
             radius_miles,
+            address,
             geojson: circle,
         }).where(eq(zones.id, id)).returning();
         
@@ -1553,7 +1555,7 @@ export const createTransfer = async (req: Request, res: Response) => {
         }
 
         const newTransfers = await db.insert(transfers_Vehicle).values(
-            rows.map(({ uniqueId, SelectZone, Price, Extra_Price, Currency, TransferInfo, NightTime, NightTime_Price }) => ({
+            rows.map(({ uniqueId,supplier_id, SelectZone, Price, Extra_Price, Currency, TransferInfo, NightTime, NightTime_Price }) => ({
                 vehicle_id: uniqueId,
                 zone_id: SelectZone,
                 price: Price,
@@ -1562,6 +1564,7 @@ export const createTransfer = async (req: Request, res: Response) => {
                 Transfer_info: TransferInfo,
                 NightTime,
                 NightTime_Price,
+                supplier_id
             }))
         ).returning();
 
@@ -1619,7 +1622,3 @@ export const deleteTransfer = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error deleting transfer", error });
     }
 };
-function fullJoin(registerTable: any, arg1: SQL<unknown>) {
-    throw new Error("Function not implemented.");
-}
-
