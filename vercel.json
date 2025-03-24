@@ -1,28 +1,14 @@
 {
-<<<<<<< HEAD
-  "version":2,
-  "builds":[
-{"src":"*.ts","use":"@vercel/node"}
-],
-"routes":[
-{
-   "src":"/(.*)",
-   "dest":"/"
+  "builds": [
+    {
+      "src": "./index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "index"
+    }
+  ]
 }
-]
-}
-=======
-    "builds": [
-      {
-        "src": "./index.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "index.js"
-      }
-    ]
-  }
->>>>>>> Supplier
