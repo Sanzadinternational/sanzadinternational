@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // export interface CreateAgentInput { 
 //       Company_name:string,
 //       Address:string,
@@ -15,6 +16,9 @@
 //       Currency:string,
 //       Gst_Tax_Certificate:string, 
 // }
+=======
+//
+>>>>>>> Supplier
 export interface CreateAgentInput { 
   Company_name: string;
   Address: string;
@@ -25,13 +29,25 @@ export interface CreateAgentInput {
   Gst_Vat_Tax_number: string;
   Contact_Person: string;
   Email: string;
+<<<<<<< HEAD
   Otp: string;
+=======
+ 
+>>>>>>> Supplier
   Password: string;
   Office_number: string;
   Mobile_number: string;
   Currency: string;
   Gst_Tax_Certificate: string;
+<<<<<<< HEAD
 }
+=======
+  Role:string,
+  IsApproved:number,
+  Token:string,
+  ResetTokenExpiry:string
+} 
+>>>>>>> Supplier
 export interface CreateOtpInput {
   email:string,
   otp: string,
