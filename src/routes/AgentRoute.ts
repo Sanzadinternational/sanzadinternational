@@ -52,6 +52,7 @@ router.get('/GetOneWayTrip',GetOneWayTrip);
 router.put('/UpdateOneWayTrip',UpdateOneWayTrip); 
 router.post('/RoundTrip',RoundTrip); 
 router.get('/GetRoundTrip',GetRoundTrip);
+// router.get('/QuickEmail',QuickEmail);
 router.post('/send-otp', sendOtp);
 router.post('/verify-otp', verifyOtp)
 <<<<<<< HEAD

@@ -1,7 +1,12 @@
 {
   "name": "backend",
   "version": "1.0.0",
+<<<<<<< HEAD
   "main": "index.js",
+=======
+  "description": "",
+  "main": "index.ts",
+>>>>>>> Supplier
   "scripts": {
     "start": "nodemon index.ts",
     "db:generate": "drizzle-kit generate",
