@@ -580,3 +580,18 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
 function equals(Email: any): any {
     throw new Error("Function not implemented.");
 }
+
+// export const QuickEmail = async(req:Request,res:Response,next:NextFunction)=>{
+//     try{
+//         const {Email}=req.body;
+//           const results = await db.select({
+//             Email:AgentTable.Email
+//           })
+//           .from(AgentTable) 
+//           .where(eq(AgentTable.Email,Email)) 
+//           .limit(1);
+//           return res.status(200).json(results); 
+//     }catch(error){
+//       next(error)
+//     }
+// }
