@@ -925,6 +925,7 @@ function equals(Email: any): any {
 >>>>>>> Supplier
 =======
 
+<<<<<<< HEAD
 // export const QuickEmail = async(req:Request,res:Response,next:NextFunction)=>{
 //     try{
 //         const {Email}=req.body;
@@ -939,4 +940,38 @@ function equals(Email: any): any {
 //       next(error)
 //     }
 // }
+>>>>>>> Supplier
+=======
+export const QuickEmail = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const {subject, message, recipient}= req.body;
+          const results = await db.select({
+            Email:AgentTable.Email
+          })
+          .from(AgentTable) 
+          .orderBy(desc(AgentTable.id)) // Order by ID in descending order 
+          .limit(1); // Get only the last inserted record
+          const transporter = nodemailer.createTransport({
+            service: 'Gmail', // Replace with your email service provider
+            auth: {
+                user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+            },
+        });
+      
+        // Send an email with the retrieved data (decrypted password)
+        const info = await transporter.sendMail({
+            from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+            to: recipient,
+            subject: "Query from Sanzadinternational", // Subject line
+            text: `${subject}`, // Plain text body
+            html: `${message}`, // HTML body
+        });
+            
+        console.log("Message sent: %s", info.messageId);
+          return res.status(200).json(results); 
+    }catch(error){
+      next(error)
+    }
+}
 >>>>>>> Supplier
