@@ -1503,6 +1503,19 @@ export const getZoneById = async (req: Request, res: Response) => {
     }
 };
 
+export const getZone = async (req: Request, res: Response) => {
+    try {
+
+        const zone = await db.select().from(zones);
+        
+        if (!zone) {
+            return res.status(404).json({ message: "Zone not found" });
+        }
+        res.json(zone);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching zone", error });
+    }
+};
 // Update Zone
 export const updateZone = async (req: Request, res: Response) => {
     try {
