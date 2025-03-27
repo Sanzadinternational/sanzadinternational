@@ -55,8 +55,8 @@ router.post('/TransportNode',TransportNode);
 router.post('/Createcardetail',CreateCartDetail); 
 router.post('/Createvehicle',CreateVehicles); 
 router.get('/GetVehicle',GetVehicle);
-router.put('/UpdateVehicle',UpdateVehicle);
-router.delete('/DeleteVehicle',DeleteVehicle);
+router.put('/UpdateVehicle/:id',UpdateVehicle);
+router.delete('/DeleteVehicle/:id',DeleteVehicle);
 router.get('/getCarDetails/:id',GetCarDetails); 
 router.get('/getVehicle/:id',GetVehiclebyId); 
 // router.put('/UpdatedSingleCarDetails/:id',UpdatedSingleCarDetails)
