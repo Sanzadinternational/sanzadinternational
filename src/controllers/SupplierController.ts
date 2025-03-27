@@ -1393,6 +1393,15 @@ export const CreateVehicles = async(req:Request,res:Response,next:NextFunction)=
     }
 }
 // Update Vehicle
+export const GetVehicle = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+          const result = await db.select()
+          .from(Create_Vehicles)
+          return res.status(200).json(result);
+    }catch(error){
+        next(error)
+    }
+}
 export const UpdateVehicle = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;

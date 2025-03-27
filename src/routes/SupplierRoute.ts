@@ -2,7 +2,7 @@ import { Supplier_price, TransportNode,resetPasswords,ForgetPasswords, CreateVeh
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
 import { CreateSupplier,UpdateVehicleTypes,UpdateVehicleModels,UpdateVehicleBrands,UpdateServiceTypes,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
-    GetCarDetails,GetServiceType,getZone,deleteZone,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+    GetCarDetails,GetServiceType,getZone,DeleteVehicle,UpdateVehicle,GetVehicle,deleteZone,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
     const multer = require('multer');
     import fs from 'fs';
     import path from 'path';
@@ -39,6 +39,9 @@ router.post('/Supplier_price',Supplier_price);
 router.post('/TransportNode',TransportNode); 
 router.post('/Createcardetail',CreateCartDetail); 
 router.post('/Createvehicle',CreateVehicles); 
+router.get('/GetVehicle',GetVehicle);
+router.put('/UpdateVehicle',UpdateVehicle);
+router.delete('/DeleteVehicle',DeleteVehicle);
 router.get('/getCarDetails/:id',GetCarDetails); 
 router.get('/getVehicle/:id',GetVehiclebyId); 
 // router.put('/UpdatedSingleCarDetails/:id',UpdatedSingleCarDetails)
