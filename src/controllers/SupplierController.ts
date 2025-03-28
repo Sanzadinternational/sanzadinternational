@@ -1601,7 +1601,7 @@ export const createTransfer = async (req: Request, res: Response) => {
 export const getTransferById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const transfer = await db.select().from(transfers_Vehicle).where(eq(transfers_Vehicle.id, id));
+        const transfer = await db.select().from(transfers_Vehicle).where(eq(transfers_Vehicle.supplier_id, id));
         
         if (!transfer) {
             return res.status(404).json({ message: "Transfer not found" });
