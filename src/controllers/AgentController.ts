@@ -613,3 +613,53 @@ export const QuickEmail = async(req:Request,res:Response,next:NextFunction)=>{
       next(error)
     }
 }
+
+export const OrderConfirm = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail', // Replace with your email service provider
+            auth: {
+                user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+            },
+        });
+      
+        // Send an email with the retrieved data (decrypted password)
+        const info = await transporter.sendMail({
+            from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+            to: 'jugalkishor556455@gmail.com',
+            subject: "Order Confirmation from Sanzadinternational", // Subject line
+            text: `Your order has been confirmed.`, // Plain text body
+            html: `<p>Your order has been <strong>confirmed</strong>.</p>`, // HTML body
+        });
+            
+        console.log("Message sent: %s", info.messageId);
+    }catch(error){
+        next(error)
+    }
+}
+
+export const OrderCencel = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail', // Replace with your email service provider
+            auth: {
+                user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+            },
+        });
+      
+        // Send an email with the retrieved data (decrypted password)
+        const info = await transporter.sendMail({
+            from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+            to: 'jugalkishor556455@gmail.com',
+            subject: "Order Cancellation from Sanzadinternational", // Subject line
+            text: `Your order has been canceled. If you have any questions, please contact us.`, // Plain text body
+            html: `<p>Your order has been <strong>canceled</strong>. If you have any questions, please contact us.</p>`, // HTML body
+        });
+            
+        console.log("Message sent: %s", info.messageId);
+    }catch(error){
+        next(error)
+    }
+}
