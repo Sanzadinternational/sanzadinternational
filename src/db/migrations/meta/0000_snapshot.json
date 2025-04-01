@@ -1,5 +1,5 @@
 {
-  "id": "3617cb8a-27c3-4117-8f4a-7de35ad89995",
+  "id": "b419d8df-41cf-42e1-8793-7e0002812a09",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -50,20 +50,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "Product_account": {
-          "name": "Product_account",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
-        "Product_operation": {
-          "name": "Product_operation",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
         "Agent_account": {
           "name": "Agent_account",
           "type": "boolean",
@@ -78,6 +64,13 @@
           "notNull": false,
           "default": false
         },
+        "Agent_product": {
+          "name": "Agent_product",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
         "Supplier_account": {
           "name": "Supplier_account",
           "type": "boolean",
@@ -87,6 +80,13 @@
         },
         "Supplier_operation": {
           "name": "Supplier_operation",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "Supplier_product": {
+          "name": "Supplier_product",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
