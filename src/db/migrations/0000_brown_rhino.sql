@@ -10,7 +10,8 @@ CREATE TABLE IF NOT EXISTS "admin" (
 	"Company_name" varchar(255),
 	"Password" varchar(255),
 	"Role" "role" NOT NULL,
-	"Product" boolean DEFAULT false,
+	"Product_account" boolean DEFAULT false,
+	"Product_operation" boolean DEFAULT false,
 	"Agent_account" boolean DEFAULT false,
 	"Agent_operation" boolean DEFAULT false,
 	"Supplier_account" boolean DEFAULT false,
@@ -67,27 +68,6 @@ CREATE TABLE IF NOT EXISTS "forget_password" (
 	"password" varchar(255) NOT NULL,
 	"resetToken" varchar(255),
 	"resetTokenExpires" varchar(255)
-);
---> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Booking" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Booking_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"booking_no" varchar(255),
-	"pickup" varchar(255),
-	"dropoff" varchar(255),
-	"passenger" varchar(255),
-	"date" date,
-	"time" time,
-	"return_date" date,
-	"return_time" time,
-	"estimated_trip_time" time,
-	"distance" varchar(255),
-	"vehicle_name" varchar(255),
-	"passengers_no" varchar(255),
-	"medium_bags" varchar(255),
-	"passenger_name" varchar(255),
-	"passenger_email" varchar(255),
-	"passenger_contact_no" varchar(255),
-	"agentforeign" integer
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "otps" (
@@ -386,6 +366,7 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "Vehicle_transfers" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"supplier_id" varchar(255),
 	"vehicle_id" uuid NOT NULL,
 	"zone_id" uuid NOT NULL,
 	"price" numeric(10, 2) NOT NULL,
@@ -400,6 +381,7 @@ CREATE TABLE IF NOT EXISTS "Vehicle_transfers" (
 CREATE TABLE IF NOT EXISTS "zones" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"supplier_id" varchar(255),
+	"address" varchar(255),
 	"name" varchar(255) NOT NULL,
 	"latitude" numeric(10, 6) NOT NULL,
 	"longitude" numeric(10, 6) NOT NULL,

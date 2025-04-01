@@ -13,7 +13,8 @@ import { Site_url } from "../config";
 
 export const CreateAdmins = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { Email, Password,Product,Company_name,IsApproved, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
+        const { Email, Password,Product_account,
+            Product_operation,Company_name,IsApproved, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
 
         // Input validation
         if (!Email || !Password) {
@@ -39,7 +40,8 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
                 Supplier_account:Supplier_account || false,
                 Supplier_operation:Supplier_operation || false,
                 Role:'admin',
-                Product:Product || false,
+                Product_account:Product_account || false,
+                Product_operation:Product_operation || false,
                 IsApproved:  IsApproved || Approval_status.Approved
             }) 
             .returning();

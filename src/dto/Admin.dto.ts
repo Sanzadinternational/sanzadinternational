@@ -1,7 +1,8 @@
 export interface CreateAdmin{ 
     Email:string, 
     Role:string, 
-    Product:boolean,
+    Product_account:boolean,
+    Product_operation:boolean,
     Password:string, 
     Agent_account:boolean, 
     Agent_operation:boolean, 

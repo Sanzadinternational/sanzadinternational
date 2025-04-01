@@ -1,5 +1,5 @@
 {
-  "id": "a94e3ac9-30d4-4d50-8ae9-030cb69d4b60",
+  "id": "3617cb8a-27c3-4117-8f4a-7de35ad89995",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -50,8 +50,15 @@
           "primaryKey": false,
           "notNull": true
         },
-        "Product": {
-          "name": "Product",
+        "Product_account": {
+          "name": "Product_account",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "Product_operation": {
+          "name": "Product_operation",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
@@ -406,135 +413,6 @@
         "resetTokenExpires": {
           "name": "resetTokenExpires",
           "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
-    },
-    "public.Booking": {
-      "name": "Booking",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "primaryKey": true,
-          "notNull": true,
-          "identity": {
-            "type": "always",
-            "name": "Booking_id_seq",
-            "schema": "public",
-            "increment": "1",
-            "startWith": "1",
-            "minValue": "1",
-            "maxValue": "2147483647",
-            "cache": "1",
-            "cycle": false
-          }
-        },
-        "booking_no": {
-          "name": "booking_no",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "pickup": {
-          "name": "pickup",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "dropoff": {
-          "name": "dropoff",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "passenger": {
-          "name": "passenger",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "date": {
-          "name": "date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "time": {
-          "name": "time",
-          "type": "time",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "return_date": {
-          "name": "return_date",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "return_time": {
-          "name": "return_time",
-          "type": "time",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "estimated_trip_time": {
-          "name": "estimated_trip_time",
-          "type": "time",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "distance": {
-          "name": "distance",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "vehicle_name": {
-          "name": "vehicle_name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "passengers_no": {
-          "name": "passengers_no",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "medium_bags": {
-          "name": "medium_bags",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "passenger_name": {
-          "name": "passenger_name",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "passenger_email": {
-          "name": "passenger_email",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "passenger_contact_no": {
-          "name": "passenger_contact_no",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "agentforeign": {
-          "name": "agentforeign",
-          "type": "integer",
           "primaryKey": false,
           "notNull": false
         }
@@ -2402,6 +2280,12 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "supplier_id": {
+          "name": "supplier_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "vehicle_id": {
           "name": "vehicle_id",
           "type": "uuid",
@@ -2503,6 +2387,12 @@
         },
         "supplier_id": {
           "name": "supplier_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "address": {
+          "name": "address",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false

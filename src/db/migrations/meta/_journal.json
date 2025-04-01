@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1742639839218,
-      "tag": "0000_whole_whistler",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1742643627036,
-      "tag": "0001_perfect_cable",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1742644645412,
-      "tag": "0002_flat_fantastic_four",
+      "when": 1743487794773,
+      "tag": "0000_brown_rhino",
       "breakpoints": true
     }
   ]

@@ -1,1 +1,0 @@
-ALTER TABLE "zones" ADD COLUMN "address" varchar(255);
