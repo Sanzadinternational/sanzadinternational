@@ -1331,24 +1331,70 @@ export const DeleteVehicleModel = async(req:Request,res:Response,next:NextFuncti
     }
 }
 
-export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{
+export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{ 
     try{
          const{
+            uniqueId,
               VehicleName,
-              Date,
-              ExtraPrice,
-              uniqueId
+            From,
+            To,
+            SurgeChargePrice,
+            supplier_id
          }=<SurgeCharge>req.body;
  
-         const result = await db.insert(SurgeChargeTable)
+         const result = await db.insert(SurgeChargeTable) 
          .values({
+            vehicle_id: uniqueId,
             VehicleName,
-            Date,
-            ExtraPrice,
-            uniqueId
+            From,
+            To,
+            SurgeChargePrice,
+            supplier_id
          })
          .returning();
          res.status(200).json(result);
+    }catch(error){
+        next(error)
+    }
+}
+
+export const GetSurgeCharges = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const result = await db.select()
+        .from(SurgeChargeTable);
+        return res.status(200).json(result);
+    }catch(error){
+        next(error)
+    }
+}
+
+export const UpdateSurgeCharges = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const {id}=req.params;
+        const { uniqueId, VehicleName, From, To, SurgeChargePrice, supplier_id } = req.body;
+        const result = await db.update(SurgeChargeTable) 
+        .set({
+            vehicle_id:uniqueId,
+            VehicleName,
+            From,
+            To,
+            SurgeChargePrice,
+            supplier_id
+        })
+        .where(eq(SurgeChargeTable.id,id))
+        .returning();
+        return res.status(200).json(result);
+    }catch(error){
+        next(error)
+    }
+}
+
+export const DeleteSurgeCharges = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const {id} = req.params;
+         const result=await db.delete(SurgeChargeTable)
+         .where(eq(SurgeChargeTable.id,id));
+         return res.status(200).json({message:"Surge Charge is Deleted Successfully"});
     }catch(error){
         next(error)
     }
@@ -1575,7 +1621,7 @@ export const createTransfer = async (req: Request, res: Response) => {
         if (!Array.isArray(rows) || rows.length === 0) {
             return res.status(400).json({ message: "Invalid input: Expected an array of transfers under 'rows'" });
         }
-
+    
         const newTransfers = await db.insert(transfers_Vehicle).values(
             rows.map(({ uniqueId,supplier_id, SelectZone, Price, Extra_Price, Currency, TransferInfo, NightTime, NightTime_Price }) => ({
                 vehicle_id: uniqueId,

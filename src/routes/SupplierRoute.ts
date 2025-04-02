@@ -2,7 +2,7 @@ import { Supplier_price, TransportNode,resetPasswords,ForgetPasswords, CreateVeh
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
 import { CreateSupplier,UpdateVehicleTypes,UpdateVehicleModels,UpdateVehicleBrands,UpdateServiceTypes,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
-    GetCarDetails,GetServiceType,getZone,updateTransfer,deleteTransfer,getTransferById,DeleteVehicle,UpdateVehicle,GetVehicle,deleteZone,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
+    GetCarDetails,GetServiceType,getZone,DeleteSurgeCharges,UpdateSurgeCharges,GetSurgeCharges,updateTransfer,deleteTransfer,getTransferById,DeleteVehicle,UpdateVehicle,GetVehicle,deleteZone,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
     const multer = require('multer');
     import fs from 'fs';
     import path from 'path';
@@ -71,8 +71,11 @@ router.post('/CreateVehicleModel',CreateVehicleModel);
 router.get('/GetVehicleModel',GetVehicleModel) 
 router.delete('/DeleteVehicleModel/:id',DeleteVehicleModel);
 router.put('/UpdateVehicleModels/:id',UpdateVehicleModels);
-router.get('/GetVehicleType',GetVehicleType)
+router.get('/GetVehicleType',GetVehicleType); 
 router.post('/SurgeCharges',SurgeCharges);
+router.get('/GetSurgeCharges',GetSurgeCharges);
+router.put('/UpdateSurgeCharges/:id',UpdateSurgeCharges);
+router.delete('/DeleteSurgeCharges/:id',DeleteSurgeCharges);
 router.post('/new-zone',CreateZone);
 router.get('/getZone',getZone);
 router.put('/update-zone/:id',updateZone);

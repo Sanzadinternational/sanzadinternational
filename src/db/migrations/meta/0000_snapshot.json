@@ -1,5 +1,5 @@
 {
-  "id": "b419d8df-41cf-42e1-8793-7e0002812a09",
+  "id": "47e6d041-3935-4ef0-8f72-11f3ef44002e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -1871,27 +1871,53 @@
           "primaryKey": false,
           "notNull": false
         },
-        "Date": {
-          "name": "Date",
+        "From": {
+          "name": "From",
           "type": "date",
           "primaryKey": false,
           "notNull": false
         },
-        "ExtraPrice": {
-          "name": "ExtraPrice",
+        "To": {
+          "name": "To",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "SurgeChargePrice": {
+          "name": "SurgeChargePrice",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
-        "uniqueId": {
-          "name": "uniqueId",
+        "vehicle_id": {
+          "name": "vehicle_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "supplier_id": {
+          "name": "supplier_id",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "SurgeCharge_vehicle_id_all_Vehicles_id_fk": {
+          "name": "SurgeCharge_vehicle_id_all_Vehicles_id_fk",
+          "tableFrom": "SurgeCharge",
+          "tableTo": "all_Vehicles",
+          "columnsFrom": [
+            "vehicle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },

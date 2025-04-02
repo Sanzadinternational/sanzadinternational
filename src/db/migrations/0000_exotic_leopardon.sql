@@ -300,9 +300,11 @@ CREATE TABLE IF NOT EXISTS "Car_Details" (
 CREATE TABLE IF NOT EXISTS "SurgeCharge" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "SurgeCharge_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"VehicleName" varchar(255),
-	"Date" date,
-	"ExtraPrice" varchar(255),
-	"uniqueId" varchar(255)
+	"From" date,
+	"To" date,
+	"SurgeChargePrice" varchar(255),
+	"vehicle_id" uuid,
+	"supplier_id" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transport_nodes" (
@@ -404,6 +406,12 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Id_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "SurgeCharge" ADD CONSTRAINT "SurgeCharge_vehicle_id_all_Vehicles_id_fk" FOREIGN KEY ("vehicle_id") REFERENCES "public"."all_Vehicles"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

@@ -311,9 +311,11 @@ export interface UpdateCreateCartDetails{
    
 export interface SurgeCharge{ 
   VehicleName:string,
-  Date:string,
-  ExtraPrice:string,
-  uniqueId:string
+  From:string,
+  To:string,
+  SurgeChargePrice :string,
+  uniqueId:string,
+  supplier_id:string
 }
 
 export interface VehicleType{
