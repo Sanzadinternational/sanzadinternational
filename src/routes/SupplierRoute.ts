@@ -73,7 +73,7 @@ router.delete('/DeleteVehicleModel/:id',DeleteVehicleModel);
 router.put('/UpdateVehicleModels/:id',UpdateVehicleModels);
 router.get('/GetVehicleType',GetVehicleType); 
 router.post('/SurgeCharges',SurgeCharges);
-router.get('/GetSurgeCharges',GetSurgeCharges);
+router.get('/GetSurgeCharges/:id',GetSurgeCharges);
 router.put('/UpdateSurgeCharges/:id',UpdateSurgeCharges);
 router.delete('/DeleteSurgeCharges/:id',DeleteSurgeCharges);
 router.post('/new-zone',CreateZone);

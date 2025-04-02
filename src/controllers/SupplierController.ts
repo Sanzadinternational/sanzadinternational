@@ -1360,8 +1360,10 @@ export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{
 
 export const GetSurgeCharges = async(req:Request,res:Response,next:NextFunction)=>{
     try{
+        const {id}=req.params;
         const result = await db.select()
-        .from(SurgeChargeTable);
+        .from(SurgeChargeTable)
+        .where(eq(SurgeChargeTable.supplier_id,id))
         return res.status(200).json(result);
     }catch(error){
         next(error)
