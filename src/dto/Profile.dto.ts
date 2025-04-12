@@ -13,7 +13,11 @@ export interface AgentInput{
                 Currency:string,
                 Gst_Tax_Certificate:string,
                 Role:string,
+<<<<<<< HEAD
                 profile_img: string
+=======
+                profileImage: string
+>>>>>>> develop
 } 
 
 export interface SupplierInput { 

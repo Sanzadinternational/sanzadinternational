@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { CreateProductInput, EditProduct } from "../dto";
 // import { Product } from "../models";
 =======
 import { CreateAdmin } from "../dto/Admin.dto"
 import { AdminTable } from "../db/schema/AdminSchema";
+=======
+import { CreateAdmin } from "../dto/Admin.dto"
+import { AdminTable } from "../db/schema/adminSchema";
+>>>>>>> develop
 import { db } from "../db/db";
 import { and,desc, eq } from "drizzle-orm";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
@@ -13,12 +18,19 @@ const bcrypt = require('bcrypt');
 var randomstring = require("randomstring");
 import nodemailer from "nodemailer";
 import { Site_url } from "../config";
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
 
 
 export const CreateAdmins = async (req: Request, res: Response, next: NextFunction) => {
     try {
+<<<<<<< HEAD
         const { Email, Password,Product,Company_name,IsApproved, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
+=======
+        const { Email, Password,Agent_product,Supplier_product,Company_name,IsApproved, Agent_account,Agent_operation, Supplier_operation, Supplier_account } =<CreateAdmin>req.body;
+>>>>>>> develop
 
         // Input validation
         if (!Email || !Password) {
@@ -32,7 +44,11 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
             Approved: 1,
             Canceled: 2,
         };
+<<<<<<< HEAD
         // Insert the new admin record
+=======
+        // Insert the new admin record 
+>>>>>>> develop
         const result = await db
             .insert(AdminTable)
             .values({ 
@@ -44,7 +60,13 @@ export const CreateAdmins = async (req: Request, res: Response, next: NextFuncti
                 Supplier_account:Supplier_account || false,
                 Supplier_operation:Supplier_operation || false,
                 Role:'admin',
+<<<<<<< HEAD
                 Product:Product || false,
+=======
+                Agent_product:Agent_product || false,
+                Supplier_product:Supplier_product || false,
+           
+>>>>>>> develop
                 IsApproved:  IsApproved || Approval_status.Approved
             }) 
             .returning();
@@ -206,7 +228,13 @@ export const AllAdminRecords = async (req: Request, res: Response, next: NextFun
             Agent_account:AdminTable.Agent_account,
             Agent_operation:AdminTable.Agent_operation,
             Supplier_account:AdminTable.Supplier_account,
+<<<<<<< HEAD
             Supplier_operation:AdminTable.Supplier_operation
+=======
+            Supplier_operation:AdminTable.Supplier_operation, 
+            Agent_product:AdminTable.Agent_product, 
+            Supplier_product:AdminTable.Supplier_product 
+>>>>>>> develop
             })
             .from(AdminTable)
             .where(eq(AdminTable.Role, role)); // Assuming `AdminTable.role` is the correct column for roles 
@@ -466,4 +494,8 @@ export const ChangeSupplierApprovalStatus = async(req:Request,res:Response,next:
     }catch(error){
         next(error)
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> develop

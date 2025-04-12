@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { integer, pgTable, varchar, text,timestamp, PgTable, date } from 'drizzle-orm/pg-core'; 
 
 export const registerTable = pgTable('supplier', {
@@ -9,12 +10,19 @@ import { integer, pgTable, varchar, text,timestamp, date, jsonb, boolean, numeri
 export const registerTable = pgTable('supplier', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(), 
 >>>>>>> Supplier
+=======
+import { integer, pgTable, varchar, text,timestamp, date, jsonb, boolean, numeric, uuid } from 'drizzle-orm/pg-core'; 
+
+export const registerTable = pgTable('supplier', { 
+  id: integer().primaryKey().generatedAlwaysAsIdentity(), 
+>>>>>>> develop
   Company_name: varchar({ length: 255 }).notNull(),
   Owner: varchar({ length: 255 }).notNull(),
   Address: varchar({ length: 255 }).notNull(),
   Country: varchar({ length: 255 }).notNull(), 
   City: varchar({ length: 255 }).notNull(),
   Zip_code: varchar({length:255}).notNull(),
+<<<<<<< HEAD
 <<<<<<< HEAD
   Office_number: varchar({length:255}).notNull(),
   Email: varchar({ length: 255 }).notNull().unique(),
@@ -26,10 +34,17 @@ export const registerTable = pgTable('supplier', {
   Contact_Person: varchar({length:255}).notNull(),
 
 >>>>>>> Supplier
+=======
+  Office_number: varchar({length:255}).notNull(), 
+  Email: varchar({ length: 255 }).notNull().unique(), 
+  Contact_Person: varchar({length:255}).notNull(),
+
+>>>>>>> develop
   Mobile_number: varchar({length:255}).notNull(),
   Gst_Vat_Tax_number: varchar({length:255}).notNull(), 
   PAN_number: varchar({length:255}).notNull(), 
   Currency: varchar({ length: 255 }).notNull(),
+<<<<<<< HEAD
 <<<<<<< HEAD
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(),
   Password: varchar({length:255}).notNull(),
@@ -42,13 +57,21 @@ export const registerTable = pgTable('supplier', {
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(), 
   profileImage:varchar({length:255}),
   Password: varchar({length:255}).notNull(),
+=======
+  Gst_Tax_Certificate: varchar({ length: 255 }).notNull(), 
+  profileImage:varchar({length:255}),
+  Password: varchar({length:255}).notNull(),
+>>>>>>> develop
   Role:varchar({length:255}),
   IsApproved:integer(), 
   Token:varchar({length:255}), 
   ResetTokenExpiry: varchar({length:255}), 
 }); 
     
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
 export const One_WayTable = pgTable('One_Way_Service_Details',{
     id:integer().primaryKey().generatedAlwaysAsIdentity(),
     country:varchar({length:255}).notNull(),
@@ -69,6 +92,7 @@ export const One_WayTable = pgTable('One_Way_Service_Details',{
     to_date: date().notNull(),   
     price: integer().notNull(), 
     new_location: varchar({ length: 255 }).notNull(),
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 });
@@ -99,6 +123,33 @@ export const PriceTable = pgTable('price',{
     new_location: varchar({ length: 255 }),
 });
 
+=======
+  
+}); 
+ 
+export const PriceTable = pgTable('price',{
+  id:integer().primaryKey().generatedAlwaysAsIdentity(), 
+    country:varchar({length:255}),
+    city:varchar({length:255}),
+    location_from_airport:varchar({length:255}),
+    location_from_port_cruise:varchar({length:255}), 
+    location_from_station:varchar({length:255}),
+    location_from_city_center:varchar({length:255}), 
+    location_to_airport:varchar({length:255}),
+    location_to_port_cruise:varchar({length:255}),
+    location_to_station:varchar({length:255}),
+    location_to_city_center:varchar({length:255}),
+    night_time_supplement:varchar({length:255}),
+    vice_versa:varchar({length:255}),
+    half_day_city_limit_4hrs:varchar({length:255}),
+    full_day_city_limit_8hrs:varchar({length:255}),
+    from_date: varchar({length:255}), 
+    to_date: varchar({length:255}),   
+    price: varchar({length:255}), 
+    new_location: varchar({ length: 255 }),
+});
+
+>>>>>>> develop
 export const zones = pgTable("zones", {
   id: uuid("id").primaryKey().defaultRandom(),
   supplier_id: varchar({length:255}),
@@ -138,7 +189,10 @@ export const TransportNodes = pgTable('transport_nodes',{
   airport_or_establishment:varchar({length:255}),
 
 })
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
 export const Roundtrip_Service_Price_Details = pgTable('Roundtrip_Service_Price_Details',{
   id:integer().primaryKey().generatedAlwaysAsIdentity(),
   country:varchar({length:255}).notNull(),
@@ -174,8 +228,11 @@ export type supplier_otps = {
     otp: string;
     otpExpiry: Date;
 <<<<<<< HEAD
+<<<<<<< HEAD
   };
 =======
+=======
+>>>>>>> develop
   }; 
  
   export const SupplierApidataTable = pgTable('Supplier_Apidata', {
@@ -274,10 +331,19 @@ export type supplier_otps = {
 export const SurgeChargeTable=pgTable('SurgeCharge',{
   id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
   VehicleName:varchar({length:255}),
+<<<<<<< HEAD
   Date:date(),
   ExtraPrice:varchar({length:255}),
   uniqueId:varchar({length:255}),
 })   
+=======
+  From:date(), 
+  To:date(), 
+  SurgeChargePrice:varchar({length:255}),
+  vehicle_id: uuid("vehicle_id").references(() => Create_Vehicles.id),
+  supplier_id:varchar({length:255})
+}); 
+>>>>>>> develop
      
   export const VehicleTypeTable=pgTable('VehicleType',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
@@ -305,4 +371,7 @@ function datetime(arg0: string): any {
   throw new Error('Function not implemented.');
 }
 
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop

@@ -1,11 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { CreateAgentInput, CreateOtpInput, CreateOneWayTripInput, CreateRoundTripInput, UpdateOneWayTripInput } from "../dto"; 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // import { v4 as uuidv4 } from 'uuid';
 // const { v4: uuidv4 } = require('uuid'); 
 =======
 import crypto from "crypto";
 >>>>>>> Supplier
+=======
+import crypto from "crypto";
+>>>>>>> develop
 import { db } from "../db/db";
 import { generateOTP, sendOTPEmail } from "../utils";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
@@ -13,13 +17,18 @@ const { otpss } = require('../db/schema/OtpSchema');
 const {Emailotps} = require('./EmailotpsController'); 
 const bcrypt = require('bcrypt'); 
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { desc, eq } from "drizzle-orm";
+=======
+import { and, desc, eq } from "drizzle-orm";
+>>>>>>> develop
 const nodemailer = require("nodemailer"); 
-// import jwt from 'jsonwebtoken';
+// import jwt from 'jsonwebtoken'; 
 const Crypto = require("crypto");
 const jwt = require('jsonwebtoken'); 
-
+import { registerTable } from "../db/schema/SupplierSchema";
 var Mailgen = require('mailgen'); 
+<<<<<<< HEAD
 =======
 import { and, desc, eq } from "drizzle-orm";
 const nodemailer = require("nodemailer"); 
@@ -31,6 +40,10 @@ var Mailgen = require('mailgen');
 var randomstring = require("randomstring");
 var passwordHash = require('password-hash');
 >>>>>>> Supplier
+=======
+var randomstring = require("randomstring");
+var passwordHash = require('password-hash');
+>>>>>>> develop
 
 export const CreateAgent = async(req: Request, res: Response, next: NextFunction) => { 
     try {
@@ -45,24 +58,56 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Contact_Person,
             Email,
 <<<<<<< HEAD
+<<<<<<< HEAD
             Otp,
 =======
           
 >>>>>>> Supplier
+=======
+          
+>>>>>>> develop
             Password,
             Office_number,
             Mobile_number,
             Currency,
 <<<<<<< HEAD
+<<<<<<< HEAD
             Gst_Tax_Certificate,
         } = req.body as CreateAgentInput;
+=======
+            
+            Role,
+            IsApproved
+        } = req.body as CreateAgentInput; 
+        const existingAgent = await db
+        .select()
+        .from(AgentTable)
+        .where(eq(AgentTable.Email, Email))
+        // .union(
+        //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
+        // );
+>>>>>>> develop
 
+        const existingSupplier= await db.select().from(registerTable).where(eq(registerTable.Email, Email))
+    
+    if (existingAgent.length > 0 || existingSupplier.length>0) {
+        // If email exists in either table, return a conflict response
+        return res.status(400).json({
+            success: false,
+            message: "Email is already registered in the system." 
+        });
+    }
         // const id = uuidv4();
-
+        const Gst_Tax_Certificate = (req as any).file ? (req as any).file.filename : null;
         // Hash the password before storing 
-        const hashedPassword = await bcrypt.hash(Password, 10); 
-
+        const hashedPassword = await bcrypt.hash(Password, 10);  
+        const Approval_status = {
+            Pending: 0, // Default
+            Approved: 1,
+            Canceled: 2,
+        };
         const newAgent = await db
+<<<<<<< HEAD
             .insert(AgentTable)
 =======
             
@@ -98,6 +143,9 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
         const newAgent = await db
             .insert(AgentTable) 
 >>>>>>> Supplier
+=======
+            .insert(AgentTable) 
+>>>>>>> develop
             .values({
                 Company_name,
                 Address,
@@ -109,15 +157,20 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
                 Contact_Person,
                 Email,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Otp,
 =======
             
 >>>>>>> Supplier
+=======
+            
+>>>>>>> develop
                 Password:hashedPassword, // Save hashed password
                 Office_number,
                 Mobile_number,
                 Currency,
                 Gst_Tax_Certificate,
+<<<<<<< HEAD
 <<<<<<< HEAD
             })
             .returning(); // Return the newly inserted agent
@@ -129,6 +182,13 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             })
             .returning(); // Return the newly inserted agent
 
+=======
+                Role: Role || "agent",
+                IsApproved: IsApproved || Approval_status.Pending
+            })
+            .returning(); // Return the newly inserted agent
+
+>>>>>>> develop
         res.status(201).json(newAgent);
         const result = await db.select({
             Email:AgentTable.Email
@@ -157,16 +217,129 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
     
             return res.status(200).json({message:"New Agent is Created Successfully",result})
        
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
     } catch (error) {
         next(error);
     }
 }
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+//
+>>>>>>> develop
 
+export const ForgetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { Email } = req.body;
+
+    // Validate email input
+    if (!Email || typeof Email !== 'string') {
+      return res.status(400).send({ success: false, message: "Valid email is required." });
+    }
+
+    // Check if the user exists based on the email
+    const user = await db
+      .select({ Email: AgentTable.Email })
+      .from(AgentTable)
+      .where(eq(AgentTable.Email, Email));
+
+    if (user.length > 0) {
+     // Generate a reset token
+     const Token = randomstring.generate();
+     const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
+
+     // Save the reset token and expiry in the database
+     const GenerateToken = await db
+            .update(AgentTable)  // Use the correct table reference
+            .set({
+                Token,
+                resetTokenExpiry,
+            })
+            .where(eq(AgentTable.Email, Email))  // Use the `id` to target the specific row
+            .returning();  //
+
+            const transporter = nodemailer.createTransport({
+                service: 'Gmail', // Replace with your email service provider
+                auth: {
+                    user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                    pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+                },
+            });
+            const resetLink = `http://localhost:8000/api/V1/agent/ResetPassword?token=${Token}`;
+            // Send an email with the retrieved data (decrypted password)
+            const info = await transporter.sendMail({
+                from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+                to: `${user[0].Email}`,
+                subject: "Query from Sanzadinternational", // Subject line
+                text: `Details of New Agent Access:\nEmail: ${user[0].Email}`, // Plain text body
+                html: `Please click below link then reset your password<br>Link: <a href="${resetLink}">${resetLink}</a>`, // HTML body,
+            });
+    
+            console.log("Message sent: %s", info.messageId);
+     // Ideally, you'd send this token via email. For now, we return it in the response.
+     res.status(200).send({
+       success: true,
+       message: "Password reset token generated successfully.",
+       GenerateToken: GenerateToken, // In a production app, don't send the token in the response, use email
+    
+     });
+
+    } else {
+      // If the user does not exist
+      res.status(404).send({
+        success: false,
+        message: "User not found with the provided email.",
+      });
+    }
+
+  } catch (error) {
+    console.error('Error in ForgetPassword API:', error);
+    next(error); // Pass the error to the next middleware for handling
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response, next: NextFunction) => {
+  const { Token, Email, Password } = req.body; // Extract fields from the request body
+
+  try {
+    // Step 1: Hash the new password
+    const hashedPassword = await bcrypt.hash(Password, 10);  
+
+    // Step 2: Verify that the user with the given Token and Email exists
+    const user = await db
+      .select({ id: AgentTable.id, Email: AgentTable.Email }) // Select necessary fields
+      .from(AgentTable)
+      .where(and(eq(AgentTable.Token, Token), eq(AgentTable.Email, Email)));
+
+    if (user.length === 0) {
+      return res.status(404).json({ error: "Invalid Token or Email" });
+    }
+
+    // Step 3: Update the user's password and reset the token
+    const result = await db
+      .update(AgentTable)
+      .set({
+        Password: hashedPassword,
+        Token: "", // Clear the token
+      })
+      .where(eq(AgentTable.id, user[0].id)) // Use the unique `id` for the update
+      .returning();
+
+    // Step 4: Respond with success
+    res.status(200).json({ message: "Password reset successful", result });
+  } catch (error) {
+    console.error("Error in resetPassword:", error);
+    next(error); // Pass the error to the next middleware
+  }
+};
+//
 export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
 {
     try{
+<<<<<<< HEAD
 
     const result = await db
 =======
@@ -283,6 +456,10 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
     
     const result = await db 
 >>>>>>> Supplier
+=======
+    
+    const result = await db 
+>>>>>>> develop
     .select({
         id:AgentTable.id,
         Company_name:AgentTable.Company_name,
@@ -308,6 +485,7 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
     }
 }
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
 
@@ -345,6 +523,8 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
 //     }
 // }
 =======
+=======
+>>>>>>> develop
 //
 // export const dashboard = async (req: Request, res: Response, next: NextFunction) => {
 //     const userID = req.body.id;
@@ -379,7 +559,10 @@ export const GetAgent= async(req:Request,res:Response,next:NextFunction)=>
 //                 role: "agent",
 //       });
 // };
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
 
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
 
@@ -388,6 +571,7 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         const { Email, Password } = req.body; 
 
         // Fetch the agent by email
+<<<<<<< HEAD
 <<<<<<< HEAD
         const [agent] = await db
             .select({
@@ -400,6 +584,13 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
                 Email: AgentTable.Email, 
                 Password: AgentTable.Password ,
 >>>>>>> Supplier
+=======
+        const [user] = await db
+            .select({
+                Id:AgentTable.id, 
+                Email: AgentTable.Email, 
+                Password: AgentTable.Password ,
+>>>>>>> develop
                 Company_name:AgentTable.Company_name,
                 Address:AgentTable.Address,
                 Country:AgentTable.Country,
@@ -419,19 +610,27 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
 
         // Check if the agent was found
 <<<<<<< HEAD
+<<<<<<< HEAD
         if (!agent) {
 =======
         if (!user) {
 >>>>>>> Supplier
+=======
+        if (!user) {
+>>>>>>> develop
             return res.status(404).json({ message: "Agent not found" });
         }
 
         // Compare the provided password with the hashed password in the database
 <<<<<<< HEAD
+<<<<<<< HEAD
         const isPasswordValid = await bcrypt.compare(Password, agent.password); // 'password' (lowercase)
 =======
         const isPasswordValid = await bcrypt.compare(Password, user.Password); // 'password' (lowercase)
 >>>>>>> Supplier
+=======
+        const isPasswordValid = await bcrypt.compare(Password, user.Password); // 'password' (lowercase)
+>>>>>>> develop
 
         if (!isPasswordValid) {
             return res.status(401).json({ message: 'Invalid credentials' });
@@ -439,12 +638,17 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
 
         // Generate a JWT token
 <<<<<<< HEAD
+<<<<<<< HEAD
         const token = jwt.sign(
             {  email: agent.email }, // Use 'agent.email' (lowercase)
 =======
         const accessToken = jwt.sign(
             {  email: user.Email }, // Use 'agent.email' (lowercase)
 >>>>>>> Supplier
+=======
+        const accessToken = jwt.sign(
+            {  email: user.Email }, // Use 'agent.email' (lowercase)
+>>>>>>> develop
             JWT_SECRET,
             { expiresIn: '1h' }  // Token valid for 1 hour
         );
@@ -453,18 +657,24 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
         return res.status(200).json({
             message: 'Login Successfully',
 <<<<<<< HEAD
+<<<<<<< HEAD
             token,
             agent,
 =======
             accessToken,
             user, 
 >>>>>>> Supplier
+=======
+            accessToken,
+            user, 
+>>>>>>> develop
         });
 
     } catch (error) {
         next(error); // Pass error to global error handler
     }
 };
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 // export const Emailotps = async(req: Request, res: Response, next: NextFunction) => { 
@@ -630,6 +840,9 @@ export const loginAgent = async (req: Request, res: Response, next: NextFunction
 =======
 //
 >>>>>>> Supplier
+=======
+//
+>>>>>>> develop
 
 export const GetBill=async(req:Request,res:Response,next:NextFunction)=>{
 
@@ -714,6 +927,7 @@ export const OneWayTrip= async(req:Request,res:Response,next:NextFunction)=>{
 } 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // export const UpdateOneWayTrip = async(req:Request,res:Response,next:NextFunction)=>{
 //     try{
 //           const {
@@ -747,6 +961,9 @@ export const OneWayTrip= async(req:Request,res:Response,next:NextFunction)=>{
 =======
 //
 >>>>>>> Supplier
+=======
+//
+>>>>>>> develop
 export const UpdateOneWayTrip = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params; 
@@ -838,6 +1055,7 @@ export const GetRoundTrip= async(req:Request,res:Response,next:NextFunction)=>{
 export const sendOtp= async(req:Request,res:Response,next:NextFunction)=>{
     const { email } = req.body;
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
     const existingAgent = await db
@@ -848,6 +1066,16 @@ export const sendOtp= async(req:Request,res:Response,next:NextFunction)=>{
     //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
     // );
 
+=======
+    const existingAgent = await db
+    .select()
+    .from(AgentTable)
+    .where(eq(AgentTable.Email, email))
+    // .union(
+    //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
+    // );
+
+>>>>>>> develop
     const existingSupplier= await db.select().from(registerTable).where(eq(registerTable.Email, email))
 
 if (existingAgent.length > 0 || existingSupplier.length>0) {
@@ -857,7 +1085,10 @@ if (existingAgent.length > 0 || existingSupplier.length>0) {
         message: "Email is already registered in the system." 
     });
 }else{
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
     const otp = generateOTP();
     const expiryTime = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
   
@@ -867,6 +1098,7 @@ if (existingAgent.length > 0 || existingSupplier.length>0) {
   
     res.status(200).json({ message: 'OTP sent successfully' });
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 // export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
@@ -891,6 +1123,10 @@ if (existingAgent.length > 0 || existingSupplier.length>0) {
 }
 //
 >>>>>>> Supplier
+=======
+}
+//
+>>>>>>> develop
 export const verifyOtp = async (req: Request, res: Response, next: NextFunction) => {
     const { email, otp } = req.body;
 
@@ -914,13 +1150,17 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
         return res.status(500).json({ message: 'Internal server error' });
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 };
 =======
+=======
+>>>>>>> develop
 };
 
 function equals(Email: any): any {
     throw new Error("Function not implemented.");
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> Supplier
 =======
@@ -942,6 +1182,8 @@ function equals(Email: any): any {
 // }
 >>>>>>> Supplier
 =======
+=======
+>>>>>>> develop
 export const QuickEmail = async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const {subject, message, recipient}= req.body;
@@ -974,4 +1216,7 @@ export const QuickEmail = async(req:Request,res:Response,next:NextFunction)=>{
       next(error)
     }
 }
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop

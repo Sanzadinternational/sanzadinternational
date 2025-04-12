@@ -3,9 +3,16 @@ const { otpTable } = require('../db/schema/OtpAgentSchema');
 import { db } from "../db/db";
 import { Request, Response, NextFunction } from "express";
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+import { desc } from "drizzle-orm";
+>>>>>>> develop
 // import {GetBill} from './AgentController';
+const { registerTable } = require('../db/schema/SupplierSchema');
+const { AgentTable } = require("../db/schema/AgentSchema"); 
 // import nodemailer from 'nodemailer';
 const nodemailer = require('nodemailer'); 
+<<<<<<< HEAD
 
 // export const Emailotps = async (req: Request, res: Response, next: NextFunction) => { 
 //     try {
@@ -117,6 +124,10 @@ const nodemailer = require('nodemailer');
 import crypto from 'crypto';
 // 
 >>>>>>> Supplier
+=======
+import crypto from 'crypto';
+// 
+>>>>>>> develop
 
 export const Emailotps = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -166,7 +177,10 @@ export const Emailotps = async (req: Request, res: Response, next: NextFunction)
     }
 };
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
 
 
 export const AgentMail = async (req: Request, res: Response, next: NextFunction) => {
@@ -266,4 +280,7 @@ export const SupplierMail = async (req: Request, res: Response, next: NextFuncti
 };
 
 
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop

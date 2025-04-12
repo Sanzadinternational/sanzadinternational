@@ -1,13 +1,18 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   "id": "f380065e-5d39-4861-9c63-e8f03508ef52",
 =======
   "id": "a94e3ac9-30d4-4d50-8ae9-030cb69d4b60",
 >>>>>>> Supplier
+=======
+  "id": "ffb1b824-0ea5-4b82-99e5-d8bd9bba8058",
+>>>>>>> develop
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+<<<<<<< HEAD
 <<<<<<< HEAD
     "public.Agent": {
       "name": "Agent",
@@ -15,6 +20,10 @@
     "public.admin": {
       "name": "admin",
 >>>>>>> Supplier
+=======
+    "public.admin": {
+      "name": "admin",
+>>>>>>> develop
       "schema": "",
       "columns": {
         "id": {
@@ -25,8 +34,11 @@
           "identity": {
             "type": "always",
 <<<<<<< HEAD
+<<<<<<< HEAD
             "name": "Agent_id_seq",
 =======
+=======
+>>>>>>> develop
             "name": "admin_id_seq",
             "schema": "public",
             "increment": "1",
@@ -62,6 +74,7 @@
           "primaryKey": false,
           "notNull": true
         },
+<<<<<<< HEAD
         "Product": {
           "name": "Product",
           "type": "boolean",
@@ -69,6 +82,8 @@
           "notNull": false,
           "default": false
         },
+=======
+>>>>>>> develop
         "Agent_account": {
           "name": "Agent_account",
           "type": "boolean",
@@ -97,6 +112,23 @@
           "notNull": false,
           "default": false
         },
+<<<<<<< HEAD
+=======
+        "Agent_product": {
+          "name": "Agent_product",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "Supplier_product": {
+          "name": "Supplier_product",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+>>>>>>> develop
         "profileImage": {
           "name": "profileImage",
           "type": "varchar(255)",
@@ -139,7 +171,10 @@
           "identity": {
             "type": "always",
             "name": "Agent_registration_id_seq",
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -204,6 +239,7 @@
           "notNull": true
         },
 <<<<<<< HEAD
+<<<<<<< HEAD
         "Otp": {
           "name": "Otp",
           "type": "varchar(255)",
@@ -212,6 +248,8 @@
         },
 =======
 >>>>>>> Supplier
+=======
+>>>>>>> develop
         "Password": {
           "name": "Password",
           "type": "varchar(255)",
@@ -242,7 +280,10 @@
           "primaryKey": false,
           "notNull": true
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
         },
         "profileImage": {
           "name": "profileImage",
@@ -273,7 +314,10 @@
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
         }
       },
       "indexes": {},
@@ -390,7 +434,10 @@
       "uniqueConstraints": {}
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
     "public.forget_password": {
       "name": "forget_password",
       "schema": "",
@@ -442,12 +489,18 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+<<<<<<< HEAD
     "public.Booking": {
       "name": "Booking",
+=======
+    "public.booking": {
+      "name": "booking",
+>>>>>>> develop
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
+<<<<<<< HEAD
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
@@ -572,6 +625,235 @@
       "uniqueConstraints": {}
     },
 >>>>>>> Supplier
+=======
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "Agent_Id": {
+          "name": "Agent_Id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vehicle_id": {
+          "name": "vehicle_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "supplier_Id": {
+          "name": "supplier_Id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pickup_location": {
+          "name": "pickup_location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "drop_location": {
+          "name": "drop_location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pickup_lat": {
+          "name": "pickup_lat",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pickup_lng": {
+          "name": "pickup_lng",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "drop_lat": {
+          "name": "drop_lat",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "drop_lng": {
+          "name": "drop_lng",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "distance_miles": {
+          "name": "distance_miles",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "booked_at": {
+          "name": "booked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "booking_Agent_Id_Agent_registration_id_fk": {
+          "name": "booking_Agent_Id_Agent_registration_id_fk",
+          "tableFrom": "booking",
+          "tableTo": "Agent_registration",
+          "columnsFrom": [
+            "Agent_Id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "booking_vehicle_id_all_Vehicles_id_fk": {
+          "name": "booking_vehicle_id_all_Vehicles_id_fk",
+          "tableFrom": "booking",
+          "tableTo": "all_Vehicles",
+          "columnsFrom": [
+            "vehicle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "booking_supplier_Id_supplier_id_fk": {
+          "name": "booking_supplier_Id_supplier_id_fk",
+          "tableFrom": "booking",
+          "tableTo": "supplier",
+          "columnsFrom": [
+            "supplier_Id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.payments": {
+      "name": "payments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "booking_id": {
+          "name": "booking_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payment_method": {
+          "name": "payment_method",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "payment_status": {
+          "name": "payment_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "transaction_id": {
+          "name": "transaction_id",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reference_number": {
+          "name": "reference_number",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "amount": {
+          "name": "amount",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "payments_booking_id_booking_id_fk": {
+          "name": "payments_booking_id_booking_id_fk",
+          "tableFrom": "payments",
+          "tableTo": "booking",
+          "columnsFrom": [
+            "booking_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "payments_transaction_id_unique": {
+          "name": "payments_transaction_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "transaction_id"
+          ]
+        },
+        "payments_reference_number_unique": {
+          "name": "payments_reference_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "reference_number"
+          ]
+        }
+      }
+    },
+>>>>>>> develop
     "public.otps": {
       "name": "otps",
       "schema": "",
@@ -754,7 +1036,10 @@
       }
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
     "public.SearchCar": {
       "name": "SearchCar",
       "schema": "",
@@ -806,7 +1091,10 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
     "public.supplier_details": {
       "name": "supplier_details",
       "schema": "",
@@ -814,7 +1102,10 @@
         "id": {
           "name": "id",
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
@@ -1194,12 +1485,16 @@
       "columns": {
         "id": {
           "name": "id",
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+<<<<<<< HEAD
 <<<<<<< HEAD
         "vehicle_type": {
           "name": "vehicle_type",
@@ -1215,104 +1510,79 @@
         },
         "type_service": {
           "name": "type_service",
+=======
+        "SupplierId": {
+          "name": "SupplierId",
+>>>>>>> develop
           "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "vehicle_model": {
-          "name": "vehicle_model",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "doors": {
-          "name": "doors",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "seats": {
-          "name": "seats",
-          "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "category_space": {
-          "name": "category_space",
-          "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "max_number_pax_accommodate": {
-          "name": "max_number_pax_accommodate",
+        "VehicleType": {
+          "name": "VehicleType",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "luggage_information": {
-          "name": "luggage_information",
+        "VehicleBrand": {
+          "name": "VehicleBrand",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "max_number_medium_suitcase": {
-          "name": "max_number_medium_suitcase",
+        "ServiceType": {
+          "name": "ServiceType",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "max_number_carbin_bag": {
-          "name": "max_number_carbin_bag",
+        "VehicleModel": {
+          "name": "VehicleModel",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "space_available_other_luggage": {
-          "name": "space_available_other_luggage",
-          "type": "integer",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "location_details": {
-          "name": "location_details",
+        "Doors": {
+          "name": "Doors",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "transfer_information": {
-          "name": "transfer_information",
+        "Seats": {
+          "name": "Seats",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "service_providing_location": {
-          "name": "service_providing_location",
+        "Cargo": {
+          "name": "Cargo",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "airport": {
-          "name": "airport",
+        "Passengers": {
+          "name": "Passengers",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "port_cruise": {
-          "name": "port_cruise",
+        "MediumBag": {
+          "name": "MediumBag",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "station": {
-          "name": "station",
+        "SmallBag": {
+          "name": "SmallBag",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true
+          "notNull": false
         },
-        "city_center": {
-          "name": "city_center",
-          "type": "varchar(255)",
+        "Extraspace": {
+          "name": "Extraspace",
+          "type": "jsonb",
           "primaryKey": false,
+<<<<<<< HEAD
           "notNull": true
         },
         "vehicle_for": {
@@ -1456,6 +1726,9 @@
           "primaryKey": false,
           "notNull": false
 >>>>>>> Supplier
+=======
+          "notNull": false
+>>>>>>> develop
         }
       },
       "indexes": {},
@@ -1599,7 +1872,10 @@
       "uniqueConstraints": {}
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
     "public.price": {
       "name": "price",
       "schema": "",
@@ -1735,7 +2011,10 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
     "public.Roundtrip_Service_Price_Details": {
       "name": "Roundtrip_Service_Price_Details",
       "schema": "",
@@ -1872,7 +2151,10 @@
       "uniqueConstraints": {}
     },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
     "public.ServiceType": {
       "name": "ServiceType",
       "schema": "",
@@ -2217,27 +2499,72 @@
           "primaryKey": false,
           "notNull": false
         },
+<<<<<<< HEAD
         "Date": {
           "name": "Date",
+=======
+        "From": {
+          "name": "From",
+>>>>>>> develop
           "type": "date",
           "primaryKey": false,
           "notNull": false
         },
+<<<<<<< HEAD
         "ExtraPrice": {
           "name": "ExtraPrice",
+=======
+        "To": {
+          "name": "To",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "SurgeChargePrice": {
+          "name": "SurgeChargePrice",
+>>>>>>> develop
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
+<<<<<<< HEAD
         "uniqueId": {
           "name": "uniqueId",
+=======
+        "vehicle_id": {
+          "name": "vehicle_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "supplier_id": {
+          "name": "supplier_id",
+>>>>>>> develop
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
+<<<<<<< HEAD
       "foreignKeys": {},
+=======
+      "foreignKeys": {
+        "SurgeCharge_vehicle_id_all_Vehicles_id_fk": {
+          "name": "SurgeCharge_vehicle_id_all_Vehicles_id_fk",
+          "tableFrom": "SurgeCharge",
+          "tableTo": "all_Vehicles",
+          "columnsFrom": [
+            "vehicle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+>>>>>>> develop
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -2415,7 +2742,10 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
     "public.supplier": {
       "name": "supplier",
       "schema": "",
@@ -2492,6 +2822,7 @@
           "notNull": true
         },
 <<<<<<< HEAD
+<<<<<<< HEAD
         "Otp": {
           "name": "Otp",
           "type": "varchar(255)",
@@ -2500,6 +2831,8 @@
         },
 =======
 >>>>>>> Supplier
+=======
+>>>>>>> develop
         "Mobile_number": {
           "name": "Mobile_number",
           "type": "varchar(255)",
@@ -2531,14 +2864,20 @@
           "notNull": true
         },
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
         "profileImage": {
           "name": "profileImage",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
         "Password": {
           "name": "Password",
           "type": "varchar(255)",
@@ -2546,20 +2885,28 @@
           "notNull": true
         },
 <<<<<<< HEAD
+<<<<<<< HEAD
         "Api_key": {
           "name": "Api_key",
 =======
         "Role": {
           "name": "Role",
 >>>>>>> Supplier
+=======
+        "Role": {
+          "name": "Role",
+>>>>>>> develop
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
 <<<<<<< HEAD
+<<<<<<< HEAD
         "Is_up": {
           "name": "Is_up",
 =======
+=======
+>>>>>>> develop
         "IsApproved": {
           "name": "IsApproved",
           "type": "integer",
@@ -2574,7 +2921,10 @@
         },
         "ResetTokenExpiry": {
           "name": "ResetTokenExpiry",
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
@@ -2638,7 +2988,10 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> develop
     },
     "public.Vehicle_transfers": {
       "name": "Vehicle_transfers",
@@ -2651,6 +3004,15 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+<<<<<<< HEAD
+=======
+        "supplier_id": {
+          "name": "supplier_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+>>>>>>> develop
         "vehicle_id": {
           "name": "vehicle_id",
           "type": "uuid",
@@ -2756,6 +3118,15 @@
           "primaryKey": false,
           "notNull": false
         },
+<<<<<<< HEAD
+=======
+        "address": {
+          "name": "address",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+>>>>>>> develop
         "name": {
           "name": "name",
           "type": "varchar(255)",
@@ -2809,7 +3180,10 @@
         "admin",
         "superadmin"
       ]
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
     }
   },
   "schemas": {},

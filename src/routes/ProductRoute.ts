@@ -13,7 +13,11 @@
 // // })
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export {router as ProductRoute}; 
 =======
 // export {router as ProductRoute}; 
 >>>>>>> Supplier
+=======
+// export {router as ProductRoute}; 
+>>>>>>> develop

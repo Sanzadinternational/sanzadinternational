@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { Request, Response, NextFunction } from "express";
 import { CreateSupplierInput,CreateSupplierDetailServicesInput, CreateSupplierOneWayInput } from "../dto";
 // const {One_Way_Service_Details = require('../dto/Supplier.dto');
@@ -12,10 +13,30 @@ const { registerTable, One_WayTable,supplier_otps} = require('../db/schema/Suppl
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
 import { generateOTP, sendOTPEmail } from "../utils";
 // const { One_Way_Service_Price_Details } = require('../db/schema/SupplierSchema'); 
+=======
+import { Request, Response, NextFunction } from "express"; 
+import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleModel,UpdateServiceType,UpdateVehicleBrand,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
+    CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
+import { and,desc, eq } from "drizzle-orm"; 
+const { v4: uuidv4 } = require('uuid'); 
+import { Create_Vehicles } from "../db/schema/SupplierSchema";
+import { CreateVehicle } from "../dto";
+import { AgentTable } from "../db/schema/AgentSchema";
+import { db } from "../db/db"; 
+const { registerTable,SurgeChargeTable, One_WayTable,CreateExtraSpaces,VehicleTypeTable,VehicleBrandTable,ServiceTypeTable,VehicleModelTable,CreateTransferCar,
+    supplier_otps,PriceTable,SupplierApidataTable,TransportNodes,SupplierCarDetailsTable} = require('../db/schema/SupplierSchema'); 
+import { zones } from "../db/schema/SupplierSchema";
+import { generateOTP, sendOTPEmail } from "../utils"; 
+var randomstring = require("randomstring");
+>>>>>>> develop
 const { registerTable2 } = require('../db/schema/Supplier_details_of_ServicesSchema'); 
-// const bcrypt = require('bcrypt'); 
-
+const bcrypt = require('bcrypt'); 
+const jwt = require('jsonwebtoken'); 
+const nodemailer = require("nodemailer"); 
+import * as turf from "@turf/turf";
+import { transfers_Vehicle } from "../db/schema/SupplierSchema";
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
+<<<<<<< HEAD
     try {
         const {
             Company_name,
@@ -44,35 +65,58 @@ const nodemailer = require("nodemailer");
 import * as turf from "@turf/turf";
 import { transfers_Vehicle } from "../db/schema/SupplierSchema";
 export const CreateSupplier = async (req: Request, res: Response, next: NextFunction) => { 
+=======
+>>>>>>> develop
     try {   
         const { 
             Company_name, 
             Owner, 
             Address, 
             Country,  
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
             City,
             Zip_code,
             Office_number,
             Email,
             Contact_Person,
 <<<<<<< HEAD
+<<<<<<< HEAD
             Otp,
 =======
       
 >>>>>>> Supplier
+=======
+      
+>>>>>>> develop
             Mobile_number,
             Gst_Vat_Tax_number, 
             PAN_number, 
             Currency,
 <<<<<<< HEAD
+<<<<<<< HEAD
             Gst_Tax_Certificate,
+=======
+        
+>>>>>>> develop
             Password,
-            Api_key,
-            Is_up,
-            // password,
-        } = <CreateSupplierInput>req.body;
+            Role,
+           IsApproved
+        } = <CreateSupplierInput>req.body; 
+        const Approval_status = {
+            Pending: 0, // Default
+            Approved: 1,
+            Canceled: 2,
+        };
+        
+        const existingSupplier = await db
+        .select()
+        .from(registerTable)
+        .where(eq(registerTable.Email, Email))
 
+<<<<<<< HEAD
         const id = uuidv4(); // Generate UUID for the new supplier
         // const saltRounds = 10;
         // const hashedPassword = await bcrypt.hash(password, saltRounds);
@@ -94,6 +138,8 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
         .from(registerTable)
         .where(eq(registerTable.Email, Email))
 
+=======
+>>>>>>> develop
 
         const existingAgent= await db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
     
@@ -110,7 +156,10 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
         const Gst_Tax_Certificate = (req as any).file ? (req as any).file.filename : null;
 
         const hashedPassword = await bcrypt.hash(Password, 10); 
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
         const newSupplier = await db
             .insert(registerTable)
             .values({
@@ -124,26 +173,81 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
                 Email,
                 Contact_Person,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Otp,
 =======
           
 >>>>>>> Supplier
+=======
+          
+>>>>>>> develop
                 Mobile_number,
                 Gst_Vat_Tax_number, 
                 PAN_number, 
                 Currency,
                 Gst_Tax_Certificate,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Password,
                 Api_key,
                 Is_up,
                 // password: hashedPassword,
+=======
+                Password:hashedPassword,
+                Role:Role || 'supplier',
+                IsApproved: IsApproved || Approval_status.Pending
+>>>>>>> develop
             })
-            .returning(); // Return the newly inserted supplier
+            .returning(); 
+            res.status(201).json(newSupplier);
+    const result = await db
+           .select({
+               Email: registerTable.Email,
+               Password: registerTable.Password, // Assuming the password is encrypted
+               // IV: AgentTable.IV, // IV used for encryption
+           })
+           .from(registerTable)
+           .orderBy(desc(registerTable.id))
+           .limit(1);
+    const transporter = nodemailer.createTransport({
+        service: 'Gmail', // Replace with your email service provider
+        auth: {
+            user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+            pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+        },
+    });
+  
 
-        return res.status(201).json(newSupplier);
+    const info = await transporter.sendMail({
+        from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+        to: `${result[0].Email}`,
+        subject: "Your Account Has Been Created", // Updated subject line
+        text: `Dear User,\n\nYour account has been successfully created. Once your account is approved, you will be notified.\n\nBest regards,\nSanzadinternational`, // Plain text fallback
+        html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+                <h2 style="color: #2c3e50;">Welcome to Sanzadinternational!</h2>
+                <p style="font-size: 16px; color: #555;">Dear User,</p>
+                <p style="font-size: 16px; color: #555;">
+                    Your account has been successfully created. Once your account is approved, you will receive a notification.
+                </p>
+                <div style="margin: 20px 0; padding: 10px; background: #f4f4f4; border-radius: 5px;">
+                    <p style="font-size: 16px; color: #333;"><strong>Email:</strong> ${result[0].Email}</p>
+                </div>
+                <p style="font-size: 16px; color: #555;">Best regards,</p>
+                <p style="font-size: 16px; color: #555;"><strong>Sanzadinternational Team</strong></p>
+            </div>
+        `, // Professional HTML email body
+    });
+    
+    
+        
+    console.log("Message sent: %s", info.messageId);
+
+        return res.status(200).json({message:"Supplier Status is Created Successfully",result})
+        // return res.status(201).json(newSupplier);
 
     } catch (error) {
+<<<<<<< HEAD
         // Pass any error to the error handler middleware
 =======
                 Password:hashedPassword,
@@ -201,17 +305,129 @@ export const CreateSupplier = async (req: Request, res: Response, next: NextFunc
     } catch (error) {
       
 >>>>>>> Supplier
+=======
+      
+>>>>>>> develop
         next(error);
     }
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+export const ForgetPasswords = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { Email } = req.body;
+    
+      // Validate email input
+      if (!Email || typeof Email !== 'string') {
+        return res.status(400).send({ success: false, message: "Valid email is required." });
+      } 
+                     
+      // Check if the user exists based on the email
+      const user = await db
+        .select({ Email: registerTable.Email })
+        .from(registerTable)
+        .where(eq(registerTable.Email, Email));
+  
+      if (user.length > 0) {
+       // Generate a reset token
+       const Token = randomstring.generate();
+       const resetTokenExpiry = new Date(Date.now() + 3600000); // Token expires in 1 hour
+  
+       // Save the reset token and expiry in the database
+       const GenerateToken = await db
+              .update(registerTable)  // Use the correct table reference
+              .set({
+                  Token,
+                  resetTokenExpiry,
+              })
+              .where(eq(registerTable.Email, Email))  // Use the `id` to target the specific row
+              .returning();  //
+  
+              const transporter = nodemailer.createTransport({
+                  service: 'Gmail', // Replace with your email service provider
+                  auth: {
+                      user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                      pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+                  },
+              });
+              const resetLink = `http://localhost:8000/api/V1/supplier/resetpassword?token=${Token}`;
+              // Send an email with the retrieved data (decrypted password)
+              const info = await transporter.sendMail({
+                  from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+                  to: `${user[0].Email}`,
+                  subject: "Query from Sanzadinternational", // Subject line
+                  text: `Details of New Agent Access:\nEmail: ${user[0].Email}`, // Plain text body
+                  html: `Please click below link then reset your password<br>Link: <a href="${resetLink}">${resetLink}</a>`, // HTML body,
+              });
+      
+              console.log("Message sent: %s", info.messageId);
+       // Ideally, you'd send this token via email. For now, we return it in the response.
+       res.status(200).send({
+         success: true,
+         message: "Password reset token generated successfully.",
+         GenerateToken: GenerateToken, // In a production app, don't send the token in the response, use email
+      
+       });
+  
+      } else {
+        // If the user does not exist
+        res.status(404).send({
+          success: false,
+          message: "User not found with the provided email.",
+        });
+      }
+  
+    } catch (error) {
+      console.error('Error in ForgetPassword API:', error);
+      next(error); // Pass the error to the next middleware for handling
+    }
+  };
+  
+  export const resetPasswords = async (req: Request, res: Response, next: NextFunction) => {
+    const { Token, Email, Password } = req.body; // Extract fields from the request body
+  
+    try {
+      // Step 1: Hash the new password
+      const hashedPassword = await bcrypt.hash(Password, 10);  
+  
+      // Step 2: Verify that the user with the given Token and Email exists
+      const user = await db
+        .select({ id: registerTable.id, Email: registerTable.Email }) // Select necessary fields
+        .from(registerTable)
+        .where(and(eq(registerTable.Token, Token), eq(registerTable.Email, Email)));
+  
+      if (user.length === 0) {
+        return res.status(404).json({ error: "Invalid Token or Email" });
+      }
+  
+      // Step 3: Update the user's password and reset the token
+      const result = await db
+        .update(registerTable)
+        .set({
+          Password: hashedPassword,
+          Token: "", // Clear the token
+        })
+        .where(eq(registerTable.id, user[0].id)) // Use the unique `id` for the update
+        .returning();
+  
+      // Step 4: Respond with success
+      res.status(200).json({ message: "Password reset successful", result });
+    } catch (error) {
+      console.error("Error in resetPassword:", error);
+      next(error); // Pass the error to the next middleware
+    }
+  };
+  
+>>>>>>> develop
 export const GetSupplier = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Fetch all suppliers from the database
+       
         const result = await db 
             .select({
                 id: registerTable.id,
+<<<<<<< HEAD
                 company_name_or_owns_car: registerTable.company_name_or_owns_car,
                 owner_name: registerTable.owner_name, 
                 office_address: registerTable.office_address,
@@ -339,6 +555,8 @@ export const GetSupplier = async (req: Request, res: Response, next: NextFunctio
         const result = await db 
             .select({
                 id: registerTable.id,
+=======
+>>>>>>> develop
                 Company_name: registerTable.Company_name,
                 Owner: registerTable.Owner,
                 Address: registerTable.Address,
@@ -357,7 +575,10 @@ export const GetSupplier = async (req: Request, res: Response, next: NextFunctio
                 Password: registerTable.Password
                 // Api_key:registerTable.Api_key,
                 // Is_up:registerTable.Is_up,
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
             })
             .from(registerTable);
 
@@ -365,95 +586,92 @@ export const GetSupplier = async (req: Request, res: Response, next: NextFunctio
 
     } catch (error) {
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Pass the error to the error handler middleware
+=======
+       
+>>>>>>> develop
         next(error);
     }
 };
+//Transport
+export const TransportNode = async(req:Request,res:Response,next:NextFunction)=>{ 
+   try{
+        const {
+            formatted_address,
+            location_lat,
+            location_lon,
+            description,
+            place_id,
+            country,
+            airport_or_establishment,
+        }= <CreateTransportNodesInput>req.body;
 
-// export const supplier_details_services = async(req:Request,res:Response,next:NextFunction)=>{ 
-//     try {
-//         const {
-//             vehicle_type,
-//             vehicle_brand, 
-//             type_service,
-//             vehicle_model, 
-//             doors,
-//             seats,
-//             category_space,
-//             max_number_pax_accommodate,
-//             luggage_information,
-//             max_number_medium_suitcase,
-//             max_number_carbin_bag, 
-//             space_available_other_luggage, 
-//             location_details,
-//             transfer_information,
-//             service_providing_location,  
-//             airport,
-//             port_cruise, 
-//             station,
-//             city_center,
-//             vehicle_for,
-//             half_day_city_limit_4hrs, 
-//             full_day_city_limit_8hrs,   
-//             inclusions,
-//             vehicle_rent,
-//             fuel,
-//             driver,
-//             parking_fees,
-//             toll_or_taxes, 
-//             driver_tips,
-//             other, 
-//         } = <supplier_details_services>req.body;
+        const TransportNode = await db.insert(TransportNodes)
+        .values({
+            formatted_address,
+            location_lat,
+            location_lon,
+            description,
+            place_id,
+            country,
+            airport_or_establishment,
+        })
+        .returning();
+        return res.status(200).json(TransportNode);
+   }catch(error){
+    next(error)
+   }
+}
+export const Supplier_price = async (req:Request,res:Response,next:NextFunction)=>{
+    try{
+          const {
+            country,
+            city,
+            location_from_airport,
+            location_from_port_cruise,
+            location_from_station,
+            location_from_city_center, 
+            location_to_airport,
+            location_to_port_cruise,
+            location_to_station,
+            location_to_city_center,
+            night_time_supplement,
+            vice_versa,
+            half_day_city_limit_4hrs,
+            full_day_city_limit_8hrs,
+            from_date, 
+            to_date,   
+            price, 
+            new_location,
+          }=<SupplierPriceInput>req.body;
 
-//         const id = uuidv4(); // Generate UUID for the new supplier
-//         // const saltRounds = 10;
-//         // const hashedPassword = await bcrypt.hash(password, saltRounds);
-//         // Insert the new supplier
-//         const newSupplier = await db
-//             .insert(registerTable2)
-//             .values({
-//                 vehicle_type:registerTable2.vehicle_type,
-//                 vehicle_brand:registerTable2.vehicle_brand,
-//                 type_service:registerTable2.type_service,
-//                 vehicle_model:registerTable2.vehicle_model, 
-//                 doors:registerTable2.doors, 
-//                 seats:registerTable2.seats,
-//                 category_space:registerTable2.category_space,
-//                 max_number_pax_accommodate:registerTable2.max_number_pax_accommodate,
-//                 luggage_information:registerTable2.luggage_information,
-//                 max_number_medium_suitcase:registerTable2.max_number_medium_suitcase,
-//                 max_number_carbin_bag:registerTable2.max_number_carbin_bag, 
-//                 space_available_other_luggage:registerTable2.space_available_other_luggage, 
-//                 location_details:registerTable2.location_details,
-//                 transfer_information:registerTable2.transfer_information,
-//                 service_providing_location:registerTable2.service_providing_location,  
-//                 airport:registerTable2.airport,
-//                 port_cruise:registerTable2.port_cruise,
-//                 station:registerTable2.station,
-//                 city_center:registerTable2.city_center,
-//                 vehicle_for:registerTable2.vehicle_for,
-//                 half_day_city_limit_4hrs:registerTable2.half_day_city_limit_4hrs, 
-//                 full_day_city_limit_8hrs:registerTable2.full_day_city_limit_8hrs, 
-//                 inclusions:registerTable2.inclusions,
-//                 vehicle_rent:registerTable2.vehicle_rent,
-//                 fuel:registerTable2.fuel,
-//                 driver:registerTable2.driver,
-//                 parking_fees:registerTable2.parking_fees,
-//                 toll_or_taxes:registerTable2.toll_or_taxes, 
-//                 driver_tips:registerTable2.driver_tips,
-//                 other:registerTable2.other, 
-//             })
-//             .returning(); // Return the newly inserted supplier
+          const Supplier_Price= await db.insert(PriceTable)
+          .values({
+            country,
+            city,
+            location_from_airport,
+            location_from_port_cruise,
+            location_from_station,
+            location_from_city_center, 
+            location_to_airport,
+            location_to_port_cruise,
+            location_to_station,
+            location_to_city_center,
+            night_time_supplement,
+            vice_versa,
+            half_day_city_limit_4hrs,
+            full_day_city_limit_8hrs,
+            from_date, 
+            to_date,   
+            price, 
+            new_location,
+          })
+          .returning();
 
-//         return res.status(201).json(newSupplier);
+          return res.status(201).json(Supplier_Price);
 
-//     } catch (error) {
-//         // Pass any error to the error handler middleware
-//         next(error);
-//     }
-
-// }
-
+<<<<<<< HEAD
 =======
        
         next(error);
@@ -536,16 +754,22 @@ export const Supplier_price = async (req:Request,res:Response,next:NextFunction)
 
           return res.status(201).json(Supplier_Price);
 
+=======
+>>>>>>> develop
     }catch(error){
         next(error);
     }
 }
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
 
 export const Supplier_details = async (req: Request, res: Response, next: NextFunction) => {   
     try {
         // Destructure the incoming request body 
         const {
+<<<<<<< HEAD
 <<<<<<< HEAD
             vehicle_type,
             vehicle_brand,
@@ -578,6 +802,8 @@ export const Supplier_details = async (req: Request, res: Response, next: NextFu
             driver_tips,
             other,
 =======
+=======
+>>>>>>> develop
             Vehicle_type,
             Vehicle_brand, 
             Type_service,
@@ -608,7 +834,10 @@ export const Supplier_details = async (req: Request, res: Response, next: NextFu
             Toll_or_taxes, 
             Driver_tips,
             Other, 
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
         } = <CreateSupplierDetailServicesInput>req.body; // Directly take values from the request body 
 
         const id = uuidv4(); // Generate UUID for the new supplier
@@ -617,6 +846,7 @@ export const Supplier_details = async (req: Request, res: Response, next: NextFu
         const newSupplier = await db
             .insert(registerTable2) // Assuming `registerTable2` is your Drizzle ORM table
             .values({
+<<<<<<< HEAD
 <<<<<<< HEAD
                 id, // Include the generated UUID
                 vehicle_type,
@@ -650,6 +880,8 @@ export const Supplier_details = async (req: Request, res: Response, next: NextFu
                 driver_tips,
                 other,
 =======
+=======
+>>>>>>> develop
 
                 Vehicle_type,
                 Vehicle_brand, 
@@ -681,7 +913,10 @@ export const Supplier_details = async (req: Request, res: Response, next: NextFu
                 Toll_or_taxes, 
                 Driver_tips,
                 Other, 
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
             })
             .returning(); // Return the newly inserted supplier details 
 
@@ -769,6 +1004,7 @@ export const GetSupplier_details = async (req: Request, res: Response, next: Nex
 }; 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 // export const One_Way_Service_Details = async(req:Request,res:Response,next:NextFunction) =>{
 //     try{
 //         const {
@@ -827,6 +1063,9 @@ export const GetSupplier_details = async (req: Request, res: Response, next: Nex
 =======
 //comment
 >>>>>>> Supplier
+=======
+//comment
+>>>>>>> develop
 
 export const One_Way_Details = async (req: Request, res: Response, next: NextFunction) => {   
     try {
@@ -851,6 +1090,7 @@ export const One_Way_Details = async (req: Request, res: Response, next: NextFun
             price, 
             new_location,
 <<<<<<< HEAD
+<<<<<<< HEAD
         } = <CreateSupplierOneWayInput>req.body; // Directly take values from the request body 
 
         const id = uuidv4(); // Generate UUID for the new supplier 
@@ -861,6 +1101,11 @@ export const One_Way_Details = async (req: Request, res: Response, next: NextFun
 
         const id = uuidv4();
 >>>>>>> Supplier
+=======
+        } = <CreateSupplierOneWayInput>req.body; 
+
+        const id = uuidv4();
+>>>>>>> develop
         const newSupplier = await db
             .insert(One_WayTable) // Assuming `registerTable2` is your Drizzle ORM table
             .values({
@@ -883,31 +1128,51 @@ export const One_Way_Details = async (req: Request, res: Response, next: NextFun
             to_date,   
             price, 
 <<<<<<< HEAD
+<<<<<<< HEAD
             new_location,
 =======
             new_location, 
 >>>>>>> Supplier
+=======
+            new_location, 
+>>>>>>> develop
             })
             .returning(); // Return the newly inserted supplier details 
 
         // Respond with the newly created supplier
 <<<<<<< HEAD
+<<<<<<< HEAD
         return res.status(201).json(newSupplier);
 =======
         return res.status(201).json(newSupplier); 
 >>>>>>> Supplier
+=======
+        return res.status(201).json(newSupplier); 
+>>>>>>> develop
 
     } catch (error) {
         // Pass any error to the error handler middleware
         next(error);
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 };
+=======
+}; 
+>>>>>>> develop
 
 
 export const suppliersendOtp= async(req:Request,res:Response,next:NextFunction)=>{
-    const { email } = req.body;
+    const { email } = req.body; 
+    const existingSupplier = await db
+    .select()
+    .from(registerTable)
+    .where(eq(registerTable.Email, email))
+    // .union(
+    //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
+    // );
 
+<<<<<<< HEAD
 =======
 }; 
 
@@ -922,6 +1187,8 @@ export const suppliersendOtp= async(req:Request,res:Response,next:NextFunction)=
     //     db.select().from(AgentTable).where(eq(AgentTable.Email, Email))
     // );
 
+=======
+>>>>>>> develop
     const existingAgent= await db.select().from(AgentTable).where(eq(AgentTable.Email, email))
 
 if (existingSupplier.length > 0 || existingAgent.length>0) {
@@ -931,7 +1198,10 @@ if (existingSupplier.length > 0 || existingAgent.length>0) {
         message: "Email is already registered in the system." 
     });
 }else{
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
     const otp = generateOTP();
     const expiryTime = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
   
@@ -941,9 +1211,13 @@ if (existingSupplier.length > 0 || existingAgent.length>0) {
   
     res.status(200).json({ message: 'OTP sent successfully' });
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 } 
 >>>>>>> Supplier
+=======
+} 
+>>>>>>> develop
 }
 
 export const supplierverifyOtp = async (req: Request, res: Response, next: NextFunction) => {
@@ -969,8 +1243,11 @@ export const supplierverifyOtp = async (req: Request, res: Response, next: NextF
         return res.status(500).json({ message: 'Internal server error' });
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 };
 =======
+=======
+>>>>>>> develop
 };
 
 
@@ -1474,10 +1751,17 @@ export const DeleteVehicleType = async(req:Request,res:Response,next:NextFunctio
 
 export const CreateVehicleBrand = async(req:Request,res:Response,next:NextFunction)=>{ 
     try{
+<<<<<<< HEAD
         const {VehicleBrand, ServiceType}=<VehicleBrand>req.body;
 
         const NewVehicleBrand = await db.insert(VehicleBrandTable) 
         .values({VehicleBrand: VehicleBrand, ServiceType: ServiceType})
+=======
+        const {VehicleBrand, serviceType}=<VehicleBrand>req.body;
+
+        const NewVehicleBrand = await db.insert(VehicleBrandTable) 
+        .values({VehicleBrand: VehicleBrand, ServiceType: serviceType})
+>>>>>>> develop
         .returning()
         return res.status(200).json(NewVehicleBrand); 
     }catch(error){
@@ -1665,6 +1949,7 @@ export const DeleteVehicleModel = async(req:Request,res:Response,next:NextFuncti
     }
 }
 
+<<<<<<< HEAD
 export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{
     try{
          const{
@@ -1680,6 +1965,28 @@ export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{
             Date,
             ExtraPrice,
             uniqueId
+=======
+
+export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{ 
+    try{
+         const{
+            uniqueId,
+              VehicleName,
+            From,
+            To,
+            SurgeChargePrice,
+            supplier_id
+         }= req.body;
+ 
+         const result = await db.insert(SurgeChargeTable) 
+         .values({
+            vehicle_id: uniqueId,
+            VehicleName,
+            From,
+            To,
+            SurgeChargePrice,
+            supplier_id
+>>>>>>> develop
          })
          .returning();
          res.status(200).json(result);
@@ -1688,6 +1995,53 @@ export const SurgeCharges=async(req:Request,res:Response,next:NextFunction)=>{
     }
 }
 
+<<<<<<< HEAD
+=======
+export const GetSurgeCharges = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const {id}=req.params;
+        const result = await db.select()
+        .from(SurgeChargeTable)
+        .where(eq(SurgeChargeTable.supplier_id,id))
+        return res.status(200).json(result);
+    }catch(error){
+        next(error)
+    }
+}
+
+export const UpdateSurgeCharges = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const {id}=req.params;
+        const { uniqueId, VehicleName, From, To, SurgeChargePrice, supplier_id } = req.body;
+        const result = await db.update(SurgeChargeTable) 
+        .set({
+            vehicle_id:uniqueId,
+            VehicleName,
+            From,
+            To,
+            SurgeChargePrice,
+            supplier_id
+        })
+        .where(eq(SurgeChargeTable.id,id))
+        .returning();
+        return res.status(200).json(result);
+    }catch(error){
+        next(error)
+    }
+}
+
+export const DeleteSurgeCharges = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const {id} = req.params;
+         const result=await db.delete(SurgeChargeTable)
+         .where(eq(SurgeChargeTable.id,id));
+         return res.status(200).json({message:"Surge Charge is Deleted Successfully"});
+    }catch(error){
+        next(error)
+    }
+}
+
+>>>>>>> develop
 export const CreateVehicles = async(req:Request,res:Response,next:NextFunction)=>{ 
     try{ 
          const {  
@@ -1727,6 +2081,7 @@ export const CreateVehicles = async(req:Request,res:Response,next:NextFunction)=
     }
 }
 // Update Vehicle
+<<<<<<< HEAD
 export const GetVehicle = async(req:Request,res:Response,next:NextFunction)=>{
     try{
           const result = await db.select()
@@ -1736,6 +2091,8 @@ export const GetVehicle = async(req:Request,res:Response,next:NextFunction)=>{
         next(error)
     }
 }
+=======
+>>>>>>> develop
 export const UpdateVehicle = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
@@ -1846,6 +2203,7 @@ export const getZoneById = async (req: Request, res: Response) => {
     }
 };
 
+<<<<<<< HEAD
 export const getZone = async (req: Request, res: Response) => {
     try {
 
@@ -1859,6 +2217,8 @@ export const getZone = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error fetching zone", error });
     }
 };
+=======
+>>>>>>> develop
 // Update Zone
 export const updateZone = async (req: Request, res: Response) => {
     try {
@@ -1946,6 +2306,42 @@ export const getTransferById = async (req: Request, res: Response) => {
     }
 };
 
+<<<<<<< HEAD
+=======
+// Get Transfer by Supplier ID
+export const getTransferBySupplierId = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const transfer = await db.select({
+            id:transfers_Vehicle.id,
+            supplier_id:transfers_Vehicle.supplier_id,
+            vehicle_id:transfers_Vehicle.vehicle_id,
+            zone_id:transfers_Vehicle.zone_id,
+            price:transfers_Vehicle.price,
+            extra_price_per_mile:transfers_Vehicle.extra_price_per_mile,
+            Currency: transfers_Vehicle.Currency,
+            Transfer_info:transfers_Vehicle.Transfer_info,
+            NightTime:transfers_Vehicle.NightTime,
+            NightTime_Price:transfers_Vehicle.NightTime_Price,
+            Zone_name:zones.name,
+            VehicleType:Create_Vehicles.VehicleType,
+            VehicleBrand:Create_Vehicles.VehicleBrand,
+            ServiceType: Create_Vehicles.ServiceType,
+            VehicleModel: Create_Vehicles.VehicleModel
+            }).from(transfers_Vehicle).where(eq(transfers_Vehicle.supplier_id, id))
+        .innerJoin(zones, eq(transfers_Vehicle.zone_id, zones.id))
+        .innerJoin(Create_Vehicles,eq(transfers_Vehicle.vehicle_id,Create_Vehicles.id));
+        
+        if (!transfer) {
+            return res.status(404).json({ message: "Transfers not found" });
+        }
+        res.json(transfer);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching transfer", error });
+    }
+};
+
+>>>>>>> develop
 // Update Transfer
 export const updateTransfer = async (req: Request, res: Response) => {
     try {
@@ -1978,4 +2374,7 @@ export const deleteTransfer = async (req: Request, res: Response) => {
         res.status(500).json({ message: "Error deleting transfer", error });
     }
 };
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop

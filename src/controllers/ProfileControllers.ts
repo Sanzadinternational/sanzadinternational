@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { db } from "../db/db"; 
 import { AgentTable } from "../db/schema/AgentSchema";
 import { registerTable } from "../db/schema/SupplierSchema";
+<<<<<<< HEAD
 import { AdminTable } from "../db/schema/AdminSchema";
 import { AgentInput, SupplierInput, AdminInput } from "../dto/Profile.dto"; 
 import { eq } from "drizzle-orm";
@@ -28,6 +29,34 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
                 .update(AgentTable)
                 .set({
                     Company_name: agentData.Company_name,
+=======
+import { AdminTable } from "../db/schema/adminSchema"; 
+import { AgentInput, SupplierInput, AdminInput } from "../dto/Profile.dto"; 
+import { eq } from "drizzle-orm"; 
+
+export const updateProfile = async (req: Request, res: Response, next: NextFunction) => { 
+    try { 
+        const id = Number(req.params.id); // Convert ID to number 
+
+        if (isNaN(id)) { 
+            return res.status(400).json({ message: "Valid ID is required for updating profile" }); 
+        } 
+    
+        let { role } = req.body; 
+        if (!role) { 
+            return res.status(400).json({ message: "Role is required" }); 
+        } 
+
+        role = role.toLowerCase(); // Normalize Role input 
+        let updateResult; 
+        if (role === "agent") {  
+           
+            const agentData = req.body as AgentInput; 
+            updateResult = await db
+                .update(AgentTable)
+                .set({
+                    Company_name: agentData.Company_name, 
+>>>>>>> develop
                     Address: agentData.Address,
                     Country: agentData.Country,
                     City: agentData.City,
@@ -39,12 +68,22 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
                     Office_number: agentData.Office_number,
                     Mobile_number: agentData.Mobile_number,
                     Currency: agentData.Currency,
+<<<<<<< HEAD
                     Gst_Tax_Certificate: agentData.Gst_Tax_Certificate,
                     Role:agentData.Role,
                     profileImage:agentData.profile_img
                 })
                 .where(eq(AgentTable.id, id))
                 .returning(); 
+=======
+                    Gst_Tax_Certificate: agentData.Gst_Tax_Certificate, 
+                    Role:agentData.Role,
+                    profileImage: agentData.profileImage
+                })
+                .where(eq(AgentTable.id, id))
+                .returning(); 
+              
+>>>>>>> develop
         } 
         
         else if (role === "supplier") {
@@ -52,9 +91,15 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
             updateResult = await db
                 .update(registerTable)
                 .set({
+<<<<<<< HEAD
                     Company_name: supplierData.Company_name,
                     Owner: supplierData.Owner,
                     Address: supplierData.Address,
+=======
+                    Company_name: supplierData.Company_name, 
+                    Owner: supplierData.Owner, 
+                    Address: supplierData.Address, 
+>>>>>>> develop
                     Country: supplierData.Country, 
                     City: supplierData.City,
                     Zip_code: supplierData.Zip_code,
@@ -103,5 +148,11 @@ export const updateProfile = async (req: Request, res: Response, next: NextFunct
     } catch (error) {
         console.error("Error updating profile:", error);
         next(error);
+<<<<<<< HEAD
     }
 };
+=======
+    } 
+}; 
+   
+>>>>>>> develop

@@ -2,6 +2,7 @@ import { integer, pgTable, varchar, text, boolean,uuid } from 'drizzle-orm/pg-co
 
 export const registerTable2 = pgTable('supplier_details', {
 <<<<<<< HEAD
+<<<<<<< HEAD
   id: uuid('id').primaryKey().defaultRandom(),
   vehicle_type: text('vehicle_type').notNull(),
   vehicle_brand: text('vehicle_brand').notNull(),
@@ -34,6 +35,8 @@ export const registerTable2 = pgTable('supplier_details', {
   driver_tips: integer().notNull(),
   other: varchar({length:255}).notNull(), 
 =======
+=======
+>>>>>>> develop
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   Vehicle_type: varchar({length:255}).notNull(),
   Vehicle_brand: varchar({length:255}).notNull(), 
@@ -65,6 +68,9 @@ export const registerTable2 = pgTable('supplier_details', {
   Toll_or_taxes: varchar({length:255}).notNull(), 
   Driver_tips: varchar({length:255}).notNull(), 
   Other: varchar({length:255}), 
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
 });
 

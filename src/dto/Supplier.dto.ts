@@ -1,10 +1,16 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 export interface CreateSupplierInput {
 =======
 import { date, integer } from 'drizzle-orm/pg-core';
 import { defaults } from './../../node_modules/@types/pg/index.d';
 export interface CreateSupplierInput { 
 >>>>>>> Supplier
+=======
+import { date, integer } from 'drizzle-orm/pg-core';
+import { defaults } from './../../node_modules/@types/pg/index.d';
+export interface CreateSupplierInput { 
+>>>>>>> develop
   Company_name:string,
   Owner: string,
   Address: string,
@@ -15,15 +21,20 @@ export interface CreateSupplierInput {
   Email: string,
   Contact_Person: string,
 <<<<<<< HEAD
+<<<<<<< HEAD
   Otp:string,
 =======
 
 >>>>>>> Supplier
+=======
+
+>>>>>>> develop
   Mobile_number: string,
   Gst_Vat_Tax_number: string, 
   PAN_number: string, 
   Currency: string,
   Gst_Tax_Certificate: string,
+<<<<<<< HEAD
 <<<<<<< HEAD
   Password: string,
   Api_key:string,
@@ -66,6 +77,42 @@ export interface SupplierPriceInput{
   airport_or_establishment:string,
   }
 >>>>>>> Supplier
+=======
+  Password: string, 
+  Role:string,
+  IsApproved:number,
+  Token:string 
+  }
+export interface SupplierPriceInput{
+  country:string,
+  city:string,
+  location_from_airport:string,
+  location_from_port_cruise:string,
+  location_from_station:string,
+  location_from_city_center:string, 
+  location_to_airport:string,
+  location_to_port_cruise:string,
+  location_to_station:string,
+  location_to_city_center:string,
+  night_time_supplement:string,
+  vice_versa:string,
+  half_day_city_limit_4hrs:string,
+  full_day_city_limit_8hrs:string,
+  from_date: string, 
+  to_date: string,   
+  price: string, 
+  new_location: string,
+} 
+  export interface CreateTransportNodesInput{
+  formatted_address:string,
+  location_lat:string,
+  location_lon:string,
+  description:string,
+  place_id:string,
+  country:string,
+  airport_or_establishment:string,
+  }
+>>>>>>> develop
   export interface CreateSupplierOneWayInput{
     country:string,
     city:string,
@@ -103,11 +150,14 @@ export interface SupplierPriceInput{
     full_day_city_limit_8hrs:string,
     from_date:string,
 <<<<<<< HEAD
+<<<<<<< HEAD
     to_date:string,
     price:number,
     new_location:string
   }
 =======
+=======
+>>>>>>> develop
     to_date:string, 
     price:number, 
     new_location:string 
@@ -332,10 +382,19 @@ export interface UpdateCreateCartDetails{
 }  
    
 export interface SurgeCharge{ 
+<<<<<<< HEAD
   VehicleName:string,
   Date:string,
   ExtraPrice:string,
   uniqueId:string
+=======
+  uniqueId:string,
+  VehicleName:string,
+From:string,
+To:string,
+SurgeChargePrice:string,
+supplier_id:string
+>>>>>>> develop
 }
 
 export interface VehicleType{
@@ -348,7 +407,11 @@ export interface UpdateVehicleType{
 
 export interface VehicleBrand{
   VehicleBrand:string,
+<<<<<<< HEAD
   ServiceType:string
+=======
+  serviceType:string
+>>>>>>> develop
 }
 
 export interface UpdateVehicleBrand{
@@ -371,4 +434,7 @@ export interface VehicleModel{
 export interface UpdateVehicleModel{
   VehicleModel:string
 }
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop

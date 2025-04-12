@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 // export interface CreateAgentInput { 
 //       Company_name:string,
 //       Address:string,
@@ -19,6 +20,9 @@
 =======
 //
 >>>>>>> Supplier
+=======
+//
+>>>>>>> develop
 export interface CreateAgentInput { 
   Company_name: string;
   Address: string;
@@ -30,24 +34,34 @@ export interface CreateAgentInput {
   Contact_Person: string;
   Email: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
   Otp: string;
 =======
  
 >>>>>>> Supplier
+=======
+ 
+>>>>>>> develop
   Password: string;
   Office_number: string;
   Mobile_number: string;
   Currency: string;
   Gst_Tax_Certificate: string;
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
+=======
+>>>>>>> develop
   Role:string,
   IsApproved:number,
   Token:string,
   ResetTokenExpiry:string
 } 
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
 export interface CreateOtpInput {
   email:string,
   otp: string,

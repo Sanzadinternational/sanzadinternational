@@ -6,7 +6,11 @@ import jwt from 'jsonwebtoken';
 import { AgentTable } from "../db/schema/AgentSchema"; 
 import { db } from "../db/db"; 
 const crypto = require('crypto');
+<<<<<<< HEAD
 import { AdminTable } from "../db/schema/AdminSchema"; 
+=======
+import { AdminTable } from "../db/schema/adminSchema"; 
+>>>>>>> develop
 const nodemailer = require('nodemailer');
 var randomstring = require("randomstring");
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
@@ -452,4 +456,8 @@ export const Verify_token = async(req:Request,res:Response,next:NextFunction)=>{
   }catch(error){
     next(error)
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> develop

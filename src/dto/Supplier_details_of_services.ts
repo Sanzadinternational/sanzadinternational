@@ -1,5 +1,6 @@
 export interface CreateSupplierDetailServicesInput { 
 <<<<<<< HEAD
+<<<<<<< HEAD
  vehicle_type:Text,
   vehicle_brand:Text, 
   type_service:string,
@@ -31,6 +32,8 @@ export interface CreateSupplierDetailServicesInput {
   driver_tips:number,
   other:string, 
 =======
+=======
+>>>>>>> develop
   Vehicle_type: string,
   Vehicle_brand: string, 
   Type_service:string,
@@ -61,5 +64,8 @@ export interface CreateSupplierDetailServicesInput {
   Toll_or_taxes:string, 
   Driver_tips:string,
   Other:string, 
+<<<<<<< HEAD
 >>>>>>> Supplier
+=======
+>>>>>>> develop
   } 
