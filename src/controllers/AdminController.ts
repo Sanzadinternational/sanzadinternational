@@ -381,6 +381,7 @@ console.log("Message sent: %s", info.messageId);
 export const AllGetSuppliers = async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const result = await db.select({
+            id:registerTable.id,
             Company_name:registerTable.Company_name, 
             Owner:registerTable.Owner, 
             Address:registerTable.Address, 
