@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { AgentTable } from "../db/schema/AgentSchema"; 
 import { db } from "../db/db"; 
 const crypto = require('crypto');
-import { AdminTable } from "../db/schema/AdminSchema"; 
+import { AdminTable } from "../db/schema/adminSchema"; 
 const nodemailer = require('nodemailer');
 var randomstring = require("randomstring");
 const JWT_SECRET = process.env.JWT_SECRET || 'Sanzad'; 
@@ -18,14 +18,18 @@ const authenticateUser = async (email: string, password: string, userTable: any)
       Id: userTable.id, 
       Email: userTable.Email, 
       Password: userTable.Password, 
-
-      role: userTable.Role 
+      role: userTable.Role,
+      IsApproved: userTable.IsApproved,
 
     }) 
     .from(userTable) 
     .where(eq(userTable.Email, email)); 
 
   if (!user) return null;
+
+  if (user.IsApproved === 0) {
+    return { error: 'Account is not activated' };
+  }
   // Password validation
   const isPasswordValid = await bcrypt.compare(password, user.Password);
   if (!isPasswordValid) return null;
@@ -41,6 +45,9 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
     // First try for supplier
     let result = await authenticateUser(Email, Password, registerTable);
     if (result) {
+      if (result.error) {
+        return res.status(403).json({ message: result.error });
+      }
       return res.status(200).json({
         message: 'Login Successfully',
         accessToken: result.accessToken,
@@ -51,6 +58,9 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
     // Then try for agent if supplier didn't match 
     result = await authenticateUser(Email, Password, AgentTable); 
     if (result) { 
+      if (result.error) {
+        return res.status(403).json({ message: result.error });
+      }
       return res.status(200).json({ 
         message: 'Login Successfully', 
         accessToken: result.accessToken, 
@@ -61,7 +71,9 @@ export const FindUser = async (req: Request, res: Response, next: NextFunction) 
 
     let AdminResult = await authenticateUser(Email,Password,AdminTable ); 
     if(AdminResult){ 
-      
+      if (AdminResult.error) {
+        return res.status(403).json({ message: AdminResult.error });
+      }
       return res.status(200).json({ 
         message:'Login Successfully', 
         accessToken: AdminResult.accessToken, 
@@ -99,7 +111,8 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               PAN_number:registerTable.PAN_number, 
               Currency:registerTable.Currency,
               Gst_Tax_Certificate:registerTable.Gst_Tax_Certificate,
-              Role:registerTable.Role
+              Role:registerTable.Role,
+              profileImage: registerTable.profileImage,
               // Api_key:registerTable.Api_key,
               // Is_up:registerTable.Is_up
           })
@@ -118,6 +131,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
       userId: req.body.id,
       Company_name: user.Company_name,
       Owner: user.Owner,
+      profileImage: user.profileImage,
       Address:user.Address,
       Country:user.Country,
       City:user.City,
@@ -150,6 +164,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
                 Mobile_number:AgentTable.Mobile_number,
                 Currency:AgentTable.Currency,
                 Role: AgentTable.Role,
+                profile: AgentTable.profileImage,
                 Gst_Tax_Certificate:AgentTable.Gst_Tax_Certificate
             })
             .from(AgentTable)
@@ -172,6 +187,7 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
               Currency:user.Currency,
               Contact_Person:user.Contact_Person,
               role: user.Role, 
+              profileImage:user.profile,
               Gst_Tax_Certificate:user.Gst_Tax_Certificate
             }); 
   }
@@ -181,6 +197,11 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
       Email:AdminTable.Email, 
       Company_name:AdminTable.Company_name,
       Role:AdminTable.Role,
+      AgentAcount: AdminTable.Agent_account,
+      AgentOpration: AdminTable.Agent_operation,
+      SupplierAccount: AdminTable.Supplier_account,
+      SupplierOPration: AdminTable.Supplier_operation,
+      profile:AdminTable.profileImage,
     })
     .from(AdminTable)
     .where(eq(AdminTable.id,userID)) 
@@ -192,6 +213,11 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     Email: user.Email, 
     Company_name:user.Company_name,
     role: user.Role,
+    AgentAccount: user.AgentAcount,
+    AgentOperation: user.AgentOpration,
+    SupplierAccount: user.SupplierAccount,
+    SupplierOpration: user.SupplierOPration,
+    profileImage:user.profile
   }); 
      
   } 

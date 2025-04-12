@@ -29,12 +29,12 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             Gst_Vat_Tax_number, 
             Contact_Person,
             Email,
-            Otp,
+          
             Password,
             Office_number,
             Mobile_number,
             Currency,
-            Gst_Tax_Certificate,
+            
             Role,
             IsApproved
         } = req.body as CreateAgentInput; 
@@ -56,7 +56,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
         });
     }
         // const id = uuidv4();
-
+        const Gst_Tax_Certificate = (req as any).file ? (req as any).file.filename : null;
         // Hash the password before storing 
         const hashedPassword = await bcrypt.hash(Password, 10);  
         const Approval_status = {
@@ -76,7 +76,7 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
                 Gst_Vat_Tax_number, 
                 Contact_Person,
                 Email,
-                Otp,
+            
                 Password:hashedPassword, // Save hashed password
                 Office_number,
                 Mobile_number,
@@ -87,7 +87,34 @@ export const CreateAgent = async(req: Request, res: Response, next: NextFunction
             })
             .returning(); // Return the newly inserted agent
 
-        return res.status(201).json(newAgent);
+        res.status(201).json(newAgent);
+        const result = await db.select({
+            Email:AgentTable.Email
+    })
+    .from(AgentTable)
+    .orderBy(desc(AgentTable.id))
+    .limit(1);
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail', // Replace with your email service provider
+            auth: {
+                user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+            },
+        });
+      
+        // Send an email with the retrieved data (decrypted password)
+        const info = await transporter.sendMail({
+            from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+            to: `${result[0].Email}`,
+            subject: "Query from Sanzadinternational", // Subject line
+            text: `Details of New Agent Access:\nEmail: ${result[0].Email}`, // Plain text body
+            html: `<p>Details of New Agent Access:</p><ul><li>Email: ${result[0].Email}</li></ul>`, // HTML body
+        });
+            
+        console.log("Message sent: %s", info.messageId);
+    
+            return res.status(200).json({message:"New Agent is Created Successfully",result})
+       
     } catch (error) {
         next(error);
     }
@@ -510,7 +537,7 @@ export const sendOtp= async(req:Request,res:Response,next:NextFunction)=>{
 
 if (existingAgent.length > 0 || existingSupplier.length>0) {
     // If email exists in either table, return a conflict response
-    return res.status(400).json({
+    return res.status(406).json({
         success: false,
         message: "Email is already registered in the system." 
     });
@@ -552,4 +579,36 @@ export const verifyOtp = async (req: Request, res: Response, next: NextFunction)
 
 function equals(Email: any): any {
     throw new Error("Function not implemented.");
+}
+export const QuickEmail = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+        const {subject, message, recipient}= req.body;
+          const results = await db.select({
+            Email:AgentTable.Email
+          })
+          .from(AgentTable) 
+          .orderBy(desc(AgentTable.id)) // Order by ID in descending order 
+          .limit(1); // Get only the last inserted record
+          const transporter = nodemailer.createTransport({
+            service: 'Gmail', // Replace with your email service provider
+            auth: {
+                user: 'jugalkishor556455@gmail.com', // Email address from environment variable
+                pass: 'vhar uhhv gjfy dpes', // Email password from environment variable
+            },
+        });
+      
+        // Send an email with the retrieved data (decrypted password)
+        const info = await transporter.sendMail({
+            from: '"Sanzadinternational" <jugalkishor556455@gmail.com>', // Sender address
+            to: recipient,
+            subject: "Query from Sanzadinternational", // Subject line
+            text: `${subject}`, // Plain text body
+            html: `${message}`, // HTML body
+        });
+            
+        console.log("Message sent: %s", info.messageId);
+          return res.status(200).json(results); 
+    }catch(error){
+      next(error)
+    }
 }

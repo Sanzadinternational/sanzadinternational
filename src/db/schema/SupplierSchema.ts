@@ -1,4 +1,4 @@
-import { integer, pgTable, varchar, text,timestamp, date, jsonb, boolean } from 'drizzle-orm/pg-core'; 
+import { integer, pgTable, varchar, text,timestamp, date, jsonb, boolean, numeric, uuid } from 'drizzle-orm/pg-core'; 
 
 export const registerTable = pgTable('supplier', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(), 
@@ -11,12 +11,13 @@ export const registerTable = pgTable('supplier', {
   Office_number: varchar({length:255}).notNull(), 
   Email: varchar({ length: 255 }).notNull().unique(), 
   Contact_Person: varchar({length:255}).notNull(),
-  Otp:varchar({length:255}).notNull(),
+
   Mobile_number: varchar({length:255}).notNull(),
   Gst_Vat_Tax_number: varchar({length:255}).notNull(), 
   PAN_number: varchar({length:255}).notNull(), 
   Currency: varchar({ length: 255 }).notNull(),
   Gst_Tax_Certificate: varchar({ length: 255 }).notNull(), 
+  profileImage:varchar({length:255}),
   Password: varchar({length:255}).notNull(),
   Role:varchar({length:255}),
   IsApproved:integer(), 
@@ -67,7 +68,34 @@ export const PriceTable = pgTable('price',{
     to_date: varchar({length:255}),   
     price: varchar({length:255}), 
     new_location: varchar({ length: 255 }),
-})
+});
+
+export const zones = pgTable("zones", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  supplier_id: varchar({length:255}),
+  address: varchar({length:255}),
+  name: varchar("name", { length: 255 }).notNull(),
+  latitude: numeric("latitude", { precision: 10, scale: 6 }).notNull(),
+  longitude: numeric("longitude", { precision: 10, scale: 6 }).notNull(),
+  radius_miles: numeric("radius_km", { precision: 5, scale: 2 }).notNull(),
+  geojson: jsonb("geojson").default(null),
+  created_at: timestamp("created_at").defaultNow(),
+});
+
+// Transfers Table
+export const transfers_Vehicle = pgTable("Vehicle_transfers", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  supplier_id: varchar({length:255}),
+  vehicle_id: uuid("vehicle_id").references(() => Create_Vehicles.id).notNull(),
+  zone_id: uuid("zone_id").references(() => zones.id).notNull(),
+  price: numeric("price", { precision: 10, scale: 2 }).notNull(),
+  extra_price_per_mile: numeric("extra_price_per_mile", { precision: 5, scale: 2 }).notNull(),
+  Currency:varchar({length:255}),
+  Transfer_info:varchar({length:255}),
+  NightTime: varchar({ length: 255 }), 
+  NightTime_Price: varchar({ length: 255 }), 
+  created_at: timestamp("created_at").defaultNow(),
+});
 
 export const TransportNodes = pgTable('transport_nodes',{
 
@@ -162,6 +190,22 @@ export type supplier_otps = {
     To: date(),  
     Others:varchar({length:255}) 
   }) 
+
+  export const Create_Vehicles = pgTable('all_Vehicles',{ 
+    id: uuid("id").primaryKey().defaultRandom(),
+    SupplierId:varchar({length:255}), 
+    VehicleType: varchar({length:255}), 
+    VehicleBrand:varchar({length:255}), 
+    ServiceType:varchar({length:255}), 
+    VehicleModel:varchar({length:255}), 
+    Doors:varchar({length:255}), 
+    Seats:varchar({length:255}), 
+    Cargo:varchar({length:255}),
+    Passengers:varchar({length:255}), 
+    MediumBag:varchar({length:255}),
+    SmallBag:varchar({length:255}),
+    ExtraSpace: jsonb("Extraspace"),
+  }) 
   
 //ExtraSpace Table
 
@@ -197,10 +241,12 @@ export type supplier_otps = {
 export const SurgeChargeTable=pgTable('SurgeCharge',{
   id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
   VehicleName:varchar({length:255}),
-  Date:date(),
-  ExtraPrice:varchar({length:255}),
-  uniqueId:varchar({length:255}),
-})   
+  From:date(), 
+  To:date(), 
+  SurgeChargePrice:varchar({length:255}),
+  vehicle_id: uuid("vehicle_id").references(() => Create_Vehicles.id),
+  supplier_id:varchar({length:255})
+}); 
      
   export const VehicleTypeTable=pgTable('VehicleType',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
@@ -209,7 +255,8 @@ export const SurgeChargeTable=pgTable('SurgeCharge',{
 
   export const VehicleBrandTable=pgTable('VehicleBrand',{
     id: integer('id').primaryKey().generatedAlwaysAsIdentity(), 
-    VehicleBrand:varchar({length:255})
+    VehicleBrand:varchar({length:255}),
+    ServiceType:varchar({length:255}),
   })
 
 export const ServiceTypeTable=pgTable('ServiceType',{

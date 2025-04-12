@@ -14,6 +14,9 @@ CREATE TABLE IF NOT EXISTS "admin" (
 	"Agent_operation" boolean DEFAULT false,
 	"Supplier_account" boolean DEFAULT false,
 	"Supplier_operation" boolean DEFAULT false,
+	"Agent_product" boolean DEFAULT false,
+	"Supplier_product" boolean DEFAULT false,
+	"profileImage" varchar(255),
 	"IsApproved" integer,
 	"Token" varchar(255),
 	"ResetTokenExpiry" varchar(255)
@@ -30,12 +33,12 @@ CREATE TABLE IF NOT EXISTS "Agent_registration" (
 	"Gst_Vat_Tax_number" varchar(255) NOT NULL,
 	"Contact_Person" varchar(255) NOT NULL,
 	"Email" varchar(255) NOT NULL,
-	"Otp" varchar(255) NOT NULL,
 	"Password" varchar(255) NOT NULL,
 	"Office_number" varchar(255) NOT NULL,
 	"Mobile_number" varchar(255) NOT NULL,
 	"Currency" varchar(255) NOT NULL,
 	"Gst_Tax_Certificate" varchar(255) NOT NULL,
+	"profileImage" varchar(255),
 	"Role" varchar(255),
 	"IsApproved" integer,
 	"Token" varchar(255),
@@ -67,25 +70,35 @@ CREATE TABLE IF NOT EXISTS "forget_password" (
 	"resetTokenExpires" varchar(255)
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "Booking" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "Booking_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"booking_no" varchar(255),
-	"pickup" varchar(255),
-	"dropoff" varchar(255),
-	"passenger" varchar(255),
-	"date" date,
-	"time" time,
-	"return_date" date,
-	"return_time" time,
-	"estimated_trip_time" time,
-	"distance" varchar(255),
-	"vehicle_name" varchar(255),
-	"passengers_no" varchar(255),
-	"medium_bags" varchar(255),
-	"passenger_name" varchar(255),
-	"passenger_email" varchar(255),
-	"passenger_contact_no" varchar(255),
-	"agentforeign" integer
+CREATE TABLE IF NOT EXISTS "booking" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"Agent_Id" integer,
+	"vehicle_id" uuid NOT NULL,
+	"supplier_Id" integer,
+	"pickup_location" varchar(255) NOT NULL,
+	"drop_location" varchar(255) NOT NULL,
+	"pickup_lat" numeric(9, 6) NOT NULL,
+	"pickup_lng" numeric(9, 6) NOT NULL,
+	"drop_lat" numeric(9, 6) NOT NULL,
+	"drop_lng" numeric(9, 6) NOT NULL,
+	"distance_miles" numeric(10, 2) NOT NULL,
+	"price" numeric(10, 2) NOT NULL,
+	"status" varchar(50) DEFAULT 'pending',
+	"booked_at" timestamp with time zone DEFAULT now(),
+	"completed_at" timestamp with time zone
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "payments" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"booking_id" uuid NOT NULL,
+	"payment_method" varchar(50),
+	"payment_status" varchar(50) DEFAULT 'pending',
+	"transaction_id" varchar(100),
+	"reference_number" varchar(100),
+	"amount" numeric(10, 2) NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now(),
+	CONSTRAINT "payments_transaction_id_unique" UNIQUE("transaction_id"),
+	CONSTRAINT "payments_reference_number_unique" UNIQUE("reference_number")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "otps" (
@@ -182,6 +195,22 @@ CREATE TABLE IF NOT EXISTS "TransferCar" (
 	"NightTime_Price" varchar(255),
 	"Price" varchar(255),
 	"SupplierCarDetailsforeign" integer
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "all_Vehicles" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"SupplierId" varchar(255),
+	"VehicleType" varchar(255),
+	"VehicleBrand" varchar(255),
+	"ServiceType" varchar(255),
+	"VehicleModel" varchar(255),
+	"Doors" varchar(255),
+	"Seats" varchar(255),
+	"Cargo" varchar(255),
+	"Passengers" varchar(255),
+	"MediumBag" varchar(255),
+	"SmallBag" varchar(255),
+	"Extraspace" jsonb
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "One_Way_Service_Details" (
@@ -302,9 +331,11 @@ CREATE TABLE IF NOT EXISTS "Car_Details" (
 CREATE TABLE IF NOT EXISTS "SurgeCharge" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "SurgeCharge_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"VehicleName" varchar(255),
-	"Date" date,
-	"ExtraPrice" varchar(255),
-	"uniqueId" varchar(255)
+	"From" date,
+	"To" date,
+	"SurgeChargePrice" varchar(255),
+	"vehicle_id" uuid,
+	"supplier_id" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "transport_nodes" (
@@ -320,7 +351,8 @@ CREATE TABLE IF NOT EXISTS "transport_nodes" (
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "VehicleBrand" (
 	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "VehicleBrand_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
-	"VehicleBrand" varchar(255)
+	"VehicleBrand" varchar(255),
+	"ServiceType" varchar(255)
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "VehicleModel" (
@@ -344,12 +376,12 @@ CREATE TABLE IF NOT EXISTS "supplier" (
 	"Office_number" varchar(255) NOT NULL,
 	"Email" varchar(255) NOT NULL,
 	"Contact_Person" varchar(255) NOT NULL,
-	"Otp" varchar(255) NOT NULL,
 	"Mobile_number" varchar(255) NOT NULL,
 	"Gst_Vat_Tax_number" varchar(255) NOT NULL,
 	"PAN_number" varchar(255) NOT NULL,
 	"Currency" varchar(255) NOT NULL,
 	"Gst_Tax_Certificate" varchar(255) NOT NULL,
+	"profileImage" varchar(255),
 	"Password" varchar(255) NOT NULL,
 	"Role" varchar(255),
 	"IsApproved" integer,
@@ -365,6 +397,56 @@ CREATE TABLE IF NOT EXISTS "supplier_otps" (
 	"otpExpiry" timestamp NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "Vehicle_transfers" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"supplier_id" varchar(255),
+	"vehicle_id" uuid NOT NULL,
+	"zone_id" uuid NOT NULL,
+	"price" numeric(10, 2) NOT NULL,
+	"extra_price_per_mile" numeric(5, 2) NOT NULL,
+	"Currency" varchar(255),
+	"Transfer_info" varchar(255),
+	"NightTime" varchar(255),
+	"NightTime_Price" varchar(255),
+	"created_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "zones" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"supplier_id" varchar(255),
+	"address" varchar(255),
+	"name" varchar(255) NOT NULL,
+	"latitude" numeric(10, 6) NOT NULL,
+	"longitude" numeric(10, 6) NOT NULL,
+	"radius_km" numeric(5, 2) NOT NULL,
+	"geojson" jsonb DEFAULT 'null'::jsonb,
+	"created_at" timestamp DEFAULT now()
+);
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "booking" ADD CONSTRAINT "booking_Agent_Id_Agent_registration_id_fk" FOREIGN KEY ("Agent_Id") REFERENCES "public"."Agent_registration"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "booking" ADD CONSTRAINT "booking_vehicle_id_all_Vehicles_id_fk" FOREIGN KEY ("vehicle_id") REFERENCES "public"."all_Vehicles"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "booking" ADD CONSTRAINT "booking_supplier_Id_supplier_id_fk" FOREIGN KEY ("supplier_Id") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "payments" ADD CONSTRAINT "payments_booking_id_booking_id_fk" FOREIGN KEY ("booking_id") REFERENCES "public"."booking"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "ExtraSpace" ADD CONSTRAINT "ExtraSpace_SupplierCarDetailsforeign_Car_Details_id_fk" FOREIGN KEY ("SupplierCarDetailsforeign") REFERENCES "public"."Car_Details"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
@@ -379,6 +461,24 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "Supplier_Apidata" ADD CONSTRAINT "Supplier_Apidata_Api_Id_Foreign_supplier_id_fk" FOREIGN KEY ("Api_Id_Foreign") REFERENCES "public"."supplier"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "SurgeCharge" ADD CONSTRAINT "SurgeCharge_vehicle_id_all_Vehicles_id_fk" FOREIGN KEY ("vehicle_id") REFERENCES "public"."all_Vehicles"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Vehicle_transfers" ADD CONSTRAINT "Vehicle_transfers_vehicle_id_all_Vehicles_id_fk" FOREIGN KEY ("vehicle_id") REFERENCES "public"."all_Vehicles"("id") ON DELETE no action ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "Vehicle_transfers" ADD CONSTRAINT "Vehicle_transfers_zone_id_zones_id_fk" FOREIGN KEY ("zone_id") REFERENCES "public"."zones"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

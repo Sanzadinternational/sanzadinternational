@@ -10,7 +10,7 @@ export interface CreateSupplierInput {
   Office_number: string,
   Email: string,
   Contact_Person: string,
-  Otp:string,
+
   Mobile_number: string,
   Gst_Vat_Tax_number: string, 
   PAN_number: string, 
@@ -218,6 +218,27 @@ export interface CreateCartDetails{
   To:string,
   Others:string
 } 
+
+export interface ExtraSpaceItem {
+  Roof_Rack?: string;
+  Trailer_Hitch?: string;
+  Extended_Cargo_Space?: string;
+}
+
+export interface CreateVehicle{ 
+  SupplierId:string,
+  VehicleType:string,
+  VehicleBrand:string,
+  ServiceType:string,
+  VehicleModel:string, 
+  Doors:string,
+  Seats:string, 
+  Cargo:string, 
+  Passengers:string,
+  MediumBag:string,
+  SmallBag:string, 
+  ExtraSpace:ExtraSpaceItem[],
+} 
 //Vehicle Type
 
 export interface UpdateCreateCartDetails{ 
@@ -289,24 +310,44 @@ export interface UpdateCreateCartDetails{
 }  
    
 export interface SurgeCharge{ 
+  uniqueId:string,
   VehicleName:string,
-  Date:string,
-  ExtraPrice:string,
-  uniqueId:string
+From:string,
+To:string,
+SurgeChargePrice:string,
+supplier_id:string
 }
 
 export interface VehicleType{
   VehicleType:string
 }
 
+export interface UpdateVehicleType{
+  VehicleType:string
+}
+
 export interface VehicleBrand{
-  VehicleBrand:string
+  VehicleBrand:string,
+  serviceType:string
+}
+
+export interface UpdateVehicleBrand{
+  VehicleBrand:string,
+  ServiceType:string
 }
 
 export interface ServiceType{
   ServiceType:string
 }
 
+export interface UpdateServiceType{
+  ServiceType:string
+}
+
 export interface VehicleModel{
+  VehicleModel:string
+}
+
+export interface UpdateVehicleModel{
   VehicleModel:string
 }
