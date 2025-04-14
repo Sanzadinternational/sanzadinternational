@@ -42,3 +42,11 @@ app.listen(4000, () => {
     console.clear();
     console.log("Server is running", );
 })
+
+process.on('SIGTERM', () => {
+  console.info('SIGTERM signal received.');
+  console.log('Closing http server.');
+  server.close(() => {
+    console.log('Http server closed.');
+  });
+});
