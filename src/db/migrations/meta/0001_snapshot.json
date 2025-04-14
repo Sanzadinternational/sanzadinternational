@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "id": "de41e319-d7d3-4fbc-a621-c1b08525a6fa",
   "prevId": "a94e3ac9-30d4-4d50-8ae9-030cb69d4b60",
+=======
+  "id": "5670083e-5a57-47e6-92b6-6c7abed0c3f6",
+  "prevId": "ffb1b824-0ea5-4b82-99e5-d8bd9bba8058",
+>>>>>>> develop
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -50,6 +55,7 @@
           "primaryKey": false,
           "notNull": true
         },
+<<<<<<< HEAD
         "Product": {
           "name": "Product",
           "type": "boolean",
@@ -57,6 +63,8 @@
           "notNull": false,
           "default": false
         },
+=======
+>>>>>>> develop
         "Agent_account": {
           "name": "Agent_account",
           "type": "boolean",
@@ -85,6 +93,23 @@
           "notNull": false,
           "default": false
         },
+<<<<<<< HEAD
+=======
+        "Agent_product": {
+          "name": "Agent_product",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+        "Supplier_product": {
+          "name": "Supplier_product",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        },
+>>>>>>> develop
         "profileImage": {
           "name": "profileImage",
           "type": "varchar(255)",
@@ -115,6 +140,87 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+<<<<<<< HEAD
+=======
+    "public.Margin": {
+      "name": "Margin",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "Margin_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "2147483647",
+            "cache": "1",
+            "cycle": false
+          }
+        },
+        "Company_name": {
+          "name": "Company_name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Currency": {
+          "name": "Currency",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "MarginPrice": {
+          "name": "MarginPrice",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "supplier_id": {
+          "name": "supplier_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "Supplierregisterforeign": {
+          "name": "Supplierregisterforeign",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Margin_Supplierregisterforeign_supplier_id_fk": {
+          "name": "Margin_Supplierregisterforeign_supplier_id_fk",
+          "tableFrom": "Margin",
+          "tableTo": "supplier",
+          "columnsFrom": [
+            "Supplierregisterforeign"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+>>>>>>> develop
     "public.Agent_registration": {
       "name": "Agent_registration",
       "schema": "",
@@ -415,12 +521,18 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+<<<<<<< HEAD
     "public.Booking": {
       "name": "Booking",
+=======
+    "public.booking": {
+      "name": "booking",
+>>>>>>> develop
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
+<<<<<<< HEAD
           "type": "integer",
           "primaryKey": true,
           "notNull": true,
@@ -544,6 +656,235 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
+=======
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "Agent_Id": {
+          "name": "Agent_Id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vehicle_id": {
+          "name": "vehicle_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "supplier_Id": {
+          "name": "supplier_Id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "pickup_location": {
+          "name": "pickup_location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "drop_location": {
+          "name": "drop_location",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pickup_lat": {
+          "name": "pickup_lat",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pickup_lng": {
+          "name": "pickup_lng",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "drop_lat": {
+          "name": "drop_lat",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "drop_lng": {
+          "name": "drop_lng",
+          "type": "numeric(9, 6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "distance_miles": {
+          "name": "distance_miles",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "price": {
+          "name": "price",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "booked_at": {
+          "name": "booked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "booking_Agent_Id_Agent_registration_id_fk": {
+          "name": "booking_Agent_Id_Agent_registration_id_fk",
+          "tableFrom": "booking",
+          "tableTo": "Agent_registration",
+          "columnsFrom": [
+            "Agent_Id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "booking_vehicle_id_all_Vehicles_id_fk": {
+          "name": "booking_vehicle_id_all_Vehicles_id_fk",
+          "tableFrom": "booking",
+          "tableTo": "all_Vehicles",
+          "columnsFrom": [
+            "vehicle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "booking_supplier_Id_supplier_id_fk": {
+          "name": "booking_supplier_Id_supplier_id_fk",
+          "tableFrom": "booking",
+          "tableTo": "supplier",
+          "columnsFrom": [
+            "supplier_Id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "public.payments": {
+      "name": "payments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "booking_id": {
+          "name": "booking_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payment_method": {
+          "name": "payment_method",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "payment_status": {
+          "name": "payment_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "transaction_id": {
+          "name": "transaction_id",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "reference_number": {
+          "name": "reference_number",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "amount": {
+          "name": "amount",
+          "type": "numeric(10, 2)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "payments_booking_id_booking_id_fk": {
+          "name": "payments_booking_id_booking_id_fk",
+          "tableFrom": "payments",
+          "tableTo": "booking",
+          "columnsFrom": [
+            "booking_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "payments_transaction_id_unique": {
+          "name": "payments_transaction_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "transaction_id"
+          ]
+        },
+        "payments_reference_number_unique": {
+          "name": "payments_reference_number_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "reference_number"
+          ]
+        }
+      }
+    },
+>>>>>>> develop
     "public.otps": {
       "name": "otps",
       "schema": "",
@@ -1993,27 +2334,72 @@
           "primaryKey": false,
           "notNull": false
         },
+<<<<<<< HEAD
         "Date": {
           "name": "Date",
+=======
+        "From": {
+          "name": "From",
+>>>>>>> develop
           "type": "date",
           "primaryKey": false,
           "notNull": false
         },
+<<<<<<< HEAD
         "ExtraPrice": {
           "name": "ExtraPrice",
+=======
+        "To": {
+          "name": "To",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "SurgeChargePrice": {
+          "name": "SurgeChargePrice",
+>>>>>>> develop
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         },
+<<<<<<< HEAD
         "uniqueId": {
           "name": "uniqueId",
+=======
+        "vehicle_id": {
+          "name": "vehicle_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "supplier_id": {
+          "name": "supplier_id",
+>>>>>>> develop
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
+<<<<<<< HEAD
       "foreignKeys": {},
+=======
+      "foreignKeys": {
+        "SurgeCharge_vehicle_id_all_Vehicles_id_fk": {
+          "name": "SurgeCharge_vehicle_id_all_Vehicles_id_fk",
+          "tableFrom": "SurgeCharge",
+          "tableTo": "all_Vehicles",
+          "columnsFrom": [
+            "vehicle_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+>>>>>>> develop
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -2402,6 +2788,15 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+<<<<<<< HEAD
+=======
+        "supplier_id": {
+          "name": "supplier_id",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+>>>>>>> develop
         "vehicle_id": {
           "name": "vehicle_id",
           "type": "uuid",
