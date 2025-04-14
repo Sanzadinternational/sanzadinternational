@@ -1,5 +1,7 @@
 import { integer, pgTable, varchar,timestamp, text, PgTable, date, boolean, pgEnum } from 'drizzle-orm/pg-core'; 
 export const RoleEnum = pgEnum('role', ['admin', 'superadmin']); 
+import {registerTable} from '../schema/SupplierSchema'; 
+
 export const AdminTable = pgTable('admin',{ 
     id: integer().primaryKey().generatedAlwaysAsIdentity(), 
     Email:varchar({length:255}), 
@@ -18,3 +20,14 @@ export const AdminTable = pgTable('admin',{
     Token:varchar({length:255}),
     ResetTokenExpiry: varchar({length:255}),
 });
+
+export const MarginTable = pgTable('Margin',{
+    id: integer().primaryKey().generatedAlwaysAsIdentity(), 
+    Company_name:varchar({length:255}),
+    Currency: varchar({ length: 255 }),
+    MarginPrice: varchar({length:255}),
+    supplier_id: varchar({length:255}),
+    Supplierregisterforeign: integer('Supplierregisterforeign')
+        .references(() => registerTable.id, { onDelete: "cascade" }),
+    created_at: timestamp("created_at").defaultNow(),
+})

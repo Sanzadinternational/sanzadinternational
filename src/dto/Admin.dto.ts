@@ -14,4 +14,12 @@ export interface CreateAdmin{
      Token:string,
      resetTokenExpiry:string
 } 
+
+export interface CreateMargin{
+       Company_name:string,
+        Currency: string,
+        MarginPrice:string,
+        supplier_id: string,
+        Supplierregisterforeign:number
+}
  

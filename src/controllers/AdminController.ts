@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { CreateAdmin } from "../dto/Admin.dto"
-import { AdminTable } from "../db/schema/adminSchema";
+import { CreateAdmin,CreateMargin } from "../dto/Admin.dto";
+import { AdminTable,MarginTable } from "../db/schema/adminSchema";
 import { db } from "../db/db";
 import { and,desc, eq } from "drizzle-orm";
 const { AgentTable,OneWayTripTable,RoundTripTable } = require('../db/schema/AgentSchema'); 
@@ -466,4 +466,89 @@ export const ChangeSupplierApprovalStatus = async(req:Request,res:Response,next:
     }catch(error){
         next(error)
     }
+}
+
+export const CreateMargindata = async (req: Request, res: Response, next: NextFunction) => { 
+  try {
+    const {
+      Company_name,
+      Currency,
+      MarginPrice,
+      supplier_id,
+      Supplierregisterforeign
+    } = req.body as CreateMargin;
+
+    const result = await db.insert(MarginTable).values({
+      Company_name,
+      Currency,
+      MarginPrice,
+      supplier_id,
+      Supplierregisterforeign
+    });
+
+    res.status(201).json({
+      message: "Margin data created successfully",
+      data: result
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const GetMarginData = async(req:Request,res:Response,next:NextFunction)=>{
+try{
+  const data = await db.select()
+  .from(MarginTable)
+  return res.status(200).json({
+    message: "Margin data fetched successfully",
+      data: data
+  })
+}catch(error){
+  next(error)
+}
+}
+
+export const UpdateMarginData = async(req:Request,res:Response,next:NextFunction)=>{
+  try{
+    const { id } = req.params;
+       const {
+        Company_name,
+        Currency,
+        MarginPrice,
+        supplier_id,
+        Supplierregisterforeign
+       }=<CreateMargin>req.body;
+
+       const result = await db.update(MarginTable)
+       .set({
+        Company_name,
+        Currency,
+        MarginPrice,
+        supplier_id,
+        Supplierregisterforeign
+       })
+       .where(eq(MarginTable.id,Number(id)))
+       .returning();
+       return res.status(200).json({
+        message:"Margin Data Updated Successfully",
+        data:result
+       })
+  }catch(error){
+    next(error)
+  }
+}
+    
+export const DeleteMarginData = async(req:Request,res:Response,next:NextFunction)=>{
+  try{
+       const {id}=req.params;
+       const result = await db.delete(MarginTable)
+       .where(eq(MarginTable.id,Number(id)))
+       return res.status(200).json({
+        message:"Margin Data Deleted Successfully",
+        data:result
+       })
+  }catch(error){
+    next(error)
+  }
 }
