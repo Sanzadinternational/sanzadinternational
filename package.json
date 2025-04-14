@@ -8,7 +8,7 @@
   "main": "index.ts",
 >>>>>>> Supplier
   "scripts": {
-    "start": "nodemon index.ts",
+    "start": "node index.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx ./migration.ts"
   },
