@@ -13,7 +13,7 @@ const { registerTable, One_WayTable,supplier_otps} = require('../db/schema/Suppl
 // import { registerTable, One_Way_Service_Price_Details } from '../db/schema/SupplierSchema';
 import { generateOTP, sendOTPEmail } from "../utils";
 // const { One_Way_Service_Price_Details } = require('../db/schema/SupplierSchema'); 
-=======
+======= 
 import { Request, Response, NextFunction } from "express"; 
 import { CreateSupplierInput,UpdateVehicleType,UpdateVehicleModel,UpdateServiceType,UpdateVehicleBrand,VehicleType,SurgeCharge,VehicleBrand,ServiceType,UpdateTransferCars,VehicleModel,CreateTransferCars,UpdateCreateCartDetails,
     CreateCartDetails,CreateSupplierDetailServicesInput,CreateExtraSpace,UpdateExtraSpace,CreateTransportNodesInput,SupplierPriceInput, CreateSupplierOneWayInput,CreateSupplierApidata } from "../dto";
