@@ -4,7 +4,7 @@
 // import { CreateProduct, GetProductById, DeleteProductById , UpdateProductById} from '../controllers';
 =======
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import {AllGetSuppliers,AllAgentRecords,SupplierSingleView,ResetAdminPassword,AgentSingleView,DestroyAdmin,ForgetAdminPassword,ChangeSupplierApprovalStatus,ChangeAgentApprovalStatus, AllAdminRecords,CreateAdmins } from "../controllers/AdminController";
+import {AllGetSuppliers,AllAgentRecords,GetAllBooking,SupplierSingleView,ResetAdminPassword,AgentSingleView,DestroyAdmin,ForgetAdminPassword,ChangeSupplierApprovalStatus,ChangeAgentApprovalStatus, AllAdminRecords,CreateAdmins } from "../controllers/AdminController";
 import { AgentMail } from "../controllers/EmailotpsController"; 
 import {SupplierMail} from "../controllers/EmailotpsController";
 const router = express.Router(); 
@@ -61,6 +61,7 @@ router.post('/CreateMargindata',CreateMargindata);
 router.get('/GetMarginData',GetMarginData);
 router.put('/UpdateMarginData/:id',UpdateMarginData);
 router.delete('/DeleteMarginData/:id',DeleteMarginData);
+router.get("/GetAllBooking",GetAllBooking); 
 export {router as AdminRoute };  
 
 >>>>>>> Supplier
