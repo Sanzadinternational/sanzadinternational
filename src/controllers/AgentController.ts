@@ -43,6 +43,7 @@ var passwordHash = require('password-hash');
 =======
 var randomstring = require("randomstring");
 var passwordHash = require('password-hash');
+import { BookingTable } from "../db/schema/BookingSchema";
 >>>>>>> develop
 
 export const CreateAgent = async(req: Request, res: Response, next: NextFunction) => { 
@@ -1214,6 +1215,17 @@ export const QuickEmail = async(req:Request,res:Response,next:NextFunction)=>{
           return res.status(200).json(results); 
     }catch(error){
       next(error)
+    }
+}
+export const GetBookingByAgentId = async(req:Request,res:Response,next:NextFunction)=>{
+    try{
+         const { id } = req.params;
+         const result = await db.select()
+         .from(BookingTable)
+         .where(eq(BookingTable.agent_id,Number(id)))
+         return res.status(200).json({result,message:"Booking fetched Successfully"})
+    }catch(error){
+        next(error)
     }
 }
 <<<<<<< HEAD
