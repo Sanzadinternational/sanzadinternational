@@ -43,7 +43,7 @@ router.post('One_Way_Service_Details', One_Way_Details);
 import { Supplier_price, TransportNode,resetPasswords,ForgetPasswords, CreateVehicles, GetVehiclebyId, CreateZone, createTransfer, updateZone, GetVehicleBySupplierId, GetZoneBySupplierId } from '../controllers/SupplierController';
 import authMiddleware from '../middlewares/authMiddleware';
 import express, {Request, Response, NextFunction, Router} from 'express'; 
-import { CreateSupplier,UpdateVehicleTypes,UpdateVehicleModels,UpdateVehicleBrands,UpdateServiceTypes,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
+import { CreateSupplier,GetBookingBySupplierId,UpdateVehicleTypes,UpdateVehicleModels,UpdateVehicleBrands,UpdateServiceTypes,DeleteVehicleType,GetSupplier,SurgeCharges,GetVehicleCarDetails,GetAllCarDetails,GetTransferCarDetails,UpdateTransferCar,UpdateExtra,CreateVehicleType,GetVehicleBrand,CreateVehicleBrand,CreateServiceType,CreateVehicleModel,GetVehicleType,
     GetCarDetails,GetServiceType,getZone,DeleteVehicle,UpdateVehicle,GetVehicle,deleteZone,DeleteVehicleModel,DeleteServiceType,DeleteVehicleBrand,CreateExtraSp,UpdatedSignleCarDetails,GetVehicleModel,DeleteSingleCarDetails,CreateTransferCarDetails,suppliersendOtp,supplierverifyOtp,CreateCartDetail,Supplier_details, GetSupplier_details, deleteUserById,  One_Way_Details, CreateSupplierApi} from '../controllers'; 
     const multer = require('multer');
     import fs from 'fs';
@@ -143,6 +143,7 @@ router.get('/gettransferbyid/:id',getTransferById);
 router.get('/getTransferBySupplierId/:id',getTransferBySupplierId);
 router.put('/updateTransfer/:id',updateTransfer);
 router.delete('/deleteTransfer/:id',deleteTransfer);
+router.get('/GetBookingBySupplierId/:id',GetBookingBySupplierId);
 >>>>>>> develop
 // router.get('/products', GetProducts); 
 // router.get('/product/:id', GetProductById);
