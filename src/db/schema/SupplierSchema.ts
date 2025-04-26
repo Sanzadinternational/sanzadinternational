@@ -6,7 +6,7 @@ export const registerTable = pgTable('supplier', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
 =======
 import { integer, pgTable, varchar, text,timestamp, date, jsonb, boolean, numeric, uuid } from 'drizzle-orm/pg-core'; 
-
+ 
 export const registerTable = pgTable('supplier', { 
   id: integer().primaryKey().generatedAlwaysAsIdentity(), 
 >>>>>>> Supplier
