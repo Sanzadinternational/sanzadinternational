@@ -5,7 +5,7 @@ import { CreateAgent,GetAgent,loginAgent,GetBill,OneWayTrip,RoundTrip,GetOneWayT
 =======
 import authMiddleware from '../middlewares/authMiddleware';
 import { ForgetPassword,resetPassword } from '../controllers/AgentController';
-import { CreateAgent,GetAgent,loginAgent,QuickEmail,GetBill,OneWayTrip,RoundTrip,GetOneWayTrip,GetRoundTrip,UpdateOneWayTrip, sendOtp, verifyOtp } from '../controllers'; 
+import { CreateAgent,GetAgent,loginAgent,GetBookingByAgentId,QuickEmail,GetBill,OneWayTrip,RoundTrip,GetOneWayTrip,GetRoundTrip,UpdateOneWayTrip, sendOtp, verifyOtp } from '../controllers'; 
 >>>>>>> develop
 import { Emailotps } from '../controllers/EmailotpsController'; 
 import { dashboard } from '../controllers/LoginController';
@@ -88,7 +88,8 @@ router.get('/GetRoundTrip',GetRoundTrip);
 router.post('/QuickEmail',QuickEmail);
 router.post('/send-otp', sendOtp);
 router.post('/QuickEmail',QuickEmail);
-router.post('/verify-otp', verifyOtp)
+router.post('/verify-otp', verifyOtp);
+router.get('/GetBookingByAgentId/:id',GetBookingByAgentId);;
 <<<<<<< HEAD
 <<<<<<< HEAD
 
