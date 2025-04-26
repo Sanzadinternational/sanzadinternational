@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+import { BookingTable } from "../db/schema/BookingSchema";
 import { CreateProductInput, EditProduct } from "../dto";
 // import { Product } from "../models";
 =======
@@ -593,3 +594,12 @@ export const DeleteMarginData = async(req:Request,res:Response,next:NextFunction
   }
 }
 >>>>>>> develop
+export const GetAllBooking = async(req:Request,res:Response,next:NextFunction)=>{
+  try{
+        const result= await db.select()
+        .from(BookingTable);
+        return res.status(200).json({result,message:"Booking all data fetch successfully"})
+  }catch(error){
+    next(error)
+  }
+}
