@@ -205,6 +205,8 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
       AgentOpration: AdminTable.Agent_operation,
       SupplierAccount: AdminTable.Supplier_account,
       SupplierOPration: AdminTable.Supplier_operation,
+      Agent_product:AdminTable.Agent_product,
+      Supplier_product:AdminTable.Supplier_product,
       profile:AdminTable.profileImage,
     })
     .from(AdminTable)
@@ -221,6 +223,8 @@ export const dashboard = async (req: Request, res: Response, next: NextFunction)
     AgentOperation: user.AgentOpration,
     SupplierAccount: user.SupplierAccount,
     SupplierOpration: user.SupplierOPration,
+    Agent_product:user.Agent_product,
+    Supplier_product:user.Supplier_product,
     profileImage:user.profile
   }); 
      
